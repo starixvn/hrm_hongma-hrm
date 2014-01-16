@@ -1,0 +1,19 @@
+﻿@model IList<Fanex.NexHR.ViewModels.WorkingScheduleModel>
+
+
+@section css{
+    @Url.CombresLink("workingschedulecss")
+}
+@section js{
+    @Url.CombresLink("workingschedulejs")
+}
+
+@{
+    ViewBag.Title = Labels.MyWorkingSchedule;
+}
+@section Breadcrumb {
+    <a class="step" href="#">Personal</a> <span class="step">@ViewBag.Title</span>
+}
+
+<h2>@Labels.MyWorkingSchedule</h2>
+<div id="calendar"></div>

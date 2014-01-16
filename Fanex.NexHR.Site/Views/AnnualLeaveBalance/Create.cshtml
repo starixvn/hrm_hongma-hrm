@@ -1,0 +1,66 @@
+﻿@model AnnualLeaveBalanceModel
+@{
+    ViewBag.Title = Labels.AdjustAnnualLeaveBalance;
+}
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("sitejs")
+}
+@section Breadcrumb
+{
+    <a class="step" href="javascript:;">HR</a> <span class="step"><a href="@Url.Action("index", "annualleavebalance")">@Labels.AnualLeaveBalance</a>
+    </span><span class="step"><a href="~/annualleavebalance/employee/@ViewBag.Employee.Id">@ViewBag.Employee.NickName's
+        annual leave balance</a> </span><span class="step">@Labels.Adjust</span>
+}
+@using (Html.BeginForm())
+{
+<div class="bunhat" style="min-width: 400px">
+    @Html.ValidationSummary(true)
+
+    @if (ViewBag.Inserted == true)
+    {
+    <div class="success">@Messages.AdjustSuccessfully</div> 
+    }
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.TotalDays)
+        </div>
+        <div class="input">
+            @Html.EditorFor(model => model.TotalDays)
+            @Html.ValidationMessageFor(model => model.TotalDays)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="input">
+            @Html.TextAreaFor(model => model.Description)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.AffectedFrom)
+        </div>
+        <div class="input">
+            @Html.DatePickerFor(model => model.AffectedFrom)
+            @Html.ValidationMessageFor(model => model.AffectedFrom)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.HiddenFor(model => model.EmpId)
+        </div>
+        <div class="input">
+            <input type="submit" value="@Labels.Adjust" />
+            <a class="button" href="~/annualleavebalance/employee/@ViewBag.Employee.Id">@Labels.Cancel</a>
+        </div>
+    </div>
+</div>
+}

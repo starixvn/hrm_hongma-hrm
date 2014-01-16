@@ -1,0 +1,149 @@
+﻿@using Fanex.NexHR.Models.Request
+@model IList<RequestEntity>
+<table class="data persist-area">
+    <thead>
+        <tr class="persist-header">
+            <th>
+                #
+            </th>
+            <th>@Labels.Team
+            </th>
+            <th>@Labels.Employee
+            </th>
+            <th>@Labels.Type
+            </th>
+            <th>@Labels.Date
+            </th>
+            <th>@Labels.Shift
+            </th>
+            <th>@Labels.FromTime
+            </th>
+            <th>@Labels.ToTime
+            </th>
+            <th>@Labels.TotalHours
+            </th>
+            <th>@Labels.CreatedDate
+            </th>
+            <th>@Labels.Remark
+            </th>
+            <th>@Labels.Status
+            </th>
+            <th>@Labels.History
+            </th>
+        </tr>
+    </thead>
+    @if (ViewBag.EntityList.Count > 0)
+    {
+        <tbody>
+            @{int index = 1;}
+            @foreach (var request in Model)
+            {
+                <tr id="row@(request.Id)">
+                    <td>@(index++)
+                    </td>
+                    <td>@request.Requester.Team.Code
+                    </td>
+                    <td class="tooltip" title="@request.Requester.FullName">
+                        @request.Requester.NickName
+                    </td>
+                    <td>@(new OvertimeType { Id = request.OvertimeType }.Name)
+                    </td>
+                    <td class="ddMMyyyy highlight">@request.FromDate.ToDateMonthYearFormatedDate()
+                    </td>
+                    @if (request.IsOvertimeHours)
+                    {
+                        <td class="highlight"></td>
+                        <td class="highlight">@request.FromDate.ToString("HH:mm")</td>
+                        <td class="highlight">@request.ToDate.ToString("HH:mm")</td>
+                        <td class="highlight">@request.TotalDays.ToString("0.##")</td>
+                    }
+                    else
+                    {
+                        <td class="highlight">@request.FromShift.Name.ToString()</td>
+                        <td class="highlight"></td>
+                        <td class="highlight"></td>
+                        <td class="highlight"></td> 
+                    }
+                            
+                    <td class="ddMMyyyyhhmm tooltip" title="@request.CreatedDate.ToShortFormatedDate()" >
+                    @request.CreatedDate.ToShortFormatedDate()
+                    </td>
+
+                    @if (!string.IsNullOrWhiteSpace(request.Remark))
+                    { 
+                        <td class="tooltip" title="@request.Remark">
+                            <span class="icon remark" alt="remark" />
+                        </td>
+                    }
+                    else
+                    {
+                        <td>-</td>
+                    }
+                            
+                    @if ((bool)ViewBag.IsAllowChangeStatus)
+                    {
+                        <!-- If view from menu "HR Space" -->
+                        if (Roles.IsUserInRole("HR"))
+                        {
+                            switch (request.Status.Id)
+                            {
+                                case 1: //Pending
+                                    <td>
+                                        <a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString() tooltip" title="@request.Requester.NickName had @request.TotalDaysRequestInMonth approved day(s) in @request.FromDate.ToMonthAndYearFormatedDate()">@request.Status.ToString()</a>
+                                    </td>
+                                                                                                                                                                                                                                                                        break;
+                                case 2: //Approve
+                                    <td>
+                                        <a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString() tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</a>
+                                    </td>
+                                                                                                                                                                                                                                        break;
+                                case 3: //Reject
+                                    <td>
+                                        <a requestid="@request.Id" href="javascript:;" class="tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</a>
+                                    </td>
+                                                                                                                                                                                                             break; 
+                            }
+                        }
+                        else
+                        { 
+                            <td class="tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()
+                            </td> 
+                        }
+                    }
+                    else
+                    {
+                        <!-- If view from menu "Company Space" -->
+                        switch (request.Status.Id)
+                        {
+                            case 1: //Pending
+                                <td>
+                                    <a href="javascript:;" class="tooltip" title="@request.Requester.NickName had @request.TotalDaysRequestInMonth approved day(s) in @request.FromDate.ToMonthAndYearFormatedDate()">@request.Status.ToString()</a>
+                                </td>
+                                                                                                                                                                                                                                            break;
+                            case 2: //Approve
+                                <td>
+                                    <a href="javascript:;" class="tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</a>
+                                </td>
+                                                                                                                                                                                                            break;
+                            case 3: //Reject
+                                <td>
+                                    <a href="javascript:;" class="tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</a>
+                                </td> 
+                                                                                                                                                                                 break;
+                        }
+                    }
+
+                    <td>
+                        <a class="viewhistory" href="javascript:;" id="/request/hrviewhistory?id=@request.Id&type=@request.Type.RequestHistoryFilter">
+                            @Labels.View </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+    else
+    { 
+        @RazorHelper.DisplayNoInformation(colspan: 13);
+    }
+</table>
+@RazorHelper.ProcessMenu()

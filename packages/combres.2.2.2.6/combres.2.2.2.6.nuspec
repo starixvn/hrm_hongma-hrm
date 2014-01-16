@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>combres</id>
+    <version>2.2.2.6</version>
+    <title>Combres</title>
+    <authors>Buu Nguyen</authors>
+    <owners>Buu Nguyen</owners>
+    <licenseUrl>http://combres.codeplex.com/license</licenseUrl>
+    <projectUrl>http://combres.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET library which minifies, compresses, combines, and caches JavaScript and CSS resources of ASP.NET and ASP.NET MVC web applications. Simply put, this library helps your applications rank better with YSlow and PageSpeed.</description>
+    <summary>Performance optimization library for ASP.NET and ASP.NET MVC applications.</summary>
+    <tags>asp.net asp.net-mvc azure closure compression minification yui yuicompressor ajaxmin dotless yslow performance obfuscation optimization speed</tags>
+    <dependencies>
+      <dependency id="fasterflect" version="[2.1.0]" />
+      <dependency id="log4net" version="[1.2.11]" />
+      <dependency id="dotless" version="[1.3.0.2]" />
+      <dependency id="YUICompressor.NET" version="[1.7.1.0]" />
+      <dependency id="AjaxMin" version="[4.48.4489.28432]" />
+      <dependency id="WebActivator" version="1.4.1" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = Labels.EmployeeManagement;
+}
+@section css{
+    @Url.CombresLink("employeecss")
+}
+@section js{
+    @Url.CombresLink("employeejs")
+}
+@section Breadcrumb {
+    <a class="step">HR Space</a><span class="step">@ViewBag.Title</span>
+}
+<script>
+    var enable = null;
+</script>
+<h2>@ViewBag.Title</h2>
+<div class="container_24 bunhat">
+    <div class="grid_24">
+        <div class="grid_2 gridlabel">@Labels.Keyword</div>
+        <div class="grid_7">
+            <input id="keyword" type="text" placeholder="@Messages.SearchEmployeeWatermark" />
+        </div>
+        <div class="grid_1 gridlabel">@Labels.Team</div>
+        <div class="grid_6">
+            <select id="group" multiple="multiple" class="team-select">
+                @foreach (Team item in ViewBag.Groups)
+                { 
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="grid_1 gridlabel">@Labels.Title</div>
+        <div class="grid_5">
+            @*  <select id="title" class="title-select">
+                <option value="">@Labels.AllTitles</option>
+                @foreach (Fanex.NexHR.Models.LookupData item in ViewBag.JobTitles)
+                { 
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>*@
+            @Html.DropDownList("title", (List<SelectListItem>)ViewBag.JobTitles, Labels.AllTitles, new { @class = "title-select" })
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="space">
+    </div>
+    <div class="clear">
+    </div>
+    <div class="space">
+    </div>
+    <div class="grid_16">
+        <div class="grid_2 gridlabel">
+            <br />
+        </div>
+        <div class="grid_8 gridlabel">
+            <input name="name" type="radio" id="active" checked="checked" />
+            <label for="active">
+                Active Users</label>
+            <input name="name" type="radio" id="enable" />
+            <label for="enable">
+                Disabled Users</label>
+            <input name="name" type="radio" id="IsDeleted" />
+            <label for="IsDeleted">
+                Deleted Users</label>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="space">
+    </div>
+    <div class="clear">
+    </div>
+    <div class="space">
+    </div>
+    <div class="grid_2 prefix_2">
+        <input id="query" type="button" value="@Labels.Submit" />
+    </div>
+</div>
+<div class="space">
+</div>
+<div class="clear">
+</div>
+<table id="data" class="data persist-area">
+    <thead>
+        <tr class="persist-header">
+            <th>
+                #
+            </th>
+            <th>
+                @Labels.Code
+            </th>
+            <th>
+                @Labels.Nick
+            </th>
+            <th>
+                @Labels.Name
+            </th>
+            <th>
+                @Labels.Team
+            </th>
+            <th>
+                @Labels.Gender
+            </th>
+            <th>
+                Job title
+            </th>
+            <th>
+                @Labels.DoB
+            </th>
+            <th>
+                @Labels.JoinedDate
+            </th>
+            <th>
+                @Labels.Edit
+            </th>
+            <th>
+                Schedule
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<input type="hidden" id="jobtitleid" value="@ViewBag.JobTitleId" />
+<script id="itemTemplate" type="text/x-jquery-tmpl">   
+    <tr id="row${Id}" {{if Enabled == false }}class="disabled"{{/if}}>
+        <td>
+          ${index()}
+        </td>
+        <td>
+            ${Code}
+        </td>
+        <td class="nick" data-code="${Code}">
+            <a href="/employee/detail/${Id}">${NickName}</a>
+        </td>
+        <td class="left">${FullName}</td>
+        <td title="${Team["Name"]}" class="tooltip">${Team["Code"]}</td>  
+        <td>
+        {{if Gender == 0 }}
+            F
+        {{else}}
+            M
+        {{/if}}
+        </td>
+        <td class="left">${JobTitle}</td>
+        <td style="width:80px">${jsonTojsDate(DOB).format("dd mmm, yyyy")}</td>
+        <td style="width:80px">
+            {{if JoinedDate != null}}
+                ${jsonTojsDate(JoinedDate).format("dd mmm, yyyy")}
+            {{/if}}
+        </td>        
+        <td style="width: 45px;">
+            {{if !IsDeleted}}
+                <a href="/employee/edit/${Id}"><img src="/Styles/Images/edit-icon.png"></a>
+            {{else}}
+                -
+            {{/if}}
+        </td>
+        <td style="width: 45px;">
+            {{if !IsDeleted}}
+                <a href="/employee/defaultschedule/${Id}"><img src="/Styles/Images/edit-icon.png"></a>
+            {{else}}
+                -
+            {{/if}}
+            
+        </td>
+       
+    </tr>
+    
+</script>

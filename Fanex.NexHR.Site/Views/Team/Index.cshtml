@@ -1,0 +1,69 @@
+﻿@model IList<Fanex.NexHR.Models.Team>
+@{
+    ViewBag.Title = "Team Management";
+}
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("teameditjs")
+}
+@section Breadcrumb {
+    <a class="step">HR Space</a><span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+<div class="button-icon"><span class="icon plus"></span>@Html.ActionLink("New Team", "Create")</div>
+<div class="clear">
+</div>
+<div class="space">
+</div>
+<table class="data" style="width: auto; min-width:600px;">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>@Labels.Code
+            </th>
+            <th>@Labels.Team
+            </th>
+            <th>@Labels.Leader
+            </th>
+            <th>@Labels.AssitantLeader
+            </th>
+            <th>
+                @Labels.Edit
+            </th>
+            <th>
+                @Labels.Delete
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int index = 1;}
+        @foreach (Team team in Model)
+        {
+            <tr id="row@(team.Id)">
+                <td>@(index++)
+                </td>
+                <td>@team.Code
+                </td>
+                <td>@team.Name
+                </td>
+                <td class="tooltip" title="@team.Leader.FullName">@team.Leader.NickName
+                </td>
+                <td class="tooltip" title="@team.AssistantLeader.FullName">@team.AssistantLeader.NickName
+                </td>
+
+                <td class="cmd">
+                    <a href="@Url.Action("Edit", "Team", new { Id = team.Id })"><img src="~/Styles/Images/edit-icon.png" /></a>
+                </td>
+                <td  class="cmd">
+                    <a href="javascript:;" onclick="deleteTeam(@team.Id);"><img src="~/Styles/Images/delete-icon.png" /></a>
+                </td>
+            </tr>
+            
+        }
+    </tbody>
+</table>
+

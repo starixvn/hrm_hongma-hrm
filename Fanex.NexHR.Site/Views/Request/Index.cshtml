@@ -1,0 +1,15 @@
+﻿@model Fanex.NexHR.ViewModels.RequestViewModel
+@{
+    ViewBag.Title = Labels.MemberRequest;
+}
+
+@section css{
+    @Url.CombresLink("managerequestscss")
+}
+@section js{
+    @Url.CombresLink("managerequestsjs")
+}
+@section Breadcrumb {
+    <a class="step">Leader View</a> <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>

@@ -1,0 +1,19 @@
+﻿@model Fanex.NexHR.Models.Employee
+@*<div class="grid_8 account">
+    Hello @Html.ActionLink(Model.FullName, "index", "account", routeValues: null, htmlAttributes: new { @class = "username", title = "Account information" })
+    <img src="~/employee/avatar/@(Model.NickName).jpg" />
+</div>*@
+<div id="user_utilities" class="dropdown_navigation">
+    <h2>
+        @Model.FullName - <i>@Model.NickName</i>
+    </h2>
+    <a href="javascript:void(0)" class="dropdown_arrow"></a>
+    <ol class="global_navigation">
+        <li><a class="" href="#">My profile</a> </li>
+        <li><a class="" href="#">Request leave</a> </li>
+        <li><a class="" href="#">Request change shift</a> </li>
+        <li><a class="" href="#">Request late in - early out</a> </li>
+        <li><a class="" href="#">Request check in/out</a> </li>
+        <li><a class="" href="~/auth/logoff">Logoff</a> </li>
+    </ol>
+</div>

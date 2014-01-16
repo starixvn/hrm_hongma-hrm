@@ -1,0 +1,141 @@
+﻿/*
+* monPickr - jQuery Plugin
+* Just a simple month picker
+*
+* Examples and documentation at: http://update.later
+*
+* Copyright (c) 2012 Nexcel Solutions
+*
+* Version: 0.0.3 (2 Mar 2012)
+* Requires: jQuery v1.7+
+*/
+
+.monpickr {
+	font-size: 11px;
+	line-height:13px !important;
+}
+
+.monpickr-arrows {
+	padding: 2px;
+	position: relative;
+}
+
+.monpickr-arrows input.monpickr-input {
+	height: 1.1em;
+	margin: 0 2px 0 20px;
+	padding: 2px;
+	text-align: center;
+	box-shadow: none !important;
+}
+
+.monpickr-arrows .monpickr-prev, .monpickr-arrows .monpickr-next, .monpickr-arrows .monpickr-down {
+	position: absolute;
+	top: 2px; 
+	padding: 1px;
+}
+
+.monpickr-arrows .monpickr-prev {
+	left: 2px;
+}
+
+.monpickr-arrows .monpickr-next, .monpickr-arrows .monpickr-down {
+	right: 2px;
+}
+
+.monpickr-arrows .monpickr-prev:hover, 
+
+.monpickr-arrows .monpickr-next:hover,
+
+.monpickr-arrows .monpickr-down:hover {
+	padding: 0;
+}
+
+.monpickr-dropdown {
+	display: none;
+	overflow: auto;
+	padding: 2px;
+	font-size: 11px;
+}
+
+.ui-monpickr ul {
+	background: none;
+	border: 0 none;
+	width: 100%;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.ui-monpickr li {
+	cursor: default;
+	list-style: none;
+	margin: 1px 0;
+	padding: 3px 1px;
+	border: transparent solid 1px;
+	float: left;
+	clear: both;
+	width: 97%;
+	cursor: pointer;
+}
+
+.ui-monpickr .ui-widget-content a {
+	text-decoration: none !important;
+}
+
+.ui-monpickr li a {
+	display: block;
+	font-weight: normal;
+	margin: 0;
+	padding-left: 5px;
+	line-height:13px !important;
+}
+
+.monpickr-dropdown .year a {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.monpickr-dropdown .month-wrap {
+	display: none;
+}
+
+.monpickr-dropdown .month-wrap a {
+	font-size: .9em;
+}
+
+/* DATE RANGE */
+
+.daypickr-wrap {
+	font-size: 11px;
+}
+
+.daypickr {
+	width: 56px;
+}
+
+.daypickr.monpickr-arrows input.monpickr-input {
+	height: 11px;
+	margin: 0 2px 0 0;
+	padding: 2px;
+	width: 25px;
+	text-align: left;
+}
+
+.daypickr-dropdown {
+	max-height: 400px;
+	overflow: auto;
+	#overflow-x: hidden;
+	display: none;
+}
+
+.daypickr-dropdown.ui-monpickr li {
+	width: 88%;
+	#width: 50px;
+	margin: 1px;
+}
+
+.monpickr-label {
+	float: left;
+	font-size: .85em;
+	margin: 3px 3px 3px 10px;
+}

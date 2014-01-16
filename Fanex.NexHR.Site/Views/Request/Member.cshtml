@@ -1,0 +1,48 @@
+﻿@model Fanex.NexHR.ViewModels.RequestViewModel
+@using Fanex.NexHR.Models.Request;
+@{
+    ViewBag.Title = Labels.MemberRequest;
+}
+@section css{
+    @Url.CombresLink("managerequestscss")
+}
+@section js{
+    @Url.CombresLink("managerequestsjs")
+}
+@section Breadcrumb {
+    <a class="step">Leader View</a> <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+<div>
+    @Html.Partial("CriteriaPanel", Model)
+</div>
+
+@*select view here*@
+@switch (Model.RequestType)
+{
+    case 1:
+        IList<RequestEntity> entityLeave = ViewBag.EntityList;
+        Html.RenderPartial("Request/Member/MemberLeaveRequest", entityLeave);
+        break;
+    case 2:
+        IList<RequestEntity> entityChangeShift = ViewBag.EntityList;
+        Html.RenderPartial("Request/Member/MemberChangeShiftRequest", entityChangeShift);
+        break;
+    case 3:
+        IList<RequestEntity> entityLateInEarlyOut = ViewBag.EntityList;
+        Html.RenderPartial("Request/Member/MemberLateInEarlyOutRequest", entityLateInEarlyOut);
+        break;
+    case 4:
+        IList<RequestEntity> entityCheckInOut = ViewBag.EntityList;
+        Html.RenderPartial("Request/Member/MemberCheckInOutRequest", entityCheckInOut);
+        break;
+    case 5:
+        IList<RequestEntity> entityOvertime = ViewBag.EntityList;
+        Html.RenderPartial("Request/Member/MemberOvertimeRequest", entityOvertime);
+        break;
+    case 6: 
+        IList<RequestEntity> entityAll = ViewBag.EntityList;
+        Html.RenderPartial("Request/AllRequest", entityAll);
+        break;
+}
+<div id="dialoghistorycontent"/>

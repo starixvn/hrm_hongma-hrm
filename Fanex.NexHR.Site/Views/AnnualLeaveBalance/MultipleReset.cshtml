@@ -1,0 +1,26 @@
+﻿@using (Html.BeginForm())
+{
+    <div class="formrow">
+        <div class="label">
+            @Html.Label("Max Balance")
+        </div>
+        <div class="input">
+            @Html.Editor("MinBalance")
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.Label("Description")
+        </div>
+        <div class="input">
+            @Html.TextArea("DescriptionReset")
+        </div>
+    </div>   
+    <div class="formrow">
+        <div class="input">
+            <input type="submit" value="@Fanex.NexHR.Resources.Labels.Submit" id="insert" />
+            <input type="button" value="@Fanex.NexHR.Resources.Labels.Cancel" id="cancelReset" />
+        </div>
+    </div>
+}

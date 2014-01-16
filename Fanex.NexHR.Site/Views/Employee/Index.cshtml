@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Staff info";
+}
+@section css{
+    @Url.CombresLink("employeecss")
+}
+@section js{
+    @Url.CombresLink("employeejs")
+}
+@section Breadcrumb {
+    <a class="step" href="#">@ViewBag.Title</a>
+}
+<script>
+    var enable = true;
+</script>
+<h2>@ViewBag.Title</h2>
+<div>
+    @Labels.Keyword
+    <input id="keyword" type="text" placeholder="@Fanex.NexHR.Resources.Messages.SearchEmployeeWatermark" />
+    @Labels.Team
+    <select id="group" multiple="multiple" class="team-select">
+        @foreach (Fanex.NexHR.Models.Team item in ViewBag.Groups)
+        { 
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
+    <input id="query" type="button" value="Submit" />
+</div>
+<table id="data" class="data persist-area">
+    <thead>
+        <tr class="persist-header">
+            <th>
+                #
+            </th>
+            <th>@Labels.Code</th>
+            <th>@Labels.Nick/@Labels.Email
+            </th>
+            <th>@Labels.Name
+            </th>
+            <th>
+                @Labels.Team
+            </th>
+            <th>@Labels.JobTitle
+            </th>
+            @*<th>@Labels.Gender</th>*@
+            <th>@Labels.Skype
+            </th>
+            <th>@Labels.Phone
+            </th>
+            @*<th>@Labels.DoB</th>*@
+            <th style="width: 80px">@Labels.JoinedDate
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script id="itemTemplate" type="text/x-jquery-tmpl">   
+    
+    {{if ResignedDate }}
+       
+    {{else}}
+     <tr id="row${Id}">
+            <td>
+              ${index()}
+            </td>
+            <td class="left">${Code}</td>
+            <td class="nick" data-code="${Code}">
+                <a href="/employee/detail/${Id}">${NickName}</a>
+            </td>
+            <td class="left" style="width:110px">${FullName}</td>
+            <td title="${Team["Name"]}" class="tooltip">${Team["Code"]}</td>
+            <td class="left">${JobTitle}</td>
+            <td class="left"><a href="skype:${Skype}?chat">${Skype}</a></td>
+            <td title="${Phone}">
+                {{if Phone != null && Phone.indexOf(",") > 0}}
+                    ${Phone.substring(0,Phone.indexOf(","))}
+                {{else}}
+                    ${Phone}
+                {{/if}}
+            </td>
+            <td style="width:80px">
+                {{if JoinedDate}}
+                    ${jsonToShortDate(JoinedDate)}
+                    
+                {{/if}}
+            </td>      
+            
+        </tr>
+    {{/if}}
+         
+</script>
+<script id="mytemplate" type="text/html">
+
+</script>

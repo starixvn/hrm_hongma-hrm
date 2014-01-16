@@ -1,0 +1,110 @@
+﻿@model HrLeaderDashboardModel
+<h2 class="section">
+    My members' requests</h2>
+<table class="data" id="myspace">
+    <thead>
+        <tr>
+            <th rowspan="2" class="firstColumn">@Fanex.NexHR.Resources.Labels.Request
+            </th>
+            <th colspan="3" class="center">
+                @Utilities.ZeroPrefix(Utilities.FirstDayOfWeek(DateTime.Now).Day) - @DateTime.Now.ToString("dd MMM, yyyy")
+            </th>
+        </tr>
+        <tr>
+            <th>@Fanex.NexHR.Resources.Labels.Pending
+            </th>
+            <th>@Fanex.NexHR.Resources.Labels.Approved
+            </th>
+            <th>@Fanex.NexHR.Resources.Labels.Rejected
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        var requestModel = new RequestViewModel
+        {
+            DateOption = 0,
+            ToDate = DateTime.Now,
+            FromDate = DateTime.Now.AddDays(-7),
+            StatusId = (byte)RequestStatuses.Pending,
+            TeamIds = string.Empty
+        };    
+    }
+        <tr>
+            <td class="firstColumn">@Fanex.NexHR.Resources.Labels.CheckInOut
+            </td>
+            <td>
+                @if (Model.TotalPendingCheckInOutRequest > 0)
+                {
+                    requestModel.RequestType = 4;
+                    <a href="@Url.Action("member", "request", requestModel)">@Model.TotalPendingCheckInOutRequest.ToString()</a>
+                }
+                else
+                {
+                    <span>0</span>
+                }
+            </td>
+            <td>@Model.TotalApprovedCheckInOutRequest
+            </td>
+            <td>@Model.TotalRejectCheckInOutRequest
+            </td>
+        </tr>
+        <tr>
+            <td class="firstColumn">@Fanex.NexHR.Resources.Labels.LateInEarlyOut
+            </td>
+            <td>
+                @if (Model.TotalPendingLateInEarlyOutRequest > 0)
+                {
+                    requestModel.RequestType = 3;
+                    <a href="@Url.Action("member", "request", requestModel)">@Model.TotalPendingLateInEarlyOutRequest.ToString()</a>
+                }
+                else
+                {
+                    <span>0</span>
+                }
+            </td>
+            <td>@Model.TotalApprovedLateInEarlyOutRequest
+            </td>
+            <td>@Model.TotalRejectLateInEarlyOutRequest
+            </td>
+        </tr>
+        <tr>
+            <td class="firstColumn">@Fanex.NexHR.Resources.Labels.ChangeShift
+            </td>
+            <td>
+                @if (Model.TotalPendingChangeShiftRequest > 0)
+                {
+                    requestModel.RequestType = 2;
+                    <a href="@Url.Action("member", "request", requestModel)">@Model.TotalPendingChangeShiftRequest.ToString()</a>
+                }
+                else
+                {
+                    <span>0</span>
+                }
+            </td>
+            <td>@Model.TotalApprovedChangeShiftRequest
+            </td>
+            <td>@Model.TotalRejectChangeShiftRequest
+            </td>
+        </tr>
+        <tr>
+            <td class="firstColumn">@Fanex.NexHR.Resources.Labels.Leave
+            </td>
+            <td>
+                @if (Model.TotalPendingLeaveRequest > 0)
+                {
+                    requestModel.RequestType = 1;
+                    <a href="@Url.Action("member", "request", requestModel)">@Model.TotalPendingLeaveRequest.ToString()</a>
+                }
+                else
+                {
+                    <span>0</span>
+                }
+            </td>
+            <td>@Model.TotalApprovedLeaveRequest
+            </td>
+            <td>@Model.TotalRejectLeaveRequest
+            </td>
+        </tr>
+    </tbody>
+</table>

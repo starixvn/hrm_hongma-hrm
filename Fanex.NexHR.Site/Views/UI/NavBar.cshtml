@@ -1,0 +1,76 @@
+﻿@helper NagivationItem(List<NavigationViewModel> navItemList)
+    {
+        foreach (var navItem in navItemList)
+        {
+    <div id="@navItem.Id" class="el" data-hashovermenu="@(!string.IsNullOrWhiteSpace(navItem.HoverController))">
+        <span class="xicon @navItem.Icon"></span>
+        @Html.ActionLink(navItem.Title, navItem.Action, navItem.Controller)
+        @if (!string.IsNullOrWhiteSpace(navItem.HoverController))
+        {
+            <div class="hoveraction hide">
+                <a title="Create new @navItem.Title.ToLower()" href="~/@navItem.HoverController/@navItem.HoverAction">
+                    <span class="xicon @navItem.HoverIcon"></span></a>
+            </div>
+        }
+    </div>
+        }
+}
+@helper NavigationSection(List<NavigationViewModel> sectionItemList)
+    {
+        int sectionCount = sectionItemList.Count;
+        for (int i = 0; i < sectionCount; i++)
+        {
+            var sectionItem = sectionItemList[i];
+        
+    <div class="overview_section togglable_section" id="@i">
+        <div class="separator">
+            <strong>@sectionItem.Title</strong>
+        </div>
+    </div>           
+    <div class="navItem" >
+        @NagivationItem(sectionItem.Childs)
+    </div>
+        }
+}
+<div class="column">
+    <div class="nav_links">
+        @NavigationSection(ViewBag.NavigationItems)
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var currentUrl = '@(ViewBag.Controller.ToString().ToLower() + "_" + ViewBag.Action.ToString().ToLower())';
+        var selectNavItem = $("#" + currentUrl);
+        if (selectNavItem != undefined) {
+            selectNavItem.addClass("selected");
+        }
+
+        //show/hide navigation secion
+        $("div.togglable_section").bind("click", function () {
+
+            var currentSection = $(this);
+            var divItems = currentSection.next("div.navItem");
+            if (currentSection.hasClass("folded")) {
+                currentSection.removeClass("folded");
+                divItems.show(200);
+            }
+            else {
+
+                currentSection.addClass("folded");
+                divItems.hide(200);
+            }
+        });
+
+        //add style for first item section
+        $("div.togglable_section:first-child").children(":first").addClass("first");
+
+        $('.el[data-hashovermenu=True], .el[data-hashovermenu=data-hashovermenu]').hover(
+        function () {
+            $(this).find('.hoveraction').fadeIn(400);
+        }, function () {
+            $(this).find('.hoveraction').hide();
+        });
+    });
+
+    
+</script>

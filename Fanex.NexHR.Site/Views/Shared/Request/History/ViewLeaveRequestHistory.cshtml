@@ -1,0 +1,73 @@
+﻿@model IList<Fanex.NexHR.Models.Request.RequestEntity>
+
+<table class="data">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>@Labels.Team</th>
+                    <th>@Labels.Employee</th>
+                    <th>@Labels.LeaveType</th>
+                    <th>@Labels.From</th>
+                    <th>@Labels.To</th>
+                    <th>@Labels.Total</th>
+                    <th>@Labels.CreatedDate</th>
+                    <th>@Labels.Remark</th>
+                    <th>@Labels.Status</th>
+                    <th>@Labels.ProcessedBy</th>
+                </tr>
+            </thead>
+            
+        @if (ViewBag.EntityList.Count > 0)
+        {
+            <tbody>
+            @{int index = 1;}
+            @foreach (var request in Model)
+            {
+                 <tr id="row@(request.Id)">
+                            <td>@(index++)
+                            </td>
+                            <td class="tooltip" title="@request.Requester.Team.Name">@request.Requester.Team.Code</td>
+                            <td class="tooltip" title="@request.Requester.FullName">@request.Requester.NickName</td>
+                            <td>@request.LeaveType</td>
+                            @if (request.TotalDays < 1)
+                            { 
+                                <td class="ddMMyyyy highlight">@request.FromDate.ToShortFormatedDate()
+                                </td>
+                                <td class="ddMMyyyy highlight">@request.ToDate.ToShortFormatedDate()
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="ddMMyyyy highlight">@request.FromDate.ToDateMonthYearFormatedDate()
+                                </td>
+                                <td class="ddMMyyyy highlight">@request.ToDate.ToDateMonthYearFormatedDate()
+                                </td>
+                            }
+                            <td class="highlight">@request.TotalDays.ToString("0.0")</td>
+                            <td class="ddMMyyyyhhmm">@request.CreatedDate.ToShortFormatedDate()</td>
+
+                            @if (!string.IsNullOrWhiteSpace(request.Remark))
+                            { 
+                                 <td class="tooltip" title="@request.Remark">
+                                     <span class="icon remark" alt="remark" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+
+                            <td>@request.Status.ToString()</td>
+                            
+                            @RazorHelper.ModifierDisplay(request.ModifiedBy.NickName, request.ModifiedBy.FullName, request.ModifiedDate, request.Id)
+                           
+                        </tr>  
+            }
+            </tbody>
+        }
+        else
+        { 
+            @RazorHelper.DisplayNoInformation(colspan: 12);
+        }
+                
+        </table>    

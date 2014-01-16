@@ -1,0 +1,102 @@
+﻿@model Fanex.NexHR.ViewModels.RequestViewModel
+@using Fanex.NexHR.Core;
+@using Fanex.NexHR.Resources;
+@Html.Hidden("DateTime-Now", DateTime.Now.ToString("MMMM dd, yyyy"))
+@Html.Hidden("ActionRequest", ViewBag.Action != null ? (string)ViewBag.Action : string.Empty)
+@using (Html.BeginGetForm())
+{ 
+    <div class="container_24 bunhat">
+        <div class="grid_2">
+            @Labels.RequestFor
+        </div>
+        <div class="grid_4">
+            <select id="Date" name="Date">
+                <option value="0" selected= "@(Model.DateOption == 0)">
+                    @Labels.DateRange</option>
+                <option value="1" selected= "@(Model.DateOption == 1)">
+                    @Labels.ToDay</option>
+                <option value="2" selected= "@(Model.DateOption == 2)">
+                    @Labels.Yesterday</option>
+                <option value="3" selected= "@(Model.DateOption == 3)">
+                    @Labels.CurrentWeek</option>
+                <option value="4" selected= "@(Model.DateOption == 4)">
+                    @Labels.LastWeek</option>
+                <option value="5" selected= "@(Model.DateOption == 5)">
+                    @Labels.CurrentMonth</option>
+                <option value="6" selected= "@(Model.DateOption == 6)">
+                    @Labels.LastMonth</option>
+                <option value="7" selected= "@(Model.DateOption == 7)">
+                    @Labels.SinceLastMonth</option>
+            </select>
+            @Html.Hidden("DateOption", Model.DateOption)
+        </div>
+        <div class="grid_2">
+            @Html.LabelFor(model => model.FromDate)
+        </div>
+        <div class="grid_6">
+            @Html.DatePickerFor(model => model.FromDate, minDate: new DateTime(2010,1,1))
+        </div>
+        <div class="grid_2">
+            @Html.LabelFor(model => model.ToDate)
+        </div>
+        <div class="grid_4">
+            @Html.DatePickerFor(model => model.ToDate)
+        </div>
+        <div class="clear">
+        </div>
+        <div class="space">
+        </div>
+        <div class="grid_2">
+            @Html.LabelFor(model => model.StatusId)
+        </div>
+        <div class="grid_4">
+            @RazorHelper.StatusDropDownList(Model.StatusId, controlName: "statusId")
+        </div>
+        <div class="grid_2">
+            @Html.LabelFor(model => model.TeamCollection)
+        </div>
+        <div class="grid_6">
+            @Html.DropDownList("TeamId", Model.GetSelecListItemTeam(), new { @multiple = "multiple" })
+        </div>
+        <div class="grid_2">
+            @Html.LabelFor(model => model.Employee)
+        </div>
+        <div class="grid_4">
+            @Html.TextBox("Employee", Model.Employee, new { placeholder = @Fanex.NexHR.Resources.Messages.SearchEmployeeWatermark })
+            @Html.HiddenFor(model => model.EmployeeId)
+        </div>
+        <div class="clear">
+        </div>
+        <div class="space">
+        </div>
+        <div class="grid_2">
+        @Html.LabelFor(model => model.RequestType, "Request")
+        </div>
+        <div class="grid_22">
+            @{
+            var types = new List<SelectListItem>
+            {
+                new SelectListItem() {Text = Labels.All, Value = "6"},
+                new SelectListItem() {Text = Labels.Leave, Value = "1"},
+                new SelectListItem() {Text = Labels.ChangeShift, Value = "2"},
+                new SelectListItem() {Text = Labels.LateInEarlyOut, Value = "3"},
+                new SelectListItem() {Text = Labels.CheckInOut, Value = "4"},
+                new SelectListItem() {Text = Labels.Overtime, Value = "5"}
+            };    
+            }
+            @Html.RadioButtonList(model => model.RequestType, types)
+        </div>
+        <div class="clear">
+        &nbsp;
+        </div>
+        <div class="space">
+        </div>
+          <div class="space">
+        </div>
+        <div class="grid_22 prefix_2">
+            <input class="processing-submit" type="submit" value="@Labels.Submit"/>
+            <input type="button" value="Excel" id="btnExcel"/>
+        </div>
+    </div>
+
+}

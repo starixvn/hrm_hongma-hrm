@@ -1,0 +1,153 @@
+﻿@model Fanex.NexHR.ViewModels.LeaveRequestViewModel
+@{
+    ViewBag.Title = "New Leave Request";
+}
+@section css{
+    @Url.CombresLink("leavecss")
+}
+@section js{
+    @Url.CombresLink("leavejs")
+}
+@section Breadcrumb {
+    <a class="step">Personal</a><a class="step">@ViewBag.Title</a>
+}
+<h2>@ViewBag.Title</h2>
+<div class="bunhat">
+    @using (Html.BeginForm())
+    {
+    
+        @Html.ValidationSummary()
+
+        if (ViewBag.Requested == true)
+        {
+        <div class="success">@Fanex.NexHR.Resources.Messages.RequestCreated</div>
+        <input type="hidden" id="successed" value="true" />
+        <input type="hidden" id="year" value="@ViewBag.Year" />
+        }
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model=>model.IsLeaveDuringWorking)
+        
+        if (ViewBag.TotalRequest > 0)
+        { 
+        <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+            <p>
+                <a href="@Url.Action("EmployeeView")">You've already requested for Leave <strong>@ViewBag.TotalRequest
+                    day(s)</strong> since @DateTime.Now.ToString("MMM yyyy")</a>
+            </p>
+        </div>
+        }
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.LeaveTypeId, Labels.LeaveType)
+            </div>
+            <div class="input">
+                @Html.DropDownListFor(model => model.LeaveTypeId, new SelectList(ViewBag.LeaveTypes, "Id", "Name"))
+                @Html.HiddenFor(model => model.LeaveTypeName)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div id="lblHalfDay" class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.HalfDayOff)
+            </div>
+            <div class="input">
+                @Html.CheckBoxFor(model => model.HalfDayOff)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        @*<div id="halfday" class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.HalfDayOff)
+            </div>
+            <div class="input">
+                @Html.CheckBoxFor(model => model.HalfDayOff)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        *@
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Employee)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Employee)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+       
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.FromDate, Labels.FromDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.FromDate,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1),
+                unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+                <span class="time hide">
+                    @Html.DropDownList("FromTime", Utilities.TimeSteps(30))
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ToDate, Labels.ToDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.ToDate, unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+                <span class="time hide">
+                    @Html.DropDownList("ToTime", Utilities.TimeSteps(30))
+                </span>
+                
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.TotalDays, Labels.TotalDays, new { id = "lblTotalDay" })
+                @Html.LabelFor(model => model.TotalDays, Labels.TotalMinutes, new { id = "lblTotalHour" })
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.TotalDays)
+                
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Remark)
+            </div>
+            <div class="input">
+                @Html.TextAreaFor(model => model.Remark)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.DisplayName)
+        <div class="formrow">
+            <div class="label">
+                &nbsp;
+            </div>
+            <div class="input">
+                <input type="submit" value="@Labels.Request" class="button-primary submit"/>
+                <a href="@Url.Action("employeeview", "leave")" class="button">@Labels.Back</a>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    }
+</div>

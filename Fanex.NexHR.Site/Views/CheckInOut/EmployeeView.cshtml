@@ -1,0 +1,88 @@
+﻿@model IList<Fanex.NexHR.Models.Request.RequestEntity>
+@{
+    ViewBag.Title = Labels.MyCheckInOutRequests;
+}
+@section css{
+    @Url.CombresLink("myrequestcss")
+}
+@section js{
+    @Url.CombresLink("empcheckinoutjs")
+}
+
+@section Breadcrumb {
+    <a class="step">Personal</a> <a class="step">@ViewBag.Title</a>
+
+}
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+
+    <input type="hidden" value="CheckInOut" id="RequestType"/>
+
+    <span>Year:</span>
+    @Html.YearPicker("Year", 2010, (int)ViewBag.Year)
+
+    <input type="submit" id="submit" value="@Labels.Submit" class="button-primary submit processing-submit"/>
+    <div class="button-icon">
+        <span class="icon plus"></span>@Html.ActionLink("Check In/Out Request", "Create")</div>
+<table class="data">
+    <thead>
+        <tr>
+                <th>#</th>
+                <th>@Labels.Team</th>
+                <th>@Labels.Employee</th>
+                <th>@Labels.Request</th>
+                <th>@Labels.Shift</th>
+                <th>@Labels.RequestDate</th>
+                <th>@Labels.CreatedDate</th>
+                <th>@Labels.Status</th>
+            </tr>
+        </thead>
+        @if (Model.Count > 0)
+        {
+            <tbody>
+                @{int index = 1;}
+                @{string selectedClass = string.Empty;}
+                @foreach (var request in Model)
+                {
+                    selectedClass = (index % 2 == 0) ? "class=odd" : string.Empty;
+                        
+                    <tr  @selectedClass id="row@(request.Id)">
+                        <td>@(index++)</td>
+                        <td>@request.Requester.Team.Name</td>
+                        <td class="tooltip" title="@request.Requester.FullName">
+                            @request.Requester.NickName
+                        </td>
+                        <td class="highlight">@request.Type.ToString()
+                        </td>
+                        <td class="highlight" >@request.FromShift.Name.ToString()
+                        </td>
+                        <td class="ddMMyyyyhhmm highlight">@request.RequestedDate.ToShortFormatedDate()
+                        </td>
+                        <td class="ddMMyyyyhhmm">@request.CreatedDate.ToShortFormatedDate()
+                        </td>
+                            
+                        @if (request.Status.ToString() == RequestStatuses.Pending.ToString())
+                        {
+                            <td >
+                                <a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString()">@request.Status.ToString()</a>
+                            </td>
+                        }
+                        else
+                        { 
+                            <td class="tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</td>
+                        }
+
+                           
+                    </tr>
+                }
+            </tbody>
+        }
+        else
+        {
+            @RazorHelper.DisplayNoInformation(colspan: 10);
+        }
+    </table>
+}
+@RazorHelper.EmployeeProcessMenu()

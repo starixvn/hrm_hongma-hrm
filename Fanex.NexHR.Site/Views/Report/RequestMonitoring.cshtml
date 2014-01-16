@@ -1,0 +1,235 @@
+﻿@model Fanex.NexHR.ViewModels.RequestsMonitoringViewModel
+@{
+    ViewBag.Title = Labels.RequestMonitoring;
+}
+@section css{
+    @Url.CombresLink("requestmonitoringcss")
+}
+@section js{
+    @Url.CombresLink("requestmonitoringjs")
+}
+@section Breadcrumb {
+    <a class="step">HR</a> <a class="step">@ViewBag.Title</a>
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+    @Html.Hidden("DateTime-Now", DateTime.Now.ToString("MMMM dd, yyyy"))
+    <div class="container_24 bunhat">
+        <div class="grid_3 gridlabel">
+            @Labels.DateRange
+        </div>
+        <div class="grid_4">
+            <select id="Date" name="Date" style="min-width:150px;">
+                <option value="0">
+                    @Labels.DateRange</option>
+                <option value="1">
+                    @Labels.ToDay</option>
+                <option value="2">
+                    @Labels.Yesterday</option>
+                <option value="3">
+                    @Labels.CurrentWeek</option>
+                <option value="4">
+                    @Labels.LastWeek</option>
+                <option value="5">
+                    @Labels.CurrentMonth</option>
+                <option value="6">
+                    @Labels.LastMonth</option>
+                <option value="7">
+                    @Labels.SinceLastMonth</option>
+            </select>
+            @Html.Hidden("DateOption", Model.DateOption)
+        </div>
+
+        <div class="grid_2 gridlabel">
+            @Html.LabelFor(model => model.FromDate)
+        </div>
+        <div class="grid_4">
+            @Html.DatePickerFor(model => model.FromDate, minDate: new DateTime(2010, 01, 01), maxDate: DateTime.Now)
+        </div>
+
+        <div class="grid_2 gridlabel">
+            @Html.LabelFor(model => model.ToDate)
+        </div>
+
+        <div class="grid_4">
+            @Html.DatePickerFor(model => model.ToDate, minDate: new DateTime(2010, 01, 01), maxDate: DateTime.Now)
+        </div>
+
+        <div class="clear"></div>
+        <div class="space"></div>
+
+        <div class="grid_3 gridlabel">@Html.LabelFor(model => model.MaxRequest)</div>
+        <div class="grid_4">@RazorHelper.MaxRequestDropDownList(Model.MaxRequest)
+        <input type="submit" value="@Labels.Submit" class="processing-submit" style="float:right"/>
+        
+        </div>
+        @*<div class="grid_2">
+        
+        </div>*@
+        <div class="clear"></div>
+
+        
+    </div>
+    
+}
+<div class="clear">
+</div>
+<table class="data persist-area">
+    <thead>
+        <tr class ="persist-header">
+            <th>
+                #
+            </th>
+            <th>@Labels.Name
+            </th>
+            <th>@Labels.Nick
+            </th>
+            <th>@Labels.Team
+            </th>
+            <th>@Labels.Leave
+            </th>
+            <th>@Labels.ChangeShift
+            </th>
+            <th>@Labels.LateInEarlyOut
+            </th>
+            <th>@Labels.CheckInOut
+            </th>
+            <th>@Labels.Overtime
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.EntityList.Count > 0)
+        {
+            int index = 1;
+            var requestModel = new RequestViewModel();
+
+            foreach (Fanex.NexHR.Models.RequestsMonitoring request in ViewBag.EntityList)
+            {
+
+                requestModel = new RequestViewModel
+                {
+                    DateOption = 0,
+                    FromDate = ViewBag.FromDate,
+                    ToDate = ViewBag.ToDate,
+                    EmployeeId = request.Requester.Id,
+                    Employee = request.Requester.NickName + " (" + request.Requester.FullName + ")",
+                    TeamIds = string.Empty,
+                    StatusId = (byte)RequestStatuses.Approve
+                };
+
+            <tr>
+                <td>@(index++)
+                </td>
+                <td class="left">@request.Requester.FullName
+                </td>
+                <td>@request.Requester.NickName
+                </td>
+                <td>@request.Requester.Team.Name
+                </td>
+                <td class="@(request.TotalLeave > Model.MaxRequest ? "overloadRequest" : string.Empty)">
+                    @if (request.TotalLeave > 0)
+                    {
+                        requestModel.RequestType = 1;
+
+                        if ((bool)ViewBag.isLeader)
+                        {
+                            <a href="@Url.Action("member", "request", requestModel)">@request.TotalLeave</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("hrview", "request", requestModel)">@request.TotalLeave</a>
+                        }
+                    }
+                    else
+                    {
+                        <span>0</span>
+                    }
+                </td>
+                <td class="@(request.TotalChangeShift > Model.MaxRequest ? "overloadRequest" : string.Empty)">
+                    @if (request.TotalChangeShift > 0)
+                    {
+                        requestModel.RequestType = 2;
+
+                        if ((bool)ViewBag.isLeader)
+                        {
+                            <a href="@Url.Action("member", "request", requestModel)">@request.TotalChangeShift</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("hrview", "request", requestModel)">@request.TotalChangeShift</a>
+                        }
+                    }
+                    else
+                    {
+                        <span>0</span>
+                    }
+
+                </td>
+                <td class="@(request.TotalLateInEarlyOut > Model.MaxRequest ? "overloadRequest" : string.Empty)">
+                    @if (request.TotalLateInEarlyOut > 0)
+                    {
+                        requestModel.RequestType = 3;
+
+                        if ((bool)ViewBag.isLeader)
+                        {
+                            <a href="@Url.Action("member", "request", requestModel)">@request.TotalLateInEarlyOut</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("hrview", "request", requestModel)">@request.TotalLateInEarlyOut</a>
+                        }
+                    }
+                    else
+                    {
+                        <span>0</span>
+                    }
+                </td>
+                <td class="@(request.TotalCheckInOut > Model.MaxRequest ? "overloadRequest" : string.Empty)">
+                    @if (request.TotalCheckInOut > 0)
+                    {
+                        requestModel.RequestType = 4;
+                        
+                        if ((bool)ViewBag.isLeader)
+                        {
+                            <a href="@Url.Action("member", "request", requestModel)">@request.TotalCheckInOut</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("hrview", "request", requestModel)">@request.TotalCheckInOut</a>
+                        }
+                    }
+                    else
+                    {
+                        <span>0</span>
+                    }
+                </td>
+                <td class="@(request.TotalOvertime > Model.MaxRequest ? "overloadRequest" : string.Empty)">
+                    @if (request.TotalOvertime > 0)
+                    {
+                        requestModel.RequestType = 5;
+                        
+                        if ((bool)ViewBag.isLeader)
+                        {
+                            <a href="@Url.Action("member", "request", requestModel)">@request.TotalOvertime</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("hrview", "request", requestModel)">@request.TotalOvertime</a>
+                        }
+                    }
+                    else
+                    {
+                        <span>0</span>
+                    }
+                </td>
+            </tr>  
+            }
+        }
+        else
+        { 
+            @RazorHelper.DisplayNoInformation(colspan: 9);
+        }
+    </tbody>
+</table>

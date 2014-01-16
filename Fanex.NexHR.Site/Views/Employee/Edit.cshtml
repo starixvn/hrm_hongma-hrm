@@ -1,0 +1,325 @@
+﻿@model Fanex.NexHR.Models.Employee
+@{
+    ViewBag.Title = "Edit";
+}
+@section css{
+    @Url.CombresLink("employeeeditcss")
+}
+@section js{
+    @Url.CombresLink("employeeeditjs")
+}
+@section Breadcrumb
+{
+    <a class="step" href="javascript:;">HR</a> <span class="step"><a href="~/employee">Employee</a>
+    </span><span class="step">Edit @(Model.FullName)'s information</span>
+}
+@using (Html.BeginForm())
+{
+    <div class="bunhat">
+        @Html.ValidationSummary(true)
+        @if (ViewBag.Updated == true)
+        {
+            <div class="success flash">
+                Saved</div> 
+        }
+        else if (ViewBag.Updated == false)
+        { 
+            <div class="error flash">@Messages.ErrorTryAgain</div> 
+        }
+        <div class="formrow">
+            <div class="label">
+                Avatar
+            </div>
+            <div class="input">
+                <img id="avatar" src="~/employee/avatar/@(Model.Code)?f=@(Fanex.NexHR.Core.Utilities.RandomString(4))" alt="@Model.FullName" /><br />
+                <input type="file" id="file" />
+                <input type="button" id="upload" value="Upload" />
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Code)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Code)
+                @Html.ValidationMessageFor(model => model.Code)
+            </div>
+        </div>
+		@*<div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Password)
+            </div>
+            <div class="input">
+                @Html.PasswordFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+		<div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ConfirmPassword)
+            </div>
+            <div class="input">
+                @Html.PasswordFor(model => model.ConfirmPassword)
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            </div>
+        </div>*@
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.DomainUsername)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.DomainUsername)
+                @Html.ValidationMessageFor(model => model.DomainUsername)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.FullName)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.FullName)
+                @Html.ValidationMessageFor(model => model.FullName)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.NickName)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.NickName)
+                @Html.ValidationMessageFor(model => model.NickName)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.DOB)
+            </div>
+            @*<div class="input">
+            @Html.DatePickerFor(model => model.DOB)
+            @Html.ValidationMessageFor(model => model.DOB)
+        </div>*@
+            <div class="input" id="DOBPicker">
+            </div>
+            @Html.HiddenFor(model => model.DOB)
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Email)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.JobTitleId)
+            </div>
+            <div class="input">
+                @Html.DropDownListFor(model => model.JobTitleId, new SelectList(ViewBag.JobTitles, "Id", "Name"), new { @style = "width : 230px;" })
+                @Html.ValidationMessageFor(model => model.JobTitleId)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Phone)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Phone)
+                @Html.ValidationMessageFor(model => model.Phone)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Gender)
+            </div>
+            <div class="input">
+                @{
+        var gender = new List<SelectListItem>
+                    {
+                        new SelectListItem() {Text = "Unknown", Value = ""}, 
+                        new SelectListItem() {Text = "Female", Value = "0"},
+                        new SelectListItem() {Text = "Male", Value = "1"}
+                    };
+                }
+                @Html.DropDownListFor(model => model.Gender, gender)
+                @Html.ValidationMessageFor(model => model.Gender)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.CardNo)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.CardNo)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Address)
+            </div>
+            <div class="input">
+                @Html.TextAreaFor(model => model.Address)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.CurrentAddress)
+            </div>
+            <div class="input">
+                @Html.TextAreaFor(model => model.CurrentAddress)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Team)
+            </div>
+            <div class="input">
+                @Html.DropDownListFor(model => model.Team.Id, new SelectList(ViewBag.Groups, "Id", "Name"))
+                @Html.ValidationMessageFor(model => model.Team.Id)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.SubGroups)
+            </div>
+            <div class="input subteam">
+                @Html.CheckBoxListFor(p => p.SubGroupArray, new SelectList(ViewBag.Groups, "Id", "Name"))
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.LeaderGroups)
+            </div>
+            <div class="input subteam">
+                @Html.CheckBoxListFor(p => p.LeaderGroupsArray, new SelectList(ViewBag.Groups, "Id", "Name"))
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Roles)
+            </div>
+            <div class="input">
+                @{
+        var roles = new List<SelectListItem>
+                    {
+                        new SelectListItem() {Text = "Assistant leader", Value = "1"},
+                        new SelectListItem() {Text = "Leader", Value = "2"},
+                        new SelectListItem() {Text = "Human resource", Value = "3"},
+                        new SelectListItem() {Text = "System admin", Value = "4"}
+                    };
+                }
+                @Html.CheckBox("Member", true, new { disabled = true })
+                @Html.Label("Member", "Member")
+                @Html.CheckBoxListFor(model => model.RoleArray, roles)
+                @Html.ValidationMessageFor(model => model.RoleArray)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.JoinedDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.JoinedDate)
+                @Html.ValidationMessageFor(model => model.JoinedDate)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ConfirmedDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.ConfirmedDate)
+                @Html.ValidationMessageFor(model => model.ConfirmedDate)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ResignedDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.ResignedDate)
+                @Html.ValidationMessageFor(model => model.ResignedDate)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Skype)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Skype)
+                @Html.ValidationMessageFor(model => model.Skype)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Yahoo)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Yahoo)
+                @Html.ValidationMessageFor(model => model.Yahoo)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Mariage)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Mariage)
+                @Html.ValidationMessageFor(model => model.Mariage)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.PassportNo)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.PassportNo)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.PassportExp)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.PassportExp)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                Leave balance
+            </div>
+            <div class="input">
+                @Model.AnnualLeaveBalance day(s) <a href="~/annualleavebalance/employee/@Model.Id">Update</a>
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                Working calendar
+            </div>
+            <div class="input">
+                <a href="~/employee/defaultschedule/@Model.Id">Update</a>
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Enabled)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Enabled)
+                @Html.ValidationMessageFor(model => model.Enabled)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                &nbsp;
+            </div>
+            <div class="input">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                <input type="submit" value="Save" />
+                <input type="button" id="delete" value="Delete?" />
+            </div>
+        </div>
+    </div>
+}

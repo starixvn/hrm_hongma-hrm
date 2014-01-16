@@ -1,0 +1,72 @@
+﻿@model IList<Fanex.NexHR.Models.Request.RequestEntity>
+
+<table class="data persist-area">
+    <thead>
+        <tr class ="persist-header">
+            <th>
+                #
+            </th>
+            <th>@Labels.Team
+            </th>
+            <th>@Labels.Employee
+            </th>
+            <th>@Labels.Request
+            </th>
+            <th>@Labels.Shift
+            </th>
+            <th>@Labels.RequestTime
+            </th>
+            <th>@Labels.CreatedDate
+            </th>
+            <th>@Labels.Status
+            </th>
+            <th>@Labels.History</th>
+        </tr>
+    </thead>
+    @if (ViewBag.EntityList.Count > 0)
+    {
+        <tbody>
+            @{int index = 1;}
+            @foreach (var request in Model)
+            { 
+                <tr id="row@(request.Id)">
+                    <td>@(index++)</td>
+                    <td  class="tooltip" title="@request.Requester.Team.Name">@request.Requester.Team.Code</td>
+                    <td class="tooltip" title="@request.Requester.FullName">
+                        @request.Requester.NickName.ToString()
+                    </td>
+                    <td class="highlight">@request.Type.ToString()
+                    </td>
+                    <td class="highlight">@request.FromShift.Name.ToString()
+                    </td>
+                    <td class="ddMMyyyyhhmm highlight">@request.RequestedDate.ToShortFormatedDate()
+                    </td>
+                    <td class="ddMMyyyyhhmm">@request.CreatedDate.ToShortFormatedDate()
+                    </td>
+
+                     @switch (request.Status.Id)
+                    {
+                        case 1: //Pending
+                            <td><a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString() tooltip" title="@request.Requester.NickName had @request.TotalDaysRequestInMonth approved request(s) in @request.RequestedDate.ToMonthAndYearFormatedDate()">@request.Status.ToString()</a></td>
+                                                                                                                                                                                                                        break;
+                        case 2: //Approve
+                            <td><a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString() tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</a></td>
+                                                                                                                                                                                                                        break;
+                        case 3: //Reject
+                            <td class="tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</td> 
+                                                                                                                                                        break;
+                    }
+
+                    <td>
+                    <a class="viewhistory" href="javascript:;" id="/request/hrviewhistory?id=@request.Id&type=@request.Type.RequestHistoryFilter"> @Labels.View </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+    else
+    {             
+        @RazorHelper.DisplayNoInformation(colspan: 11);
+    }
+</table>
+@RazorHelper.ProcessMenu()

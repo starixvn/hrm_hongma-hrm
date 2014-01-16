@@ -1,0 +1,224 @@
+﻿@model Fanex.NexHR.Models.Memo
+@{
+    ViewBag.Title = Labels.Edit;
+}
+@section css{
+    @Url.CombresLink("memoeditcss")
+}
+@section js{
+    @Url.CombresLink("memoeditjs")
+}
+@section Breadcrumb {
+    <a class="step">Company</a><a class="step" href="@Url.Action("Index", "memo")">Memo</a>
+    <span class="step">@Model.Subject</span>
+}
+<h2>@Labels.EditMemo</h2>
+@using (Html.BeginForm())
+{
+    <div class="container_24 bunhat">
+        @Html.ValidationSummary(true)
+        @if (ViewBag.Updated == true)
+        {
+            <div class="success flash">
+                Edited Successful!</div> 
+        }
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.TotalPages)
+        @Html.HiddenFor(model => model.AttachFile)
+        @Html.HiddenFor(model => model.Type)
+        @Html.Hidden("pathName", Model.Contents)
+        <!-- Gets replaced with TinyMCE, remember HTML in a textarea should be encoded -->
+        <div class="grid_19 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.Subject)
+                </div>
+            </div>
+            <div class="grid_16">
+                @Html.EditorFor(model => model.Subject)
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="space">
+        </div>
+        <div class="grid_9 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.RefNo)
+                </div>
+            </div>
+            <div class="grid_6">
+                @Html.EditorFor(model => model.RefNo)
+            </div>
+        </div>
+        <div class="grid_9 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.Category)
+                </div>
+            </div>
+            <div class="grid_6">
+                @Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.MemoCategories, "Id", "Name"))
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="space">
+        </div>
+        <div class="grid_9 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.ForInfo)
+                </div>
+            </div>
+            <div class="grid_6">
+                @Html.EditorFor(model => model.ForInfo)
+            </div>
+        </div>
+        <div class="grid_9 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.SentDate)
+                </div>
+            </div>
+            <div class="grid_6">
+                @Html.DatePickerFor(model => model.SentDate)
+                @Html.ValidationMessageFor(model => model.SentDate)
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="space">
+        </div>
+        <div class="grid_9 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.SentTo)
+                </div>
+            </div>
+            <div class="grid_6">
+                @Html.EditorFor(model => model.SentTo)
+                @Html.ValidationMessageFor(model => model.SentTo)
+            </div>
+        </div>
+        <div class="grid_9 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.SentFrom)
+                </div>
+            </div>
+            <div class="grid_6">
+                @Html.EditorFor(model => model.SentFrom)
+                @Html.ValidationMessageFor(model => model.SentFrom)
+            </div>
+        </div>
+        <div class="grid_9 formrow">
+            <div class="grid_2">
+                <div class="label">
+                    @Html.LabelFor(model => model.SendMail)
+                </div>
+            </div>
+            <div class="grid_6">
+                @Html.CheckBoxFor(model => model.SendMail)<label for="SendMail">@Labels.SendToAllEmployee</label>
+                @Html.ValidationMessageFor(model => model.SendMail)
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="space">
+        </div>
+        <div class="grid_19">
+            <div class="grid_2">
+                <br />
+            </div>
+            <div class="grid_16">
+                @{
+        var types = new List<SelectListItem>
+            {
+                new SelectListItem() {Text = "Upload", Value = "1", Selected = true},
+                new SelectListItem() {Text = "FCK Editor", Value = "0"},
+            };    
+                }
+                @Html.RadioButtonList(model => model.Type, types)
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="space">
+        </div>
+        <div id="upload">
+            <div class="clear">
+            </div>
+            <div class="space">
+            </div>
+            <div id="upload">
+                <div class="clear">
+                </div>
+                <div class="space">
+                </div>
+                <div class="grid_19 formrow">
+                    <div class="grid_2">
+                        <br />
+                    </div>
+                    <div class="grid_11">
+                        <input type="file" id="fileName" size="55" />
+                    </div>
+                    <div class="grid_4">
+                        <input type="checkbox" id="override" size="55" />
+                        <span>override</span>
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+            <div class="space">
+            </div>
+            <div id="attach" class="grid_20 formrow">
+                <div class="grid_2">
+                    <br />
+                </div>
+                <div class="grid_17">
+                    <div>
+                        <span id="attachFile"></span>&nbsp <a href="javascript:deleteFile();"><span class="icon delete">
+                        </span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+            <div class="space">
+            </div>
+        </div>
+        <div id="content">
+            <div class="grid_20 formrow">
+                <div class="grid_2">
+                    <div class="label">
+                        @Html.LabelFor(model => model.Contents)
+                    </div>
+                </div>
+                <div class="grid_17">
+                    @Html.TextAreaFor(model => model.Contents)
+                    @Html.ValidationMessageFor(model => model.Contents)
+                </div>
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="grid_2">
+                <div class="label">
+                    &nbsp</div>
+            </div>
+            <div class="grid_17">
+                @Html.AntiForgeryToken()
+                <input type="submit" value="Save" class="button-primary submit" />
+                <a href="@Url.Action("index", "memo")" class="button">@Labels.Back</a>
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>    
+    <div class="space">
+    </div>
+
+    @Html.ActionLink("Back to Memo list", "index")
+}

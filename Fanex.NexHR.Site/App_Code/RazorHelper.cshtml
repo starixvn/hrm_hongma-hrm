@@ -1,0 +1,255 @@
+﻿@using System.Web.Mvc;
+@using System.Web.WebPages;
+@using System.Web.Mvc.Html5;
+@using Fanex.NexHR.Core.Enums;
+@using Fanex.NexHR.Core;
+@using Fanex.NexHR.Resources;
+
+@helper RequestType(short type)
+    {
+        switch (type)
+        {
+            case 1:
+    <text>Check in</text>
+                break;
+            case 2:
+    <text>Check out</text>
+                break;
+            case 3:
+    <text>Late in</text>
+                break;
+            case 4:
+    <text>Early out</text>
+                break;
+            case 5:
+    <text>Change shift</text>
+                break;
+            case 6:
+    <text>Leave request</text>
+                break;
+        }
+}
+@helper FormatDate(DateTime? date)
+    {
+    <span>
+        @if (date.HasValue)
+        {
+            @date.Value.ToString("MMM dd, yyyy hhH:mm")
+        }
+    </span>
+}
+@helper YearDropDownList(int year)
+    {
+    <span style="font-size:12px">Year:</span>
+    <select id="year" name="year">
+        @for (int i = DateTime.Now.Year; i >= 2010; i--)
+        {
+            var selected = year == i ? "selected='true'" : string.Empty;
+            <option @selected value="@i">@i</option>
+        }
+    </select>
+}
+@helper DisplayNoInformation(int colspan)
+    {
+    <tr>
+        
+        <td colspan="@colspan">
+           
+        </td>
+    </tr>
+    <tr>
+        
+        <td colspan="@colspan" rowspan="2">
+            @Fanex.NexHR.Resources.Messages.NoInformation
+        </td>
+    </tr>
+}
+@helper StatusDropDownList(int status = (int)RequestStatuses.Pending, bool isShowAll = true, string controlName = "status")
+    {
+    <select name="@controlName" id="@controlName">
+        @if (isShowAll)
+        { 
+            <option selected="@(status == 0)" value="0">All</option>
+        }
+        <option selected="@(status == (byte)RequestStatuses.Pending)" value="@Convert.ToByte(RequestStatuses.Pending)">@Labels.Pending</option>
+        <option selected="@(status == (byte)RequestStatuses.Reject)" value="@Convert.ToByte(RequestStatuses.Reject)">@Labels.Rejected</option>
+        <option selected="@(status == (byte)RequestStatuses.Approve)" value="@Convert.ToByte(RequestStatuses.Approve)">@Labels.Approved</option>
+    </select>
+        
+}
+@helper StatusDisplayByHR(long statusId, Fanex.NexHR.Models.Request.RequestStatus status)
+    {
+        if (status.Id != (byte)RequestStatuses.Reject)
+        { 
+    <td>
+        <a requestid="@statusId" href="javascript:;" class="@status.Name tooltip">@status.Name</a>
+    </td>
+        }
+        else
+        {
+    <td>@status.Name
+    </td> 
+        }
+}
+
+
+@helper ModifierDisplay(string nickName, string fullName, DateTime? modifiedDate, long requestId)
+    {
+        if (!string.IsNullOrWhiteSpace(nickName))
+        {
+            if (modifiedDate > new DateTime(2010, 1, 1))
+            {
+                <td id="pb@(requestId)">@nickName, @modifiedDate.ToShortFormatedDate()</td>
+            }
+            else
+            {
+                <td id="pb@(requestId)">@nickName</td>
+            }
+        }
+        else
+        { 
+           <td id="pb@(requestId)">N/A</td>
+        }    
+}
+@helper TeamDropDownList(List<Fanex.NexHR.Models.Team> teamList, string controlName = "team")
+    {
+    <select name="@controlName" id="@controlName">
+        @if (teamList != null && teamList.Count > 0)
+        {
+            foreach (Fanex.NexHR.Models.Team team in teamList)
+            {
+            <option value="@team.Name" >@team.Name</option>
+            }
+        }
+    </select>    
+}
+@helper EmployeeDropDownList(List<string> EmployeeList)
+    {
+    <select id="employee">
+        @foreach (string emp in EmployeeList)
+        {
+            <option value="@emp">@emp</option>
+        }
+    </select>
+}
+@helper ShiftInfoTable(dynamic shiftInfoList)
+    {
+   
+    
+    <div id="shifts">
+        <table class="shift_table">
+            <thead>
+                <tr>
+                    <th class="left">
+                        Shift
+                    </th>
+                    <th>
+                        Checkin time
+                    </th>
+                    <th>
+                        Checkout time
+                    </th>
+                    <th>
+                        Break
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Fanex.NexHR.Models.Shift item in shiftInfoList)
+                {
+                    <tr>
+                        <td class="left">@item.Name
+                        </td>
+                        <td>@item.BeginCheckInTime &nbsp;@((item.BeginCheckInTime == item.EndCheckInTime) ? string.Empty : "- " + item.EndCheckInTime)
+                        </td>
+                        <td>
+                            @item.BeginCheckOutTime &nbsp;@((item.BeginCheckOutTime == item.EndCheckOutTime) ? string.Empty : "- " + item.EndCheckOutTime)
+                        </td>
+                        <td>@((item.BreakTimeMins == 0) ? string.Empty : (item.BeginBreakTime + "' - " + item.EndBreakTime + "'"))
+                        </td>
+                    </tr> 
+                }
+            </tbody>
+        </table>
+    </div>
+    
+
+}
+@helper LateInEarlyOutTimeFormat(int mins, short type)
+    {
+        if (type == (byte)RequestTypes.LateIn)
+        {
+    <span>+@mins'</span>
+        }
+        else
+        {
+    <span>-@mins'</span>
+        }
+}
+@helper ProcessMenu()
+    {
+    <ul id="pendingMenu" class="hide">
+        <li class="approve"><a command="Approve" href="javascript:;">@Fanex.NexHR.Resources.Labels.Approve</a>
+        </li>
+        <li class="reject"><a command="Reject" href="javascript:;">@Fanex.NexHR.Resources.Labels.Reject</a>
+        </li>
+    </ul>
+    <ul id="approvedMenu" class="hide">
+        <li class="disapprove"><a command="Disapprove" href="javascript:;">@Fanex.NexHR.Resources.Labels.Disapprove</a>
+        </li>
+    </ul>
+}
+@helper EmployeeProcessMenu()
+    {
+    <ul id="pendingMenu" class="hide">
+        <li class="edit"><a command="Edit" href="javascript:;">@Fanex.NexHR.Resources.Labels.Edit</a>
+        </li>
+        <li class="reject"><a command="Cancel" href="javascript:;">@Fanex.NexHR.Resources.Labels.Cancel</a>
+        </li>
+    </ul>
+}
+@helper MinuteDropDownList(string name, int step)
+    {
+    <select id="@name" name="@name">
+        @{
+            var index = 60;
+        }
+        @while (index > 0)
+        {
+            <option value="@index">@index'</option>
+            index -= step;
+        }
+    </select>
+}
+@helper MaxRequestDropDownList(int maxRequest, string name = "MaxRequest")
+    {
+    <select id="@name" name="@name" class="minWidthDropdown">
+        @for (int i = 1; i <= 10; i++)
+        {
+            <option selected="@(i == maxRequest)" value="@i">@i</option>
+        }
+    </select>
+}
+
+@helper ShiftDropDownList(string name, int? currentValue, IList<System.Web.Mvc.SelectListItem> listItem)
+    {
+    <select id="@name" name="@name">
+        <option value="">@Labels.Off</option>
+        @{
+            var value = currentValue != null ? currentValue.ToString() : string.Empty;
+        }
+        @foreach (var item in listItem)
+        {
+            <option value="@item.Value" selected="@(item.Value == value)">@item.Text</option>
+        }
+    </select>
+}
+
+@helper OvertimeTypeDropDownList(int type)
+    {
+    <select id="OvertimeType" name="OvertimeType">
+        <option @(type == 0 ? "selected" : "") value="0">@Labels.NormalDay</option>
+        <option @(type == 1 ? "selected" : "") value="1">@Labels.OffDay</option>
+        <option @(type == 2 ? "selected" : "") value="2">@Labels.PublicHoliday</option>
+    </select>
+}

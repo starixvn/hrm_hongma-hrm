@@ -1,0 +1,99 @@
+﻿@model Fanex.NexHR.ViewModels.ChangeShiftViewModel
+@{
+    ViewBag.Title = Labels.NewChangeShiftRequest;
+}
+@section css{
+    @Url.CombresLink("changeshiftcss")
+}
+@section js{
+    @Url.CombresLink("changeshiftjs")
+}
+@section Breadcrumb {
+    <a class="step">Personal</a> <a class="step">@ViewBag.Title</a>
+}
+<h2>@ViewBag.Title</h2>
+<div class="bunhat">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        if (ViewBag.Requested == true)
+        {
+        <div class="success">@Fanex.NexHR.Resources.Messages.RequestCreated</div> 
+        <input type="hidden" id="successed" value="true" />
+        <input type="hidden" id="year" value="@ViewBag.Year" />
+        }
+
+        if (ViewBag.TotalRequest >= 2)
+        {
+           
+
+        <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+            <p>
+                <a href="@Url.Action("EmployeeView")">You've already requested for Change shift <b>@ViewBag.TotalRequest</b>
+                    times since @DateTime.Now.ToString("MMM yyyy")</a>
+            </p>
+        </div>
+        }
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Employee)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Employee)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ForDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.ForDate,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1),
+                unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Fanex.NexHR.Resources.Labels.ChangeFromShift
+            </div>
+            <div class="input">
+                <span id="shiftOfDate">@Model.FromShiftName</span> <span class="to">@Fanex.NexHR.Resources.Labels.To.ToLower()</span>
+                @Html.DropDownListFor(model => model.ToShift, new SelectList(ViewBag.Shifts, "Id", "Name"))
+                <a id="shiftinfo" href="javascript:;" title="@Fanex.NexHR.Resources.Labels.ShiftInfo">
+                    <span class="icon shiftinfo"></span></a>
+                <div class="hide">
+                    @RazorHelper.ShiftInfoTable(ViewBag.Shifts)
+                </div>
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Remark)
+            </div>
+            <div class="input">
+                @Html.TextAreaFor(model => model.Remark)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.HiddenFor(model => model.DisplayName)
+                @Html.HiddenFor(model => model.Employee)
+                @Html.HiddenFor(model => model.EmployeeId)
+                @Html.HiddenFor(model => model.FromShift)
+                @Html.HiddenFor(model => model.FromShiftName)
+                @Html.HiddenFor(model => model.ToShiftName)
+            </div>
+            <div class="input">
+                <input type="submit" value="@Fanex.NexHR.Resources.Labels.Request" class="button-primary submit"/>
+                <a href="~/changeshift/employeeview" class="button">@Labels.Back</a>
+            </div>
+        </div>
+    }
+</div>

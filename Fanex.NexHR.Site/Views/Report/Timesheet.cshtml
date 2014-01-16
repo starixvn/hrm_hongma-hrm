@@ -1,0 +1,178 @@
+﻿@using Fanex.NexHR.Core;
+@model Fanex.NexHR.ViewModels.TimesheetViewModel
+@{
+    ViewBag.Title = "My timesheet";
+}
+@section css{
+    @Url.CombresLink("timesheetcss")
+}
+@section js{
+    @Url.CombresLink("timesheetjs")
+}
+@section Breadcrumb {
+    <a class="step">Personal</a> <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginGetForm())
+{   
+    @Html.ValidationSummary(true)
+    <div class="container_24">
+        <div class="grid_1 gridlabel">
+            Month
+        </div>
+        <div class="grid_4">
+            <div id="monthPickr">
+            </div>
+            <input type="hidden" id="Year" name="Year" value="@DateTime.Now.Year" />
+            <input type="hidden" id="Month" name="Month" value="@DateTime.Now.Month" />
+            <input type="hidden" id="maxDate" value="@DateTime.Now.GetMaxDate().ToString("yyyy/MM/dd")" />
+            @Html.HiddenFor(model => model.EmpId)
+        </div>
+        <div class="grid_3 gridlabel">
+            @Html.LabelFor(model => model.Type)
+        </div>
+        <div class="grid_4 pull_1">
+            @{
+    var types = new List<SelectListItem>
+                {
+                    new SelectListItem() {Text = "All", Value = "0"},
+                    new SelectListItem() {Text = "Checkin", Value = "1"},
+                    new SelectListItem() {Text = "Checkout", Value = "2"},
+                    new SelectListItem() {Text = "Late in", Value = "3"},
+                    new SelectListItem() {Text = "Early out", Value = "4"},
+                    new SelectListItem() {Text = "Not working", Value = "5"},
+                };
+            }
+            @Html.DropDownListFor(model => model.Type, types)
+            @Html.ValidationMessageFor(model => model.Type)
+        </div>
+        <div class="grid_3 pull_1">
+            <input type="submit" id="view" value="Submit" name="@Labels.View"/>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+}
+<div class="clear">
+</div>
+<table id="data" class="data persist-area">
+    <thead>
+        <tr class="persist-header">
+            <th>
+                #
+            </th>
+            <th>
+                @Labels.Date
+            </th>
+            <th>
+                @Labels.Nick
+            </th>
+            <th>
+                @Labels.Team
+            </th>
+            <th>
+                @Labels.Shift
+            </th>
+            <th>
+                @Labels.CheckIn
+            </th>
+            <th>
+                @Labels.CheckOut
+            </th>
+            <th>
+                @Labels.TotalHours
+            </th>
+            <th>
+                @Labels.LateIn
+            </th>
+            <th>
+                @Labels.EarlyOut
+            </th>
+            <th>
+                @Labels.Request
+            </th>
+            <th>
+                @Labels.Overtime
+            </th>
+            <th>
+                @Labels.Note
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script id="itemTemplate" type="text/x-jquery-tmpl">
+    <tr {{if IsNotWork != 0}}class="offdate"{{else ShiftId }} {{else}} class="noshift"{{/if}}>
+        <td>${index()}</td>
+        <td>
+            ${jsonToShortDate(AttendanceDate)}
+        </td>
+        <td title="${FullName}" class="tooltip">
+            ${NickName}
+        </td>
+        <td class="tooltip" title="${Team}">
+            ${TeamCode}
+        </td>
+        <td>
+            ${ShiftCode}
+        </td>
+        <td>
+            {{if InFixed}} ${jsonTojsDate(InFixed).format("HH:MM")}{{/if}}
+        </td>
+        <td>
+            {{if OutFixed }} ${jsonTojsDate(OutFixed).format("HH:MM")}{{/if}}
+        </td>
+        <td>
+            {{if TotalWorkHours > 0}}
+                ${totalHoursToTime(TotalWorkHours)}
+            {{/if}}
+        </td>
+        <td>
+            {{if LateIn > 0}}
+                ${displayMinute(LateIn)}
+            {{/if}}
+        </td>
+        <td>
+            {{if EarlyOut > 0}}
+                ${displayMinute(EarlyOut)}
+            {{/if}}
+        </td>
+        <td>
+            {{if RequestList != null > 0}}
+                {{each RequestList}}
+                    <a href='#' class="tooltip-request req" 
+                            data-requesttype="${RequestType.Id}"
+                            data-fromdate="${FromDate}"
+                            data-todate="${ToDate}" 
+                            data-fromshift="${FromShift}"
+                            data-toshift="${ToShift}"
+                            data-leavetype="${LeaveType}"
+                            data-totaldays="${TotalDays}"
+                            data-totalmins="${TotalMins}"
+                            data-ottype='${OvertimeType.Id}'
+                            data-isothours='${IsOvertimeHours}'
+                            data-remark='${Remark}'>
+                            ${RequestType.Name}
+                        </a> 
+                {{/each}}
+               
+            {{/if}}
+        </td>
+        <td>
+            {{if OvertimeList != null > 0}}
+                {{each OvertimeList}}
+                    <a href='#' class="tooltip-overtime"
+                        {{if OvertimeFromTime != null}} data-fromtime="${jsonTojsDate(OvertimeFromTime).format('HH:MM')}" {{else}} data-fromtime="N/A" {{/if}}
+                        {{if OvertimeToTime != null}} data-totime="${jsonTojsDate(OvertimeToTime).format('HH:MM')}" {{else}} data-totime="N/A" {{/if}}
+                        {{if OvertimeTotalHours != null}} data-totalhours="${totalHoursToTime(OvertimeTotalHours)}" {{else}} data-totalhours="N/A" {{/if}}>
+                        ${OvertimeName}
+                    </a> 
+                {{/each}}
+            {{/if}}
+        </td>
+        <td>
+            ${Notes}
+        </td>
+    </tr>
+</script>

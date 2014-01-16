@@ -1,0 +1,86 @@
+﻿@model IList<Fanex.NexHR.Models.Holiday>
+@using Fanex.NexHR.Models
+@using Fanex.NexHR.Core;
+@{
+    ViewBag.Title = "Holiday";
+}
+
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("holidayjs")
+}
+@section Breadcrumb {
+    <a class="step">Company</a> <a class="step">@ViewBag.Title</a>
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginGetForm())
+{
+        <span style="padding-right: 5px; vertical-align:8px;">Year</span>
+        @Html.YearPicker("year", 2010, (int)ViewBag.year)
+        <input type="button" id="submit" value="@Labels.Submit" class="processing-submit"/>
+        if (Roles.IsUserInRole("HR"))
+        { 
+            <div class="button-icon"><span class="icon plus"></span>@Html.ActionLink("Holiday", "Create")</div>
+        }
+}
+<table id="data" class="data persist-area">
+    <thead>
+        <tr class ="persist-header">
+            <th>#</th>
+            @*<th>@Labels.ActualDate
+            </th>*@
+            <th>@Labels.Name
+            </th>
+            <th>@Labels.From
+            </th>
+            <th>@Labels.To
+            </th>
+            @if (Roles.IsUserInRole("HR"))
+            { 
+                <th>@Labels.Edit
+                </th>
+                <th>@Labels.Delete
+                </th>
+            }
+        </tr>
+    </thead>
+    @if (Model.Any())
+    {
+        <tbody>
+            @{int index = 1;}
+            @foreach (Holiday item in Model)
+            {
+                <tr id="row@(item.Id)">
+                    <td>@(index++)</td>
+                    @*<td class="ddMMyyyy">
+                        @item.ActualFromDate.ToDateMonthYearFormatedDate()
+                    </td>*@
+                    <td class="left">
+                        @item.HolidayName
+                    </td>
+                    <td class="ddMMyyyy">
+                        @item.FromDate.ToDateMonthYearFormatedDate()
+                    </td>
+                    <td class="ddMMyyyy">
+                        @item.ToDate.ToDateMonthYearFormatedDate()
+                    </td>
+                    @if (Roles.IsUserInRole("HR"))
+                    {
+                        <td class="cmd">
+                            <a href="@Url.Action("Edit", "Holiday", new { Id = item.Id })"><img src="~/Styles/Images/edit-icon.png" /></a>
+                        </td>
+                        <td  class="cmd">
+                            <a href="javascript:;" onclick="deleteHoliday(@item.Id);"><img src="~/Styles/Images/delete-icon.png" /></a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    }
+    else
+    {
+        @RazorHelper.DisplayNoInformation(colspan: 7);
+    }
+</table>

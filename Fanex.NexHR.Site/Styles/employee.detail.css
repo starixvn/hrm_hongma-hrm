@@ -1,0 +1,212 @@
+.leftpersonal
+{
+	width: 340px;
+	float:left;
+	padding: 5px;
+	margin-right: 10px;
+}
+
+.accinfo
+{
+	margin: 0px;
+}
+.rightjob
+{
+	float:left;
+	padding: 5px;
+	padding-right:10px;
+}
+.avatarbox
+{
+	background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#ebebeb));
+	background: -moz-linear-gradient(top,  #f4f4f4,  #ebebeb);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ebebeb');
+	padding: 5px;
+	padding-right: 0px;
+	margin-bottom: 5px;
+	height: 70px;
+	background-color: #fafafa;
+	border: 1px solid #ececec;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	color: #666666;
+}
+
+.avatar
+{
+	border: 1px solid 848484;
+	width: 65px;
+	height: 65px;
+	float:left;
+	margin-right: 10px;
+	float:left;
+	padding:2px 0 0 2px;
+}
+
+.pinfo
+{
+	font-family: "Myriad Pro", Tahoma, REZ, Arial;
+	font-size: 14px;
+	color: #666666;
+}
+
+.name
+{
+	font-size: 20px;
+	color: #ac794c;
+}
+
+.Jobinformation
+{
+	background-color: #fafafa;
+	border: 1px solid #ececec;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin-top: 10px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	color: #666666;
+	height: auto;
+}
+
+.contactdetails
+{
+	background-color: #fafafa;
+	border: 1px solid #ececec;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin-top: 10px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	color: #666666;
+}
+
+.personalinformation
+{
+	background-color: #fafafa;
+	border: 1px solid #ececec;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	color: #666666;
+}
+
+.attendacereport
+{
+	background-color: #fafafa;
+	border: 1px solid #ececec;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin-top: 10px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	color: #666666;
+}
+
+.label
+{
+	float: left;
+	text-align:right;
+	padding-left:10px;
+	margin-right: 10px;
+	min-width: 100px;
+}
+
+.label2
+{
+	float: left;
+	text-align:right;
+	padding-left:10px;
+	margin-right: 10px;
+	min-width: 150px;
+}
+
+.pcontent
+{
+	float:left;
+	text-align:left;
+	font-weight:bold;
+	max-width: 520px;
+}
+
+.boxtitle
+{
+	background-color: #E5E5E5;
+	background-image: -moz-linear-gradient(center top , #EBEBEB, #E5E5E5);
+	border-top: 1px solid #FAFAFA;
+	padding: 12px 12px;
+	font-family:"Myriad Pro", Tahoma, REZ, Arial;
+	font-size:16px;
+	text-shadow: 0.05em 0.05em #fff;
+	color: #777;
+}
+
+.boxcontent
+{
+	padding-bottom: 10px;
+}
+
+.line
+{
+	padding: 10px 0px;
+	border-bottom: 1px solid #e5e3e3;
+}
+.line:last-child {
+	border-bottom: none;
+}
+
+.schedule
+{
+	float: left;
+	background: #e9e7e7;
+	padding: 0px 0px;
+	font-weight: normal;
+	text-align: center;
+	border: 1px solid #dddddd;
+	margin-right: 2px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+}
+
+.scheduleoff
+{
+	float: left;
+	background: #cfcfcf;
+	padding: 0px 0px;
+	font-weight: normal;
+	text-align: center;
+	border: 1px solid #a5a2a2;
+	margin-right: 2px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.day
+{
+	padding: 3px 0px;
+	border-bottom: 1px solid #dddddd;
+	width: 65px;
+}
+
+.shift
+{
+	padding: 3px 0px;
+	border-bottom: 1px solid #dddddd;
+	width: 65px;
+}

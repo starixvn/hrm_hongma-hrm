@@ -1,0 +1,15 @@
+@{
+    ViewBag.Title = "Home Page";
+    
+}
+
+@section css{
+    @Url.CombresLink("homecss")
+}
+@section js{
+    @Url.CombresLink("homejs")
+}
+
+@section Breadcrumb {
+    <a class="step" href="#!">Personal</a> <span class="step">@ViewBag.Title</span>
+}

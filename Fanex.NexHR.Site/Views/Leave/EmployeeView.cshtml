@@ -1,0 +1,124 @@
+﻿@model IList<Fanex.NexHR.Models.Request.RequestEntity>
+@{
+    ViewBag.Title = Labels.LeaveRequest;
+}
+@section css{
+    @Url.CombresLink("myrequestcss")
+}
+@section js{
+    @Url.CombresLink("empcheckinoutjs")
+}
+@{
+    ViewBag.Title = Labels.LeaveRequest;
+}
+@section Breadcrumb {
+    <a class="step">Personal</a> <a class="step">@ViewBag.Title</a>
+}
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{ 
+        <input type="hidden" value="Leave" id="RequestType" />
+        
+        <span>Year:</span>
+        @Html.YearPicker("Year", 2010, (int)ViewBag.Year)
+        <input type="submit" id="submit" value="@Labels.Submit" class="button-primary submit processing-submit"/>
+        <div class="button-icon">
+            <span class="icon plus"></span>@Html.ActionLink("Leave request", "Create")</div>
+        <br />
+
+        <table class="data" id="data">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>@Labels.Team
+                    </th>
+                    <th>@Labels.Employee
+                    </th>
+                    <th>@Labels.LeaveType
+                    </th>
+                    <th>@Labels.From
+                    </th>
+                    <th>@Labels.To
+                    </th>
+                    <th>@Labels.Total
+                    </th>
+                    <th>@Labels.CreatedDate
+                    </th>
+                    <th>@Labels.Remark
+                    </th>
+                    <th>@Labels.Status
+                    </th>
+                </tr>
+            </thead>
+           <tbody>
+                @{int index = 1;}
+                @if (Model.Count > 0)
+                {
+                    foreach (var request in Model)
+                    {                   
+                        <tr id="row@(request.Id)">
+                            <td>@(index++)
+                            </td>
+                            <td>@request.Requester.Team.Name
+                            </td>
+                            <td class="tooltip" title="@request.Requester.FullName">
+                                @request.Requester.NickName
+                            </td>
+                            <td>@request.LeaveType
+                            </td>
+                            @if (request.TotalDays < 1)
+                            { 
+                                <td class="ddMMyyyy highlight">@request.FromDate.ToShortFormatedDate()
+                                </td>
+                                <td class="ddMMyyyy highlight">@request.ToDate.ToShortFormatedDate()
+                                </td>
+                            }
+                            else
+                            {
+                                 <td class="ddMMyyyy highlight">@request.FromDate.ToDateMonthYearFormatedDate()
+                                </td>
+                                <td class="ddMMyyyy highlight">@request.ToDate.ToDateMonthYearFormatedDate()
+                                </td>
+                            }
+                            <td class="highlight">@request.TotalDays.ToString("0.0")
+                            </td>
+                            <td class="ddMMyyyy tooltip" title="@request.CreatedDate.ToShortFormatedDate()" >
+                            @request.CreatedDate.ToDateMonthYearFormatedDate()
+                            </td>
+
+                            @if (!string.IsNullOrWhiteSpace(request.Remark))
+                            { 
+                                    <td class="tooltip" title="@request.Remark">
+                                        <span class="icon remark" alt="remark" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                            
+                            @if (request.Status.ToString() == RequestStatuses.Pending.ToString())
+                            {
+                                <td>
+                                    <a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString()">@request.Status.ToString()</a>
+                                </td>
+                            }
+                            else
+                            { 
+                                <td class="tooltip" title="@request.Status.Name by @request.ModifiedBy.NickName (@request.ModifiedDate.ToShortFormatedDate())">@request.Status.ToString()</td>
+                            }
+                        </tr>
+                    }
+
+                }
+                else
+                { 
+                    @RazorHelper.DisplayNoInformation(colspan: 10);
+                }
+            </tbody>
+        </table>
+}
+@RazorHelper.EmployeeProcessMenu()

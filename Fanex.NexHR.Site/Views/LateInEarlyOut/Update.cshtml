@@ -1,0 +1,136 @@
+﻿@model Fanex.NexHR.ViewModels.LateInEarlyOutRequestViewModel
+@using System.Web.Mvc.Html5;
+@{
+    ViewBag.Title = Labels.MyLateInEarlyOutRequest;
+}
+
+@section css{
+    @Url.CombresLink("lateinearlyoutcss")
+}
+@section js{
+    @Url.CombresLink("lateinearlyoutjs")
+}
+
+@section Breadcrumb {
+        <a class="step">Personal</a> <a class="step">@ViewBag.Title</a>
+
+}
+<h2>@Labels.Edit</h2>
+<div class="bunhat">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        if (ViewBag.Updated == true)
+        {
+            <div class="success">@Fanex.NexHR.Resources.Messages.RequestUpdated</div> 
+            <input type="hidden" id="successed" value="true" />
+            <input type="hidden" id="year" value="@ViewBag.Year" />
+        }
+        
+        <div class="formrow">
+            <div class="label">
+                @Fanex.NexHR.Resources.Labels.RequestCode
+            </div>
+            <div class="input">
+                <strong>Rq.@Model.Id</strong>
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Type)
+            </div>
+            <div class="input">
+                @(Model.Type == 3 ? "Late in" : "Early out")
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Employee)
+            </div>
+            <div class="input">
+                @Html.DisplayFor(model => model.Employee)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ToDate, Labels.FromDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.FromDate,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1),
+                unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+               
+                @Html.DropDownList("FromTime", Utilities.TimeSteps(15))
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ToDate, Labels.ToDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.ToDate,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1),
+                unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+
+                @Html.DropDownList("ToTime", Utilities.TimeSteps(15))
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Minute, "Minutes")
+            </div>
+            <div class="input latein">
+                @Html.EditorFor(model => model.Minute)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        @*
+        <div class="formrow">
+            <div class="label">
+                @Fanex.NexHR.Resources.Labels.Date
+            </div>
+            <div class="input">
+                 @Html.DatePickerFor(model => model.ForDate,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1),
+                unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+                @Html.DropDownList("Minute", Utilities.MinuteSteps(15))
+
+            </div>
+        </div>*@
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Remark)
+            </div>
+            <div class="input">
+                @Html.TextAreaFor(model => model.Remark)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.HiddenFor(model => model.Employee)
+                @Html.HiddenFor(model => model.DisplayName)
+                @Html.HiddenFor(model => model.EmployeeId)
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Type)
+            </div>
+            <div class="input">
+                <input type="submit" value="@Labels.Update"/>
+                <a href="@Url.Action("employeeview", "lateinearlyout")" class="button">@Labels.Back</a>
+            </div>
+        </div>
+    }
+</div>

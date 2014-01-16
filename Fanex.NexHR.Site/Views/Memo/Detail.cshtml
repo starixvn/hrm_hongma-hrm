@@ -1,0 +1,88 @@
+﻿@model Fanex.NexHR.Models.Memo
+@using Fanex.NexHR.Core;
+@{        
+    var memoSubject = Model != null ? Model.Subject : Labels.NoData;
+    ViewBag.Title = memoSubject + " - " + Labels.Memo;    
+}
+@section css{
+    @Url.CombresLink("memoedetailcss")
+}
+@section js{
+    @Url.CombresLink("memojs")
+}
+@section Breadcrumb {
+    <a class="step">Company Space</a><a class="step">@memoSubject</a>
+}
+@if (!ReferenceEquals(Model, null))
+{ 
+    <table class="data memo">
+        <thead>
+            <tr>
+                <th colspan="4">@Model.Subject
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="left">
+                    <b>@Labels.To</b>
+                </td>
+                <td class="left">
+                    @Model.SentTo
+                </td>
+                <td>
+                    <b>@Labels.RefNo</b>
+                </td>
+                <td>
+                    <b>@Model.RefNo</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="left">
+                    <b>@Labels.ForInfo</b>
+                </td>
+                <td class="left">
+                    @Model.ForInfo
+                </td>
+                <td>
+                    <b>@Labels.TotalPages</b>
+                </td>
+                <td>
+                    @Model.TotalPages
+                </td>
+            </tr>
+            <tr>
+                <td class="left">
+                    <b>@Labels.From</b>
+                </td>
+                <td class="left">
+                    @Model.SentFrom
+                </td>
+                <td>
+                    <b>@Labels.Date</b>
+                </td>
+                <td class="ddMMyyyyhhmm">
+                    @Model.SentDate.ToDateMonthYearFormatedDate()
+                </td>
+            </tr>
+            <tr>
+                <td class="left">
+                    <b>Category</b>
+                </td>
+                <td colspan="3">
+                    <b>@Model.CategoryName</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    @Html.Raw(Model.Contents)
+                </td>
+            </tr>
+        </tbody>
+    </table> 
+    <a href="@Url.Action("index")" class="button">@Labels.Back</a>
+}
+else
+{
+    <h2>@Messages.ThisContentHasAlreadyBeenDeleted</h2>
+}

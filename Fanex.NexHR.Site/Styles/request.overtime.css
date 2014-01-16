@@ -1,0 +1,11 @@
+﻿#Shift {
+	min-width:60px !important;
+	vertical-align:middle;
+}
+#TotalHours {
+	width:54px;
+	text-align:center;
+}
+#FromTime, #ToTime {
+	min-width:60px;
+}

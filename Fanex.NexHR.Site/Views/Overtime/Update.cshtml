@@ -1,0 +1,160 @@
+﻿@using Fanex.NexHR.Resources
+@model Fanex.NexHR.ViewModels.OvertimeRequestViewModel
+@{
+    ViewBag.Title = Labels.MyOvertimeRequest;
+}
+
+@section css{
+    @Url.CombresLink("overtimecss")
+}
+@section js{
+    @Url.CombresLink("overtimejs")
+}
+
+@section Breadcrumb {
+    <a class="step">Personal</a> <a class="step">@ViewBag.Title</a>
+}
+
+<h2>@Labels.Edit</h2>
+<div class="bunhat">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        if (ViewBag.Updated == true)
+        {
+            <div class="success">@Fanex.NexHR.Resources.Messages.RequestUpdated</div> 
+            <input type="hidden" id="successed" value="true" />
+            <input type="hidden" id="year" value="@ViewBag.Year" />
+        }
+        
+        <div class="formrow">
+            <div class="label">
+                @Fanex.NexHR.Resources.Labels.RequestCode
+            </div>
+            <div class="input">
+                <strong>Rq.@Model.Id</strong>
+            </div>
+            <div class="clear"></div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.OvertimeType, Labels.Type)
+            </div>
+            <div class="input">
+                @RazorHelper.OvertimeTypeDropDownList(Model.OvertimeType)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.IsOvertimeHours, Labels.Hours)
+            </div>
+            <div class="input">
+                @Html.CheckBoxFor(model => model.IsOvertimeHours)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Employee)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Employee)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+       
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Date, Labels.Date)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.Date,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1))
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow" id="shift-row">
+            <div class="label">
+                @Html.LabelFor(model => model.Shift, Labels.Shift)
+            </div>
+            <div class="input">
+                @Html.DropDownListFor(model => model.Shift, new SelectList(ViewBag.Shifts, "Id", "Name"))
+                <a id="shiftinfo" href="javascript:;" title="@Fanex.NexHR.Resources.Labels.ShiftInfo">
+                    <span class="icon shiftinfo"></span></a>
+                <div class="hide">
+                    @RazorHelper.ShiftInfoTable(ViewBag.Shifts)
+                </div>
+            </div>
+        </div>
+        
+        <div class="formrow" id="time-row">
+            <div class="label">
+                @Html.LabelFor(model => model.FromTime, Labels.Time)
+            </div>
+            <div class="input">
+                
+                <span class="time">
+                    @Html.DropDownList("FromTime", Utilities.TimeSteps(30))
+                </span>
+                ~
+                <span class="time">
+                    @Html.DropDownList("ToTime", Utilities.TimeSteps(30))
+                </span>
+                @Html.CheckBoxFor(model => model.IsCrossDay)
+                <span>@Labels.CrossDay</span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow" id="totalhours-row">
+            <div class="label">
+                @Html.LabelFor(model => model.TotalMinutes, Labels.TotalMinutes)
+            </div>
+            <div class="input">
+                <span class="time">
+                    @Html.EditorFor(model => model.TotalMinutes)
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Remark)
+            </div>
+            <div class="input">
+                @Html.TextAreaFor(model => model.Remark)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.HiddenFor(model => model.DisplayName)
+                @Html.HiddenFor(model => model.Employee)
+                @Html.HiddenFor(model => model.EmployeeId)
+                @Html.HiddenFor(model => model.Id)
+                &nbsp;
+            </div>
+            <div class="input">
+                <input type="submit" value="@Labels.Update"/>
+                <a href="@Url.Action("employeeview", "leave")" class="button">@Labels.Back</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    }
+</div>

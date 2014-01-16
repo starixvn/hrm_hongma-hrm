@@ -1,0 +1,32 @@
+﻿@model Fanex.NexHR.Models.Employee
+<div class="header_wrap">
+    <div class="header">
+        <h1>
+            <a href="~/">
+                <img src="/Images/logo.png" width="147px" height="30px" alt="Nexcel Solutions Vietnam" /></a></h1>
+        <div class="search_bar">
+            <form class="search" method="get" action="/employee/index" accept-charset="UTF-8" id="search">
+            <input type="text" autocomplete="off" placeholder="Nickname or full name" name="query"
+                id="searchbox" class="placeholder" /><a id="searchIcon" class="search_btn button straight-left no_border just-icon"><span class="icon magnifier"></span></a></form>
+        </div>
+
+        <div id="user_utilities" class="dropdown_navigation"  style="z-index: 1000;">
+            <h2>
+                @Model.FullName - <i>@Model.NickName</i>
+            </h2>
+            <a href="javascript:;" class="dropdown_arrow"></a>
+            <ol class="global_navigation">
+                <li><a class="" href="@Url.Action("create","leave")">Request leave</a> </li>
+                <li><a class="" href="@Url.Action("create","changeshift")">Request change shift</a> </li>
+                <li><a class="" href="@Url.Action("create","lateinearlyout")">Request late in - early out</a> </li>
+                <li><a class="" href="@Url.Action("create","checkinout")">Request check in/out</a> </li>
+                <li><a class="" href="@Url.Action("index","account")">My profile</a> </li>
+				<li><a class="" href="@Url.Action("changepwd", "employee")">Change Password</a> </li>
+				<li><a class="" href="@Url.Action("logout", "auth")">Logout</a> </li>
+                @*<li><a class="" href="@Url.Action("logoff", "auth")">Log off</a> </li>*@
+            </ol>
+        </div>
+
+        
+    </div>
+</div>

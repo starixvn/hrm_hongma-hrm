@@ -1,0 +1,58 @@
+﻿@model Fanex.NexHR.ViewModels.ChangePasswordViewModel
+@{
+	ViewBag.Title = "Change Password";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	string changePwdOK = ViewBag.ChangePwdOK;
+}
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("changepwdjs")
+}
+@section Breadcrumb {
+    <span class="step">@ViewBag.Title</span>
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("ChangePwd", "Employee", FormMethod.Post))
+{
+	@Html.AntiForgeryToken();
+	@Html.ValidationSummary();
+	if (!string.IsNullOrWhiteSpace(changePwdOK))
+	{
+		<div class="success">@changePwdOK</div>
+	}
+    <div class="container_24 bunhat" style="min-width:400px">
+		<div class="formrow">
+			<div class="label">
+				@Html.LabelFor(model => model.Password)
+			</div>
+			<div class="input">
+				@Html.PasswordFor(model => model.Password)
+			</div>
+		</div>
+		<div class="formrow">
+			<div class="label">
+				@Html.LabelFor(model => model.NewPassword)
+			</div>
+			<div class="input">
+				@Html.PasswordFor(model => model.NewPassword)
+			</div>
+		</div>
+		<div class="formrow">
+			<div class="label">
+				@Html.LabelFor(model => model.ConfirmPassword)
+			</div>
+			<div class="input">
+				@Html.PasswordFor(model => model.ConfirmPassword)
+			</div>
+		</div>
+		<div class="formrow">
+			<div class="label">&nbsp;</div>
+			<div class="input">
+				<input type="submit" value="Submit" />
+			</div>
+		</div>
+    </div>
+}

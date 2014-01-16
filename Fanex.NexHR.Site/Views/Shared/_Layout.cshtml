@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xml:lang="en" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>NexHRM - @ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @RenderSection("css", false)
+    @RenderSection("js", false)
+    @Html.Action("GlobalScript", "UI")
+</head>
+<body class="locale_en production">
+    <header>
+        @Html.Action("Header", "UI")
+    </header>
+    <div id="container" class="container">
+        <nav>
+            <div class="column_wrap">
+                @Html.Action("NavBar", "UI")
+            </div>
+        </nav>
+        <section id="section_content">
+            <div class="content_wrap">
+                <section id="section_breadcrumb">
+                    <div class="separator js-separator">
+                        <div class="js-view-title separator-view-title" id="view_title">
+                            <div class="breadcrumb">
+                                @RenderSection("Breadcrumb", required: true)
+                            </div>
+                        </div>
+                        <div class="js-menu separator-menu">
+                            @RenderSection("SeparatorMenu", required: false)
+                        </div>
+                    </div>
+                </section>
+                <section id="section_body">
+                    <div class="content_scroll">
+                        @RenderBody()
+                    </div>
+                </section>
+            </div>
+        </section>
+        <div class="right_wrap">
+            @RenderSection("Right", required: false)
+        </div>
+    </div>
+    <footer>
+    </footer>
+    <div id="message"></div>
+</body>
+</html>

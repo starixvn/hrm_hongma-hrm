@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Job title management";
+}
+@section css{
+    @Url.CombresLink("jobtitlecss")
+}
+@section js{
+    @Url.CombresLink("jobtitle")
+}
+@section Breadcrumb {
+    <a class="step" href="#">@ViewBag.Title</a>
+}
+<script>
+    var enable = true;
+</script>
+<h2>@ViewBag.Title</h2>
+<div class="container_24 bunhat">
+    @Labels.Keyword
+    <input id="keyword" type="text" placeholder="@Fanex.NexHR.Resources.Messages.JobTitle"/>
+    <div class="button-icon">
+        <span class="icon plus"></span><a href="#" id="btnNewJobTitle">New Job Title</a></div>
+</div>
+<div class="clear">
+</div>
+<table id="data" class="data persist-area" style="width: auto; min-width: 622px;">
+    <thead>
+        <tr class="persist-header">
+            <th>
+                #
+            </th>
+            <th style="width: 340px">@Labels.JobTitle
+            </th>
+            <th>@Labels.Employee
+            </th>
+            <th>@Labels.Edit
+            </th>
+            <th>@Labels.Delete
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script id="itemTemplate" type="text/x-jquery-tmpl">      
+     <tr id="row${Id}">
+            <td>
+              ${index()}
+            </td>
+            <td class="left" style="width: 340px">
+                <span id="spanJobTitle_${Id}"> ${Name}</span>
+                <input type="text" value="${Name}" id="txtJobTile_${Id}" style="display:none;height:22px;width: 300px;"/> 
+            </td>            
+            <td >
+                {{if Value!='0'}}
+                    <a href="/employee/usermanagement/?jobtitleid=${Id}">${Value}</a>
+                {{else}}
+                    0
+                {{/if}}                
+            </td>                        
+           <td class="cmd">
+                    <a href="#" onclick="editJobTile('${Id}')" id='btnEditJobTitle_${Id}'><img src="@Url.Content("~/Styles/Images/edit-icon.png")" /></a>                    
+                    <a href="#" id="btnUpdateJT_${Id}" style="display:none" onclick="UpdateJobTitle('${Id}')" title="Apply">
+                        <img src="@Url.Content("~/Styles/Images/approve.png")" />
+                    </a>
+                    <a href="#" id="btnCancelUpdateJT_${Id}" style="display:none;margin-left:10px;" onclick="CancelUpdate('${Id}')" title="Cancel">
+                        <img src="@Url.Content("~/Styles/Images/reject.png")" />
+                    </a>                    
+            </td>
+            <td  class="cmd">              
+             {{if Value!='0'}}
+                     <a href="#" style="cursor:default"><img src="@Url.Content("~/Styles/Images/disabled-delete.png")" /></a> 
+                {{else}}
+                      <a href="#" onclick="deleteJobTitle('${Id}')" id="${Id}"><img src="@Url.Content("~/Styles/Images/delete-icon.png")" /></a> 
+                {{/if}}    
+                            
+            </td>            
+        </tr>     
+</script>
+<script id="mytemplate" type="text/html">
+</script>
+<div id="dialog-form" title="Create an job title" style="display: none">
+    <p class="validateTips">
+    </p>
+    <form>
+    <fieldset>
+        <label for="name">
+            Job title</label>
+        <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+    </fieldset>
+    </form>
+</div>

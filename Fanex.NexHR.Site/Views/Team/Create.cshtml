@@ -1,0 +1,90 @@
+﻿@model Fanex.NexHR.ViewModels.TeamViewModel
+
+@{
+    ViewBag.Title = Labels.Team;
+}
+
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("teamjs")
+}
+@section Breadcrumb {
+    <a class="step">HR Space</a><span class="step">@ViewBag.Title</span>
+}
+
+<h2>@Labels.Create</h2>
+
+@using (Html.BeginForm())
+{
+<div class="bunhat">
+    @Html.ValidationSummary(true)
+    @if (ViewBag.Inserted == true)
+    {
+    <div class="success">@Messages.TeamCreated</div> 
+    }
+
+    @Html.HiddenFor(model => model.CreatedDate)
+    @Html.HiddenFor(model => model.CreatedBy)
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.TeamCode)
+            
+        </div>
+        <div class="input">
+            @Html.EditorFor(model => model.TeamCode)
+            @Html.ValidationMessageFor(model => model.TeamCode)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.TeamName)
+        </div>
+        <div class="input">
+            @Html.EditorFor(model => model.TeamName)
+            @Html.ValidationMessageFor(model => model.TeamName)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Leader)
+        </div>
+        <div class="input">
+            @Html.TextBox("Leader", string.Empty, new { placeholder = Messages.SearchEmployeeWatermark })
+            
+            @Html.ValidationMessage("Leader")
+            
+            @Html.HiddenFor(model => model.Leader)
+            @Html.HiddenFor(model => model.LeaderId)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.AssistantLeader)
+        </div>
+        <div class="input">
+            @Html.TextBox("AssistantLeader", string.Empty, new { placeholder = Messages.SearchEmployeeWatermark })
+
+            @*@Html.ValidationMessage("AssistantLeader")*@
+
+            @Html.HiddenFor(model => model.AssistantLeader)
+            @Html.HiddenFor(model => model.AssistantLeaderId)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+
+        </div>
+        <div class="input">
+            <input type="submit" value="@Labels.Add"/>
+            <a href="@Url.Action("index","team")" class="button">@Labels.Back</a>
+        </div>
+    </div>
+
+</div>
+}

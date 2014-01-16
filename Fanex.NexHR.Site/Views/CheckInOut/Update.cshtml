@@ -1,0 +1,107 @@
+﻿@model Fanex.NexHR.ViewModels.CheckInOutRequestViewModel
+@using System.Web.Mvc.Html5;
+@{
+    ViewBag.Title = Labels.MyCheckInOutRequests;
+}
+
+@section css{
+    @Url.CombresLink("checkinoutrequestcss")
+}
+@section js{
+    @Url.CombresLink("checkinoutrequestjs")
+}
+
+@section Breadcrumb {
+    <a class="step">Personal</a> <a class="step">@ViewBag.Title</a>
+
+}
+<h2>@Labels.Edit</h2>
+<div class="bunhat">
+    @using (Html.BeginForm())
+{
+    
+    @Html.ValidationSummary(true)
+
+    if (ViewBag.Updated == true)
+    {
+        <div class="success">@Fanex.NexHR.Resources.Messages.RequestUpdated</div> 
+        <input type="hidden" id="successed" value="true" />
+        <input type="hidden" id="year" value="@ViewBag.Year" />
+    }
+    
+    <div class="formrow">
+        <div class="label">
+            @Fanex.NexHR.Resources.Labels.RequestCode
+        </div>
+        <div class="input">
+            <strong>Rq.@Model.Id</strong>
+        </div>
+    </div>
+        
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Type)
+        </div>
+        <div class="input">
+            @Model.Type.ToText()
+        </div>
+    </div>
+        
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Employee)
+        </div>
+        <div class="input">
+            @Html.DisplayFor(model => model.Employee)
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="formrow">
+        <div class="label">
+            @Fanex.NexHR.Resources.Labels.RequestTime
+        </div>
+        <div class="input">
+            @Html.DatePickerFor(model => model.ForDate, new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1), DateTime.Now, unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+                
+            @Html.Html5Number(0, 23, 1, Model.Hour, new { Name = "Hour", MaxLength = "2", id = "Hour" })
+                 
+            :
+            @Html.Html5Number(0, 59, 1, Model.Minute, new { Name = "Minute", MaxLength = "2", id = "Minute" })
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Shift)
+        </div>
+        <div class="input">
+            <span id="shiftname">@Model.Shift</span> <a id="shiftinfo" href="javascript:;" title="@Fanex.NexHR.Resources.Labels.ShiftInfo">
+                <span class="icon shiftinfo"> </span>
+            </a>
+            <div class="hide">
+            @RazorHelper.ShiftInfoTable(ViewBag.Shifts)
+            </div>
+        </div>
+    </div>
+        
+    <div class="formrow">
+        <div class="label">
+                
+        </div>
+        <div class="input">
+            @Html.HiddenFor(model => model.Employee)
+            @Html.HiddenFor(model => model.DisplayName)
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Type)
+            @Html.HiddenFor(model => model.Shift)  
+            @Html.Hidden("InTime")
+            @Html.Hidden("OutTime")
+
+            <input type="submit" value="@Labels.Update"/>
+            <a href="@Url.Action("employeeview","checkinout")" class="button">@Labels.Back</a>
+        </div>
+    </div>
+}
+</div>

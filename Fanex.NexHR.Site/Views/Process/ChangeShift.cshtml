@@ -1,0 +1,106 @@
+﻿@model Fanex.NexHR.ViewModels.ProcessChangeShiftViewModel
+@{
+    ViewBag.Title = "Process change shift request";
+}
+
+@section css{
+    @Url.CombresLink("checkinoutrequestcss")
+}
+@section js{
+    @Url.CombresLink("checkinoutrequestjs")
+}
+
+    <h2>Process change shift request</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        if (ViewBag.Success == true)
+        {
+            <div class="success flash">Your action has been saved successfully!</div> 
+        }
+    
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.From)
+            </div>
+            <div class="input">
+                @Model.From
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ForDate)
+            </div>
+            <div class="input">
+                @Model.ForDate.ToShortDateString()
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.FromShift)
+            </div>
+            <div class="input">
+                @Model.FromShiftName
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ToShift)
+            </div>
+            <div class="input">
+                @Model.ToShiftName
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.IsPlanned)
+            </div>
+            <div class="input">
+                @(Model.IsPlanned ? "Yes" : "No")
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Remark)
+            </div>
+            <div class="input">
+                @(string.IsNullOrWhiteSpace(Model.Remark) ? "No remark" : Model.Remark)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.HiddenFor(model => model.RequestId)
+                @Html.HiddenFor(model => model.From)
+                @Html.HiddenFor(model => model.ForDate)
+                @Html.HiddenFor(model => model.FromShift)
+                @Html.HiddenFor(model => model.FromShiftName)
+                @Html.HiddenFor(model => model.ToShift)
+                @Html.HiddenFor(model => model.ToShiftName)
+                @Html.HiddenFor(model => model.IsPlanned)
+                @Html.HiddenFor(model => model.Remark)
+                @Html.HiddenFor(model => model.Status)
+            </div>
+            <div class="input">
+                @if (Model.Status == 1)
+                {
+                    <input type="submit" value="Approve" name="command" />
+                    <input type="submit" value="Reject" name="command" />
+                }
+                else if (Model.Status == 2)
+                {
+                    <input type="submit" value="Disapprove" name="command" />
+                }
+            </div>
+        </div>
+        if (Model.Status == 3)
+        {
+            <div class=alert>This request has been rejected</div>
+        }
+    }

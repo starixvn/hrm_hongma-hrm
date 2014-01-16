@@ -1,0 +1,75 @@
+﻿@model Fanex.NexHR.ViewModels.ProcessCheckInOutViewModel
+@using System.Web.Mvc.Html5;
+@{
+    ViewBag.Title = "Approve check in/out request";
+}
+
+@section css{
+    @Url.CombresLink("checkinoutrequestcss")
+}
+@section js{
+    @Url.CombresLink("checkinoutrequestjs")
+    <h2>Process check in/out request</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        if (ViewBag.Success == true)
+        {
+            <div class="success flash">Your action has been saved successfully!</div> 
+        }
+    
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.From)
+            </div>
+            <div class="input">
+                @Model.From
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.RequestDate)
+            </div>
+            <div class="input">
+                @Model.RequestDate
+            </div>
+        </div>
+
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Type)
+            </div>
+            <div class="input">
+                @(Model.Type == 1 ? "Missing check in" : "Missing check out")
+            </div>
+        </div>
+       
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.HiddenFor(model => model.RequestId)
+                @Html.HiddenFor(model => model.From)
+                @Html.HiddenFor(model => model.RequestDate)
+                @Html.HiddenFor(model => model.Status)
+                @Html.HiddenFor(model => model.Shift)
+                @Html.HiddenFor(model => model.Type)
+            </div>
+            <div class="input">
+                @if (Model.Status == 1)
+                {
+                    <input type="submit" value="Approve" name="command" />
+                    <input type="submit" value="Reject" name="command" />
+                }
+                else if (Model.Status == 2)
+                {
+                    <input type="submit" value="Disapprove" name="command" />
+                }
+            </div>
+        </div>
+        if (Model.Status == 3)
+        {
+            <div class=alert>This request has been rejected</div>
+        }
+    }

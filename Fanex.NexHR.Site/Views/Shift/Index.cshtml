@@ -1,0 +1,52 @@
+﻿@model IList<Fanex.NexHR.Models.Shift>
+
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("sitejs")
+}
+@{
+    ViewBag.Title = Labels.ShiftInfo;
+}
+@section Breadcrumb {
+    <a class="step">Company</a> <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+<div class="grid_24">
+@RazorHelper.ShiftInfoTable(Model)
+    @*<table class="shift_table">
+        <thead>
+            <tr>
+                <th class="left">
+                    Shift
+                </th>
+                <th>
+                    Checkin time
+                </th>
+                <th>
+                    Checkout time
+                </th>
+                <th>
+                    Break
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Fanex.NexHR.Models.Shift item in Model)
+            {
+                <tr>
+                    <td class="left">@item.Name
+                    </td>
+                    <td>@item.BeginCheckInTime &nbsp;@((item.BeginCheckInTime == item.EndCheckInTime) ? string.Empty : "- " + item.EndCheckInTime)
+                    </td>
+                    <td>
+                        @item.BeginCheckOutTime &nbsp;@((item.BeginCheckOutTime == item.EndCheckOutTime) ? string.Empty : "- "+item.EndCheckOutTime)
+                    </td>
+                    <td>@((item.BreakTimeMins == 0) ? "N" : item.BreakTimeMins.ToString() + "'")
+                    </td>
+                </tr> 
+            }
+        </tbody>
+    </table>*@
+</div>

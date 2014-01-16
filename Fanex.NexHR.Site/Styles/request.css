@@ -1,0 +1,12 @@
+﻿#Minute {
+	min-width: 40px !important;
+}
+#Employee {
+	min-width: 165px !important;
+}
+#to {
+	padding-left:30px;
+}
+#FromTime, #ToTime {
+	min-width:60px;
+}

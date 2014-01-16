@@ -1,0 +1,139 @@
+﻿@model MySpaceViewModel
+
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("sitejs")
+}
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+@section Breadcrumb {
+    <a class="step" href="#">Personal</a> <span class="step">@ViewBag.Title</span>
+}
+
+
+<h2>@Labels.MySpace</h2>
+<div  class="grid_5">
+    @Labels.AnualLeaveBalance:<strong> @Model.AnnualLeaveBalance day(s)</strong>
+</div>
+<div class="clear"></div>
+<div class="space"></div>
+<div class="grid_5">
+    @Labels.TotalWorkingHours @DateTime.Now.ToString("MMM yyyy"): <strong>@Model.TotalWorkHours hours</strong>
+</div>
+<div class="clear"></div>
+<div class="space"></div>
+<table class="data" id="myspace">
+    <thead>
+        <tr>
+            <th class="firstColumn">
+                @Labels.Request
+            </th>
+            <th>@DateTime.Now.ToString("MMM yyyy")
+            </th>
+            <th>
+                @Labels.Pending
+            </th>
+            <th>
+                @Labels.CreateRequest
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="firstColumn">
+                @Labels.CheckInOut
+            </td>
+            <td>
+                @Model.TotalCheckInOutRequest
+            </td>
+
+            <td>
+                @if (Model.TotalPendingCheckInOutRequest > 0)
+                { 
+                    @Html.ActionLink(Model.TotalPendingCheckInOutRequest.ToString(), "employeeView", "checkinout")
+                }
+                else
+                { 
+                    <span>0</span>
+                }
+            </td>
+            <td>
+                @Html.ActionLink(Labels.Request, "create", "checkinout")
+            </td>
+        </tr>
+        <tr>
+            <td class="firstColumn">
+                @Labels.LateInEarlyOut
+            </td>
+            <td>
+                @Model.TotalLateInEarlyOutRequest
+            </td>
+            <td>
+                @if (Model.TotalPendingLateInEarlyOutRequest > 0)
+                { 
+                    @Html.ActionLink(Model.TotalPendingLateInEarlyOutRequest.ToString(), "employeeView", "lateinearlyout")
+                }
+                else
+                { 
+                    <span>0</span>
+                }
+            </td>
+
+            <td>
+                @Html.ActionLink(Labels.Request, "create", "lateinearlyout")
+            </td>
+        </tr>
+        <tr>
+            <td class="firstColumn">
+                @Labels.ChangeShift
+            </td>
+            <td>
+                @Model.TotalChangedShiftRequest
+            </td>
+            <td>
+                @if (Model.TotalPendingChangedShiftRequest > 0)
+                { 
+                    @Html.ActionLink(Model.TotalPendingChangedShiftRequest.ToString(), "employeeView", "changeshift")
+                }
+                else
+                { 
+                    <span>0</span>
+                }
+            </td>
+
+            <td>
+                @Html.ActionLink(Labels.Request, "create", "changeshift")
+            </td>
+        </tr>
+        <tr>
+            <td class="firstColumn">
+                @Labels.Leave
+            </td>
+            <td>
+                @Model.TotalLeaveRequest
+            </td>
+            <td>
+                @if (Model.TotalPendingLeaveRequest > 0)
+                { 
+                    @Html.ActionLink(Model.TotalPendingLeaveRequest.ToString(), "employeeView", "leave")
+                }
+                else
+                { 
+                    <span>0</span>
+                }
+            </td>
+
+            <td>                    
+                @Html.ActionLink(Labels.Request, "create", "leave")
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="space"></div>
+@*Management dashboard*@
+@Html.Action("ManagementDashboard")
+

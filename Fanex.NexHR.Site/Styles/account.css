@@ -1,0 +1,12 @@
+﻿.formrow
+{
+	margin: 0;
+}
+.formrow .label
+{
+	width: 150px;
+}
+.formrow .input
+{
+	margin-left: 160px;
+}

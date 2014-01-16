@@ -1,0 +1,34 @@
+﻿table.data tr.offdate
+{
+	background:#ccc; 
+}
+table.data tr.noshift
+{
+	background: #ccc;
+}
+table.data tr.highlight-row
+{
+    background:#EDEAC7;
+}
+.grid_2 {
+	line-height:26px;
+}
+select {
+	min-width: 130px;
+	max-width: 130px;
+}
+#Employee {
+	width:140px;
+}
+.overtimetype0
+{
+    
+    }
+.overtimetype1
+{
+    color: #1B50C0;
+    }
+.overtimetype2
+{
+    color: #E70B04;
+    }

@@ -1,0 +1,145 @@
+﻿@model Fanex.NexHR.ViewModels.CreateEmployeeViewModel
+@{
+    ViewBag.Title = "Create account";
+}
+
+@section css{
+    @Url.CombresLink("employeecreatecss")
+}
+@section js{
+    @Url.CombresLink("sitejs")
+}
+@section Breadcrumb {
+    <a class="step">HR Space</a><span class="step">@ViewBag.Title</span>
+
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+    
+<div class="bunhat" style="min-width:700px">
+    @Html.ValidationSummary(true)
+
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.FullName)
+        </div>
+        <div class="input">
+            @Html.EditorFor(model => model.FullName)
+            @Html.ValidationMessageFor(model => model.FullName)
+        </div>
+        <div class="clear"></div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.NickName)
+        </div>
+        <div class="input">
+            @Html.EditorFor(model => model.NickName)
+            @Html.ValidationMessageFor(model => model.NickName)
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.DomainUsername)
+        </div>
+        <div class="input">
+            <strong>@System.Configuration.ConfigurationManager.AppSettings["domain"]</strong>
+            @Html.EditorFor(model => model.DomainUsername)
+            @Html.ValidationMessageFor(model => model.DomainUsername)
+        </div>
+        <div class="clear"></div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Code)
+        </div>
+        <div class="input">
+            @Html.EditorFor(model => model.Code)
+            @Html.ValidationMessageFor(model => model.Code)  
+        </div>
+        <div class="clear"></div>
+    </div>
+
+	<div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Password)
+        </div>
+        <div class="input">
+            @Html.PasswordFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)  
+        </div>
+        <div class="clear"></div>
+    </div>
+
+	<div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.ConfirmPassword)
+        </div>
+        <div class="input">
+            @Html.PasswordFor(model => model.ConfirmPassword)
+            @Html.ValidationMessageFor(model => model.ConfirmPassword)  
+        </div>
+        <div class="clear"></div>
+    </div>
+        
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.TeamId)
+        </div>
+        <div class="input">
+            @Html.DropDownListFor(model => model.TeamId, new SelectList(ViewBag.TeamList, "Id", "Name"))
+        </div>
+    </div>
+        
+    <div class="formrow">
+        <div class="label">
+            Working schedule
+        </div>
+        <div class="input shift">
+            <div class="grid_2 alpha">
+                Sun<br />
+                @RazorHelper.ShiftDropDownList("SunShift", Model.SunShift, (IList<SelectListItem>)ViewBag.Shifts)                
+            </div>
+            <div class="grid_2">
+                Mon<br />
+                @RazorHelper.ShiftDropDownList("MonShift", Model.MonShift, (IList<SelectListItem>)ViewBag.Shifts)                 
+            </div>
+            <div class="grid_2">
+                Tue<br />
+                @RazorHelper.ShiftDropDownList("TueShift", Model.TueShift, (IList<SelectListItem>)ViewBag.Shifts) 
+            </div>
+            <div class="grid_2">
+                Wed<br />
+                @RazorHelper.ShiftDropDownList("WedShift", Model.WedShift, (IList<SelectListItem>)ViewBag.Shifts) 
+            </div>
+            <div class="grid_2">
+                Thu<br />
+                @RazorHelper.ShiftDropDownList("ThuShift", Model.ThuShift, (IList<SelectListItem>)ViewBag.Shifts) 
+            </div>
+            <div class="grid_2">
+                Fri<br />
+                @RazorHelper.ShiftDropDownList("FriShift", Model.FriShift, (IList<SelectListItem>)ViewBag.Shifts) 
+            </div>
+            <div class="grid_2">
+                Sat<br />
+                @RazorHelper.ShiftDropDownList("SatShift", Model.SatShift, (IList<SelectListItem>)ViewBag.Shifts) 
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+        
+    <div class="formrow">
+        <div class="label">
+        </div>
+        <div class="input">
+            <input type="submit" value="Next" />
+        </div>
+    </div>
+
+</div>
+}

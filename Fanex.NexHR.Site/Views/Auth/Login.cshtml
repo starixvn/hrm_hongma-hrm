@@ -1,0 +1,50 @@
+﻿@model Fanex.NexHR.ViewModels.LoginModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Welcome to NexHRM</title>
+	@Url.CombresLink("logincss")
+    @*<link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>    *@
+	@Url.CombresLink("loginjs")
+</head>
+<body>
+    <div id="panel">
+        <div class="title">
+            <div class="nexHRMicon">
+            </div>
+            <div class="signinicon">
+            </div>
+        </div>
+        <div id="formContainer">
+            @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+            {
+				@Html.ValidationSummary()	
+                <div class="textbox-outer">
+                    <div class="username-icon">
+                    </div>
+                    <div class="username-field">
+                        @Html.TextBoxFor(model => model.UserName, new { placeholder = "Username" })
+                    </div>
+                </div>
+                <div class="textbox-outer">
+                    <div class="password-icon">
+                    </div>
+                    <div class="password-field">
+                        @Html.TextBoxFor(model => model.Password, new { placeholder = "Password", type = "Password" })
+                    </div>
+                </div>
+                <div class="signin-button">
+                    <input type="submit" name="submit" class="button" value="LOGIN" />
+                </div>
+			}
+        </div>
+    </div>
+    <div id="copyright">
+        © @DateTime.Today.Year by Nexcel Solutions. All rights reserved
+    </div>   
+</body>
+</html>

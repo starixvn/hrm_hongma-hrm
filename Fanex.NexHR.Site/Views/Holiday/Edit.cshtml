@@ -1,0 +1,102 @@
+﻿@model Fanex.NexHR.Models.Holiday
+@using System.Web.Mvc.Html5;
+
+
+@{
+    ViewBag.Title = Labels.Holiday;
+}
+
+
+@section css{
+    @Url.CombresLink("holidayeditcss")
+}
+@section js{
+    @Url.CombresLink("holidayeditjs")
+}
+
+@section Breadcrumb {
+    <a class="step">Company</a> <a class="step">@ViewBag.Title</a>
+}
+
+<h2>@Labels.EditHoliday</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="container_24 bunhat" style="min-width: 400px">
+    
+    @Html.ValidationSummary(true)
+    @if (ViewBag.Updated == true)
+    {
+        <div class="success flash">Edited Successful!</div> 
+    }
+    
+        @Html.HiddenFor(model => model.Id)
+
+		<br />
+        <div class="formrow">
+			<div class="label">
+					@Html.LabelFor(model => model.HolidayName)
+				</div>
+			<div class="input">
+					@Html.EditorFor(model => model.HolidayName)
+					@Html.ValidationMessageFor(model => model.HolidayName)
+			</div>
+		</div>
+		
+        @*<div class="formrow" style="display:none">
+			<div class="label">
+					@Html.LabelFor(model => model.ActualFromDate)
+				</div>
+			<div class="input">
+                    @Html.DatePickerFor(model => model.ActualFromDate)
+					@Html.ValidationMessageFor(model => model.ActualFromDate)                   
+			</div>
+            @Html.HiddenFor(model => model.ActualToDate)
+		</div>*@
+		
+        <div class="formrow">
+			<div class="label">
+					Date(s)
+			</div>
+			<div class="input">
+					@{
+    var numDay = Model.ToDate.Day - Model.FromDate.Day + 1;    
+                    }
+                    <input type="number" name="numDay" id="numDay" min="1" max="15" step="1" value="1">
+                    
+            </div>
+        </div>
+		
+        <div class="formrow">
+			<div class="label">
+					@Html.LabelFor(model => model.FromDate)
+			</div>
+			<div class="input">
+					@Html.DatePickerFor(model => model.FromDate)
+					@Html.ValidationMessageFor(model => model.FromDate)
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                    @Html.LabelFor(model => model.ToDate)
+            </div>
+            <div class="input">
+                    
+                    @Html.DatePickerFor(model => model.ToDate)
+					@Html.ValidationMessageFor(model => model.ToDate)
+			</div>
+            <div>
+            
+            </div>
+        </div>
+
+        <div class="formrow">
+            <div class="label">&nbsp</div>
+            <div class="input">
+                @Html.AntiForgeryToken()
+                <input type="submit" value="Save" class="button-primary submit"/>
+                <a href="@Url.Action("index","holiday")" class="button">@Labels.Back</a>
+            </div>
+        </div>
+    </div>
+}  

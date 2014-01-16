@@ -1,0 +1,86 @@
+﻿@model AnnualLeaveBalanceViewModel
+@{
+    ViewBag.Title = ViewBag.Employee.NickName + "'s annual leave balance";
+}
+@section css{
+    @Url.CombresLink("sitecss")
+}
+@section js{
+    @Url.CombresLink("sitejs")
+}
+@section Breadcrumb
+{
+    <a class="step" href="javascript:;">HR</a> 
+    <span class="step">
+        <a href="@Url.Action("index", "annualleavebalance")">@Labels.AnualLeaveBalance</a>
+    </span>
+    <a class="step" href="~/employee/edit/@ViewBag.Employee.Id">@(ViewBag.Employee.DisplayName)</a>
+    <span class="step">@ViewBag.Employee.NickName's annual leave balance</span>
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+    <span>@Html.LabelFor(model => model.Year)</span>
+    @Html.YearPickerFor(model => model.Year, 2010)
+
+    @Html.CheckBoxFor(model => model.ExcludedRequestTrans)
+    @Html.LabelFor(model => model.ExcludedRequestTrans)
+
+    @Html.HiddenFor(model => model.EmployeeId)
+    <input type="submit" value="@Labels.View" />
+        
+    <div class="button-icon">
+            <span class="icon plus"></span>@Html.ActionLink("Adjustment", "Create", new { id = ViewBag.Employee.Id })
+    </div>
+
+}
+
+    <table class="data">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>@Labels.AffectFrom</th>
+                <th>@Labels.TotalDays</th>
+                <th>@Labels.Description</th>
+                <th>@Labels.CreatedDate</th>
+                <th>@Labels.Edit</th>
+            </tr>
+        </thead>
+@if (ViewBag.Data.Count > 0)
+{
+        <tbody>
+            @{int index = 1;}
+            @foreach (AnnualLeaveBalanceModel item in ViewBag.Data)
+            { 
+                <tr>
+                    <td>@(index++)</td>
+                    <td class="ddMMyyyy">@item.AffectedFrom.ToDateMonthYearFormatedDate()</td>
+                    <td>@item.TotalDays</td>
+                    <td class="left">
+                        @if (item.RequestId != null)
+                        { 
+                            <span>[request]</span>
+                        }
+                        @item.Description
+                    </td>
+                    <td>@item.CreatedDate.ToShortFormatedDate()</td>
+                    @if (item.RequestId == null)
+                        {
+                            <td>
+                                <a href="~/annualleavebalance/edit/@item.Id">@Labels.Edit</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>-</td>
+                        }
+                </tr>
+            }
+        </tbody>
+   
+}
+else
+{
+    @RazorHelper.DisplayNoInformation(6)
+}
+ </table>

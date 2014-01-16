@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"
+xml:lang="en" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - NexHRM</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @RenderSection("css", false)
+    <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/css")" rel="stylesheet" type="text/css" />
+    <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="~/Scripts/Libs/jquery.min.js"></script>        
+</head>
+<body class="locale_en production">
+    <header>
+        @Html.Partial("_Header")
+    </header>
+    <div id="container" class="container">
+        <nav>
+            <div class="column_wrap">                
+                @Html.Action("NavBar", "UI")
+            </div>
+        </nav>
+        <div class="content_wrap">
+            <div class="separator js-separator">
+                <div class="js-view-title separator-view-title" id="view_title">
+                    <div class="breadcrumb">
+                        @RenderSection("BreadcrumbTitle", required: true)
+                    </div>
+                </div>
+                <div class="js-menu separator-menu">
+                    @RenderSection("SeparatorMenu", required: false)
+                </div>
+            </div>
+            <div class="content_scroll">
+                @RenderBody()
+            </div>
+        </div>
+        <div class="right_wrap">
+            @RenderSection("Right", required: false)
+        </div>
+    </div>
+    <footer>
+    </footer>
+    @RenderSection("js", false)
+</body>
+</html>

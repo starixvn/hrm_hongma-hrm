@@ -1,0 +1,19 @@
+﻿.subteam {
+	width: 240px;
+	height: 210px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	border: solid 1px #ccc;
+	padding-bottom:8px;
+}
+.subteam label{
+	display: block;
+	border-top: solid 1px #ccc;
+	padding-top:4px;
+	margin-top:4px;
+	line-height:20px;
+}
+.subteam label:first-child 
+{
+	border-top: none !important;
+}

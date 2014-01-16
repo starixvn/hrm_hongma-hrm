@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Functions>
+	<Function Name="Attendance">
+		<Setting Key="GetMissingCheckInOutList" SpName="EmployeeAttendance_GetMissingCheckinOutToRemind" DbName="nexhr" Plain="1"></Setting>
+    <Setting Key="TimeRecord_ImportData" SpName="TimeRecord_ImportData" DbName="nexhr" Plain="1"></Setting>
+	</Function>
+</Functions>

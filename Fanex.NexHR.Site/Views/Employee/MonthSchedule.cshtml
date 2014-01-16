@@ -1,0 +1,64 @@
+﻿@model IList<Fanex.NexHR.ViewModels.WorkingScheduleModel>
+@{
+    ViewBag.Title = "Month schedule of " + ViewBag.Employee.NickName;
+}
+
+@section css{
+    @Url.CombresLink("monthschedulecss")
+}
+@section js{
+    @Url.CombresLink("monthschedulejs")
+}
+@section Breadcrumb {
+    <a class="step">HR</a>
+    <a class="step" href="~/employee/edit/@ViewBag.Employee.Id">@(ViewBag.Employee.DisplayName)</a>
+    <span class="step">@ViewBag.Title</span>
+}
+
+<script>
+    var id = @ViewBag.Id;
+</script>
+    <h2>Working schedule of @ViewBag.Employee.NickName</h2>
+    
+    <div class="section">
+        <input id="scheduledefault" type="radio" name="schedule" />
+        <label for="scheduledefault">Default working schedule</label>
+
+        <input id="schedulemonth" type="radio" name="schedule" checked="checked" />
+        <label for="schedulemonth">Edit by month</label>
+    </div>
+    <div class="clear"></div>
+    
+    <div id="calendar"></div>
+    
+<div class="hide">
+    <div id="dialog" title="Update shift">
+        <div class="formrow">
+            <div class="label">
+                Current shift
+            </div>
+            <div class="input">
+                <span id="current"></span>
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                Change to
+            </div>
+            <div class="input">
+                @Html.DropDownList("shifts", (List<SelectListItem>)ViewBag.Shifts, Labels.Off)
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="space"></div>
+        <div class="formrow">
+            <div class="label">
+                
+            </div>
+            <div class="input">
+                <input type="button" value="@Labels.Update" id="update" />
+            </div>
+        </div>
+    </div>
+</div>

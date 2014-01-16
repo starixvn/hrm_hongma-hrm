@@ -1,0 +1,15 @@
+﻿#Contents {
+	width:600px;
+	height:400px;
+}
+#Category {
+	min-width: 0px !important;
+	width:130px !important;
+}
+#Subject {
+	width:580px !important;
+}
+#Year {
+min-width: 0px !important;
+width:95px !important;
+}

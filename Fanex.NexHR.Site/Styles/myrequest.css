@@ -1,0 +1,11 @@
+﻿.status2 td
+{
+	color: #3366CC !important;
+}
+.status3 td, .status3 td a
+{
+	color: #FF0000 !important;
+}
+.remark {
+	width:220px;
+}

@@ -1,0 +1,12 @@
+﻿#dialog .formrow {
+	margin:0;
+}
+#dialog .formrow .label {
+	line-height:25px;
+}
+#dialog .formrow .input {
+	line-height:25px;
+}
+#shifts {
+	min-width:64px;
+}

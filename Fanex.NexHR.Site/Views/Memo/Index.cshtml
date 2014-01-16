@@ -1,0 +1,115 @@
+﻿@*@model IList<Fanex.NexHR.Models.Memo>*@
+@model Fanex.NexHR.ViewModels.MemoViewModel
+@using Fanex.NexHR.Models
+@using Fanex.NexHR.Core;
+@{
+    ViewBag.Title = "Company Memo";
+}
+@section css{
+    @Url.CombresLink("memoeditcss")
+}
+@section js{
+    @Url.CombresLink("memojs")
+}
+@section Breadcrumb {
+    <a class="step">Company</a> <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+    <div class="container_24 bunhat" style="width: 878px;">
+        <div class="grid_8" style="display: none;">
+            @Html.LabelFor(model => model.Content)
+            @Html.TextBoxFor(model => model.Content)
+        </div>
+        <div class="grid_1 formrow">
+            @Html.LabelFor(model => model.Year)
+        </div>
+        <div class="grid_3">
+            @*@Html.LabelFor(model=>model.Year)*@
+            @Html.YearPickerFor(model => model.Year, 2010)
+        </div>
+        <div class="grid_2 formrow">
+            @Html.LabelFor(model => model.Category)
+        </div>
+        <div class="grid_4">
+            @Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.MemoCategories, "id", "Name"), new SelectListItem() { Value = "-1", Text = "All" }, new { @class = "aaaa" })
+        </div>
+        <div class="grid_6">
+            <input type="submit" id="submit" class="processing-submit" value="@Labels.Submit" />
+            @if (Roles.IsUserInRole("HR"))
+            { 
+                <div class="button-icon">
+                    <span class="icon plus"></span>@Html.ActionLink("Create new Memo", "Create")</div>
+            }
+        </div>
+    </div>
+    <div class="clear">
+    </div> 
+    <table id="memo" class="data persist-area" style="width: 900px">
+        <thead>
+            <tr class="persist-header">
+                <th>
+                    #
+                </th>
+                <th>@Labels.RefNo
+                </th>
+                <th>@Labels.Subject
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>@Labels.Date
+                </th>
+                @if (Roles.IsUserInRole("HR"))
+                { 
+                    <th>@Labels.Edit
+                    </th>
+                    <th>@Labels.Delete
+                    </th>
+                }
+            </tr>
+        </thead>
+        @if (ViewBag.EntityList.Count > 0)
+        {
+            <tbody>
+                @{int index = 1;}
+                @foreach (Memo item in ViewBag.EntityList)
+                { 
+            
+                    <tr id="row_@item.Id">
+                        <td>@(index++)
+                        </td>
+                        <td>
+                            @item.RefNo
+                        </td>
+                        <td class="left">
+                            <a href="@Url.Action("detail", "memo", new { Id = item.Id })">@item.Subject</a>
+                        </td>
+                        <td>
+                            @item.CategoryName
+                        </td>
+                        <td class="ddMMyyyy">
+                            @item.SentDate.ToDateMonthYearFormatedDate()
+                        </td>
+                        @if (Roles.IsUserInRole("HR"))
+                        { 
+                            <td class="cmd" title="Edit">
+                                <a href="@Url.Action("edit", "memo", new { Id = item.Id })">
+                                    <img src="~/Styles/Images/edit-icon.png" alt="Edit" /></a>
+                            </td>
+                            <td class="cmd" title="Delete">
+                                <a href="javascript:;" onclick="deleteMemo(@item.Id, '@System.Web.HttpUtility.HtmlEncode(item.Contents)', @item.Type);">
+                                    <img src="~/Styles/Images/delete-icon.png" alt="Delete" /></a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        }
+        else
+        {
+            @RazorHelper.DisplayNoInformation(7)
+        }
+    </table>
+}

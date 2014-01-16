@@ -1,0 +1,366 @@
+﻿@model IList<Fanex.NexHR.ViewModels.WorkingCalendarsViewModel>
+@section css{
+    @Url.CombresLink("workingcalendarscss")
+}
+@section js{
+    @Url.CombresLink("workingcalendarsjs")
+}
+@{
+    ViewBag.Title = "Working calendars";
+}
+@{
+    //Set max month we can select in MonthPick
+    int Month = 12;
+    int Year = DateTime.Now.GetMaxDate().Year;
+
+    var maxDate = new System.Text.StringBuilder();
+    maxDate.AppendFormat("{0}/{1}/1", Year, Month);
+}
+@section Breadcrumb {
+    <a class="step">Company</a> <span class="step">@ViewBag.Title</span>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        initMonthPick('@maxDate.ToString()', '@ViewBag.CurrentDate');
+    });
+</script>
+<h2>@ViewBag.Title</h2>
+<div class="container_24">
+    @using (Html.BeginGetForm())
+    {
+        <div class="grid_1 gridlabel">
+            @Labels.Month
+        </div>
+        <div class="grid_4">
+            <div id="DateControl">
+            </div>
+        </div>
+        <div class="grid_2">
+            <input type="hidden" id="Year" name="Year" value="@ViewBag.Year" />
+            <input type="hidden" id="Month" name="Month" value="@ViewBag.Month" />
+            <input type="hidden" id="maxDate" value="@maxDate.ToString()" />
+            <input type="submit" value="@Labels.Submit" class="processing-submit"/>
+        </div>
+        
+        <div class="grid_8">
+            @if (Roles.IsUserInRole("HR"))
+            {
+                <div class="button-icon">
+                    <span class="icon plus"></span>@Html.ActionLink(Labels.ChangeWorkingDayForWholeCompany, "WorkingCalendarsEdit")</div>  
+            }
+        </div>
+        <div class="clear">
+        </div>
+    }
+</div>
+<br />
+<div style="width: 990px; height: 520px" class="datagrid-wrap panel-body">
+    <div style="width: 990px; height: 500px" class="datagrid-view">
+        <div style="width: 285px;" class="datagrid-view1">
+            <div style="width: 285px; height: 50px;" class="datagrid-header">
+                <div style="display: block;" class="datagrid-header-inner">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                            <tr style="background-color: #ccc;">
+                                <td colspan="3" align="right">
+                                    <div style="width: 150px; text-align: right;" class="datagrid-cell">
+                                        <b style="text-transform: uppercase">@(new DateTime(ViewBag.Year, ViewBag.Month, 1).ToString("MMM yyyy"))</b>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="datagrid-cell-rownumber">
+                                        #
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="width: 150px; text-align: left;" class="datagrid-cell ">
+                                        @Labels.FullName
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="width: 90px; text-align: left;" class="datagrid-cell ">
+                                        @Labels.Nick
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="width: 285px; height: 450px;" class="datagrid-body">
+                <div class="datagrid-body-inner">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                            @{int rowId = 1;}
+                            @foreach (Fanex.NexHR.ViewModels.WorkingCalendarsViewModel employee in Model)
+                            { 
+                                <tr>
+                                    <td class="datagrid-header-rownumber">
+                                        <div class="datagrid-cell-rownumber">
+                                            @rowId
+                                        </div>
+                                    </td>
+                                    <td class="datagrid-fullname">
+                                        <div style="width: 150px; text-align: left;" class="datagrid-cell ">
+                                            @employee.FullName
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="width: 90px; text-align: left;" class="datagrid-cell ">
+                                            @employee.NickName
+                                        </div>
+                                    </td>
+                                </tr>
+                                rowId++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div style="width: 705px; left: 285px;" class="datagrid-view2">
+            <div style="width: 690px; height: 50px;" class="datagrid-header">
+                <div style="display: block;" class="datagrid-header-inner">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                            @{
+                                int daysInMonth = Model.Count != 0
+                                    ? Model[0].Days
+                                    : DateTime.DaysInMonth(ViewBag.Year, ViewBag.Month);                            
+                                <tr style="background-color: #ccc;">
+                                    @for (int i = 1; i <= daysInMonth; i++)
+                                    {
+                                            
+                                        <td>
+                                            <div style="width: 50px; text-align: center;" class="datagrid-cell ">
+                                                @i
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    @for (int i = 1; i <= daysInMonth; i++)
+                                    {
+                                        DateTime dt = new DateTime(ViewBag.Year, ViewBag.Month, i);
+                                        <td class="@((dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday) ? "SatSunDay" : string.Empty)">
+                                            <div style="width: 50px; text-align: center;" class="datagrid-cell">
+                                                @dt.ToString("ddd")
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                                   
+                            
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="width: 705px; height: 450px;" class="datagrid-body">
+                <table cellspacing="0" cellpadding="0" border="0" class="shift-grid">
+                    <tbody>
+                        @{
+                            var leaves = string.Empty;
+
+                            foreach (UserChangedShift user in ViewBag.UserChangeShift)
+                            {
+                                foreach (WorkingCalendarsViewModel employee in Model)
+                                {
+                                    if (employee.EmpId == user.Id)
+                                    {
+                                        for (int i = 0; i < employee.WorkingDays.Count; i++)
+                                        {
+                                            if (user.Day == i + 1)
+                                            {
+                                                var prefix = "_";
+                                                employee.WorkingDays[i] = prefix + employee.WorkingDays[i];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            foreach (HalfDayOff item in ViewBag.HalfDayOffs)
+                            {
+                                foreach (WorkingCalendarsViewModel employee in Model)
+                                {
+                                    if (employee.EmpId == item.ID)
+                                    {
+                                        for (int i = 0; i < employee.WorkingDays.Count; i++)
+                                        {
+                                            if (item.Day == i + 1)
+                                            {
+                                                employee.WorkingDays[i] = "-" + employee.WorkingDays[i];
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                        @foreach (WorkingCalendarsViewModel employee in Model)
+                        {
+                            var day = 1;
+                            <tr class="row">
+                                @foreach (string workingday in employee.WorkingDays)
+                                {
+                                    var shift = workingday;
+                                    leaves = string.Empty;
+
+                                    if (shift.IndexOf('/') != -1)
+                                    {
+                                        shift = shift.Substring(0, shift.Length - 1);
+                                    }
+                                    
+                                    if (!string.IsNullOrEmpty(shift) && shift[0].Equals('_'))
+                                    { 
+                                    <td class="ChangeShift">
+                                        <div class="datagrid-cell">
+                                            @shift.Substring(1)
+                                        </div>
+                                    </td>
+                                    }
+                                    else if (!string.IsNullOrEmpty(shift) && shift[0].Equals('-'))
+                                    {
+                                        var shiftstring = shift.Substring(1);
+                                        var arrLeaves = shiftstring.Split('/');
+                                        
+                                        for (int k = 0; (k < arrLeaves.Count()); k++)
+                                        {
+                                            leaves += arrLeaves[k].Trim() + "/";
+                                        }
+
+                                        if (leaves.Length > 0)
+                                        {
+                                            leaves = leaves.Substring(0, leaves.Length - 1);
+                                        }
+                                        
+                                        if (arrLeaves.Count() > 1)
+                                        {    
+                                            <td class="HAL2">
+                                                <div class="datagrid-cell">
+                                                    @leaves
+                                                </div>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="HAL">
+                                                <div class="datagrid-cell">
+                                                    @leaves
+                                                </div>
+                                            </td>
+                                        }
+
+
+                                    }
+                                    else if (shift.Equals("AL"))
+                                    { 
+                                    <td class="AL">
+                                        <div class="datagrid-cell">
+                                            @shift
+                                        </div>
+                                    </td>
+                                    }
+                                    else if (shift.Equals("UPL"))
+                                    { 
+                                    <td class="UPL">
+                                        <div class="datagrid-cell">
+                                            @shift
+                                        </div>
+                                    </td>
+                                    }
+                                    else if (shift.Equals("HAL"))
+                                    { 
+                                    <td class="HAL">
+                                        <div class="datagrid-cell">
+                                            @shift
+                                        </div>
+                                    </td>
+                                    }
+                                    else if (shift.Equals("OFF") || shift.Equals("PH"))
+                                    { 
+                                    <td class="OFF">
+                                        <div class="datagrid-cell">
+                                            @shift
+                                        </div>
+                                    </td>
+                                    }
+                                    else if (shift.Equals("BL"))
+                                    { 
+                                    <td class="BL">
+                                        <div class="datagrid-cell">
+                                            @shift
+                                        </div>
+                                    </td>
+                                    }
+                                    else if (shift.Equals("BT"))
+                                    { 
+                                    <td class="BT">
+                                        <div class="datagrid-cell">
+                                            @shift
+                                        </div>
+                                    </td>
+                                    }
+                                    else if (shift.IndexOf('/') > -1)
+                                    {
+                                        var arrLeaves = shift.Split('/');
+
+                                        for (int k = 0; (k < arrLeaves.Count()); k++)
+                                        {
+                                            leaves += arrLeaves[k].Trim() + "/";
+                                        }
+
+                                        if (leaves.Length > 0)
+                                        {
+                                            leaves = leaves.Substring(0, leaves.Length - 1);
+                                        }
+                                        
+                                        <td class="HAL2" title="@leaves">
+                                            <div class="datagrid-cell">
+                                                @leaves
+                                            </div>
+                                        </td>
+                                    }
+                                    else
+                                    { 
+                                    <td>
+                                        <div class="datagrid-cell">
+                                            @shift
+                                        </div>
+                                    </td>
+                                    }
+                                    day++;
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container_24" id="colordef">
+    <div class="grid_2 AL tooltip alpha" title="Annual Leave">
+        AL</div>
+    <div class="grid_2 HAL tooltip" title="Half Annual Leave">
+        AL</div>
+    <div class="grid_2 UPL tooltip alpha" title="Unpaid Leave">
+        UPL</div>
+    <div class="grid_2 OFF tooltip" title="Public Holiday/Off Day">
+        PH/OFF</div>
+    <div class="grid_2 BL tooltip" title="Bereavement Leave">
+        BL</div>
+    <div class="grid_2 BT tooltip" title="Business Trip">
+        BT</div>
+    <div class="grid_2 ChangeShift tooltip" title="Change Shift">
+        CS</div>
+    <div class="grid_2 tooltip" title="Wedding Leave">
+        WL</div>
+    <div class="grid_2 tooltip" title="Maternity Leave">
+        ML</div>
+    <div class="grid_4 HAL2 tooltip">
+        Leave Type/Leave Type</div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model AnnualLeaveBalanceMultiViewModel
+@{
+    ViewBag.Title = Labels.MultipleInsert;
+}
+@using (Html.BeginForm())
+{
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.TotalDays)
+        </div>
+        <div class="input">
+            @Html.EditorFor(model => model.TotalDays)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="input">
+            @Html.TextAreaFor(model => model.Description)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.LabelFor(model => model.AffectedFrom)
+        </div>
+        <div class="input">
+            @Html.DatePickerFor(model => model.AffectedFrom)
+        </div>
+    </div>
+    
+    <div class="formrow">
+        <div class="label">
+            @Html.HiddenFor(model => model.EmpIds)
+        </div>
+        <div class="input">
+            <input type="submit" value="@Fanex.NexHR.Resources.Labels.Add" id="insert" />
+            <input type="button" value="@Fanex.NexHR.Resources.Labels.Cancel" id="cancel" />
+        </div>
+    </div>
+}

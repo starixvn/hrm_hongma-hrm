@@ -1,0 +1,172 @@
+﻿@model Fanex.NexHR.ViewModels.LeaveSummaryViewModel
+
+@{
+    ViewBag.Title = Labels.LeaveSummary;
+}
+
+@section css{
+    @Url.CombresLink("managerequestscss")
+}
+@section js{
+    @Url.CombresLink("leavesummaryjs")
+}
+
+@section Breadcrumb {
+    <a class="step">HR</a> <a class="step">@ViewBag.Title</a>
+}
+<h2>@ViewBag.Title</h2>
+<div class="container_24 bunhat">
+    @using (Html.BeginForm())
+    {
+        <div class="grid_1 gridlabel">
+            @Html.LabelFor(model => model.Year)
+        </div>
+
+        <div class="grid_3">
+            @Html.YearPickerFor(model => model.Year, 2010)
+        </div>
+
+        <div class="grid_1 gridlabel">
+            @Html.LabelFor(model => model.Team)
+        </div>
+        <div class="grid_6">
+            <select id="TeamId" multiple="multiple" name="TeamId">
+                @{
+                    var teamIds = ViewBag.TeamIds != null ? ((string)ViewBag.TeamIds).Split(',') : null;
+                    var selected = string.Empty;
+                    foreach (Fanex.NexHR.Models.Team team in ViewBag.Groups)
+                    {
+                        selected = string.Empty;
+                        if (teamIds != null)
+                        {
+                            int pos = Array.IndexOf(teamIds, team.Id.ToString());
+                            if (pos > -1)
+                            {
+                                selected = "selected";
+                            }
+                        }
+                        
+                        <option @selected value="@team.Id">@team.Name</option> 
+                    }
+                }
+            </select>
+        </div>
+        <div class="grid_2 gridlabel">
+            @Html.LabelFor(model => model.Employee)
+        </div>
+        <div class="grid_4">
+            @Html.TextBox("Employee", Model.Employee, new { placeholder = @Fanex.NexHR.Resources.Messages.SearchEmployeeWatermark })
+            @Html.HiddenFor(model => model.EmployeeId)
+        </div>
+
+        <div class="grid_5 prefix_1">
+            <input type="submit" value="@Labels.Submit" class="processing-submit"/>
+            <input type="button" value="Excel" id="btnExcel"/>
+        </div>
+        <div class="clear"></div>
+        <div class="space"></div>
+        
+        
+    }
+</div>  
+
+<div class="clear"></div>
+
+<table class="data persist-area">
+    <thead  class ="persist-header">
+        <tr>
+            <th rowspan="2">#</th>
+            <th rowspan="2">@Labels.Nick</th>
+            <th colspan="2">@Labels.AnnualLeave</th>
+            <th colspan="12">Take Annual Leave @Model.Year</th>
+            <th rowspan="2">Balance of AL @Model.Year</th>
+            <th rowspan="2">@Labels.Remark</th>
+        </tr>
+        <tr>
+            <th>@(Model.Year - 1)</th>
+            <th>@Model.Year</th>
+            <th>@Labels.Jan</th>            
+            <th>@Labels.Feb</th>            
+            <th>@Labels.Mar</th>
+            <th>@Labels.Apr</th>
+            <th>@Labels.May</th>
+            <th>@Labels.Jun</th>
+            <th>@Labels.Jul</th>
+            <th>@Labels.Aug</th>
+            <th>@Labels.Sep</th>
+            <th>@Labels.Oct</th>
+            <th>@Labels.Nov</th>
+            <th>@Labels.Dec</th>
+        </tr>
+    </thead>
+    
+    
+    @*Check if exists*@
+    @{
+        bool checkSummaryList = true;
+        foreach (LeaveSummaryByTeam leaveSumaryByTeam in ViewBag.LeaveSummaryByTeamList)
+        {
+            if (leaveSumaryByTeam.LeaveSummaryInTeam.Count > 0)
+            {
+                checkSummaryList = true;
+                break;
+            }
+            else
+            {
+                checkSummaryList = false;
+            }
+
+        }    
+    }
+    
+    @if (checkSummaryList)
+    {
+    <tbody>
+        @{int index = 1;}
+            @foreach (LeaveSummaryByTeam item in ViewBag.LeaveSummaryByTeamList)
+            {
+                if (item.LeaveSummaryInTeam.Count > 0)
+                { 
+                    <tr>
+                        <td class="rowdivider highlight left" colspan="18">
+                         <b>@item.Team.Name.ToUpper()</b>
+                        </td>
+                    </tr>
+                }
+
+
+                foreach (LeaveSummary leave in item.LeaveSummaryInTeam)
+                { 
+                    <tr>
+                        <td>@(index++)</td>
+                        <td class="tooltip" title="@leave.Employee.FullName">@leave.Employee.NickName</td>
+                        <td style="@(leave.AnnualLeaveLastYear < 0 ? "color:red;" : string.Empty)">@leave.AnnualLeaveLastYear.ToString("0.0")</td>                    
+                        <td style="@(leave.AnnualLeaveCurrentYear < 0 ? "color:red;" : string.Empty)">@leave.AnnualLeaveCurrentYear.ToString("0.0")</td>
+                        <td style="@(leave.Jan < 0 ? "color:red;" : string.Empty)">@leave.Jan.ToString("0.0")</td>                    
+                        <td style="@(leave.Feb < 0 ? "color:red;" : string.Empty)">@leave.Feb.ToString("0.0")</td>
+                        <td style="@(leave.Mar < 0 ? "color:red;" : string.Empty)">@leave.Mar.ToString("0.0")</td>                    
+                        <td style="@(leave.Apr < 0 ? "color:red;" : string.Empty)">@leave.Apr.ToString("0.0")</td>
+                        <td style="@(leave.May < 0 ? "color:red;" : string.Empty)">@leave.May.ToString("0.0")</td>                    
+                        <td style="@(leave.Jun < 0 ? "color:red;" : string.Empty)">@leave.Jun.ToString("0.0")</td>
+                        <td style="@(leave.Jul < 0 ? "color:red;" : string.Empty)">@leave.Jul.ToString("0.0")</td>                    
+                        <td style="@(leave.Aug < 0 ? "color:red;" : string.Empty)">@leave.Aug.ToString("0.0")</td>                
+                        <td style="@(leave.Sep < 0 ? "color:red;" : string.Empty)">@leave.Sep.ToString("0.0")</td>                    
+                        <td style="@(leave.Oct < 0 ? "color:red;" : string.Empty)">@leave.Oct.ToString("0.0")</td>
+                        <td style="@(leave.Nov < 0 ? "color:red;" : string.Empty)">@leave.Nov.ToString("0.0")</td>                    
+                        <td style="@(leave.Dec < 0 ? "color:red;" : string.Empty)">@leave.Dec.ToString("0.0")</td>
+                        <td style="@(leave.LeaveBalance < 0 ? "color:red;" : string.Empty)">@leave.LeaveBalance.ToString("0.0")</td>
+                        <td>@leave.Remark</td>
+                    </tr>
+                }
+            }
+
+    </tbody>
+    }
+    else
+    { 
+        @RazorHelper.DisplayNoInformation(18)
+    }
+            
+</table>
+
+

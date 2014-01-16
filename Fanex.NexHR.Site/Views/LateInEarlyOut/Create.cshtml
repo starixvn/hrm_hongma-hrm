@@ -1,0 +1,123 @@
+﻿@model Fanex.NexHR.ViewModels.LateInEarlyOutRequestViewModel
+@using System.Web.Mvc.Html5;
+@{
+    ViewBag.Title = Labels.NewLateInEarlyOutRequest;
+}
+
+@section css{
+    @Url.CombresLink("lateinearlyoutcss")
+}
+@section js{
+    @Url.CombresLink("lateinearlyoutjs")
+}
+
+@section Breadcrumb {
+    <a class="step">Personal</a> <a class="step">@ViewBag.Title</a>
+}
+<h2>@ViewBag.Title</h2>
+<div class="bunhat">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        if (ViewBag.Requested == true)
+        {
+            <div class="success">@Fanex.NexHR.Resources.Messages.RequestCreated</div>
+            <input type="hidden" id="successed" value="true" />
+            <input type="hidden" id="year" value="@ViewBag.Year" />
+        }
+
+        if (ViewBag.TotalRequest >= 2)
+        {
+
+            <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+                <p>
+                    <a href="@Url.Action("EmployeeView")">
+                You've already requested for Late in/early out @ViewBag.TotalRequest times
+                since @DateTime.Now.ToString("MMM yyyy")</a>
+                </p>
+            </div>
+        }
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Type)
+            </div>
+            <div class="input">
+                @Html.RadioButtonList(model => model.Type, Utilities.LateInEarlyOutTypes)
+                <div class="clear"></div>
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Employee)
+            </div>
+            <div class="input">
+                @Html.EditorFor(model => model.Employee)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ToDate, Labels.FromDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.FromDate,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(10).AddDays(-1),
+                unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+               
+                @Html.DropDownList("FromTime", Utilities.TimeSteps(15))
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ToDate, Labels.ToDate)
+            </div>
+            <div class="input">
+                @Html.DatePickerFor(model => model.ToDate,
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1),
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1),
+                unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+
+                @Html.DropDownList("ToTime", Utilities.TimeSteps(15))
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Minute, "Minutes")
+            </div>
+            <div class="input latein">
+                @Html.EditorFor(model => model.Minute)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.Remark)
+            </div>
+            <div class="input">
+                @Html.TextAreaFor(model => model.Remark)
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.HiddenFor(model => model.Employee)
+                @Html.HiddenFor(model => model.DisplayName)
+                @Html.HiddenFor(model => model.EmployeeId)
+            </div>
+            <div class="input">
+                <input type="submit" value="@Labels.Request"/>
+                <a href="~/lateinearlyout/employeeview" class="button">@Labels.Back</a>
+            </div>
+        </div>
+    }
+</div>

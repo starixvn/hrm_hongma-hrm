@@ -1,0 +1,9 @@
+﻿table.data tr:hover
+{
+	background: none !important;
+}
+
+table.data tr:nth-child(odd)
+{
+	background-color: transparent !important;
+}

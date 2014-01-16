@@ -1,0 +1,104 @@
+﻿@model Fanex.NexHR.Models.EmployeeShift 
+@{
+    ViewBag.Title = "Working schedule of " + ViewBag.Employee.NickName;
+}
+
+@section css{
+    @Url.CombresLink("employeewscss")
+}
+@section js{
+    @Url.CombresLink("employeewsjs")
+}
+@section Breadcrumb {
+    <a class="step">HR</a>
+    <a class="step" href="~/employee/edit/@ViewBag.Employee.Id">@(ViewBag.Employee.DisplayName)</a>
+    <span class="step">@ViewBag.Title</span>
+}
+
+<script>
+    var id = @ViewBag.Employee.Id;
+</script>
+
+<h2>Working schedule of @ViewBag.Employee.NickName</h2>
+<div class="container_24">
+@using (Html.BeginForm())
+{
+
+    @Html.ValidationSummary(true)
+    if (ViewBag.Updated == true)
+    {
+        <div class="success flash">@Messages.Saved</div> 
+    }
+    
+    <div class="section">
+        <input id="scheduledefault" type="radio" name="schedule" />
+        <label for="scheduledefault">Default working schedule</label>
+
+        <input id="schedulemonth" type="radio" name="schedule" />
+        <label for="schedulemonth">Edit by month</label>
+    </div>
+    
+    <div class="clear"></div>
+    
+    <div class="grid_3">
+        Sun<br />
+        @(ViewBag.WeekWorking != null ? ViewBag.WeekWorking[0].WorkDate.ToShortDateString() : string.Empty)
+    </div>
+    <div class="grid_3">
+        Mon<br />
+        @(ViewBag.WeekWorking != null ? ViewBag.WeekWorking[1].WorkDate.ToShortDateString() : string.Empty)
+    </div>
+    <div class="grid_3">
+        Tue<br />
+        @(ViewBag.WeekWorking != null ? ViewBag.WeekWorking[2].WorkDate.ToShortDateString() : string.Empty)
+    </div>
+    <div class="grid_3">
+        Wed<br />
+        @(ViewBag.WeekWorking != null ? ViewBag.WeekWorking[3].WorkDate.ToShortDateString() : string.Empty)
+    </div>
+    <div class="grid_3">
+        Thu<br />
+        @(ViewBag.WeekWorking != null ? ViewBag.WeekWorking[4].WorkDate.ToShortDateString() : string.Empty)
+    </div>
+    <div class="grid_3">
+        Fri<br />
+        @(ViewBag.WeekWorking != null ? ViewBag.WeekWorking[5].WorkDate.ToShortDateString() : string.Empty)
+    </div>
+    <div class="grid_3">
+        Sat<br />
+        @(ViewBag.WeekWorking != null ? ViewBag.WeekWorking[6].WorkDate.ToShortDateString() : string.Empty)
+    </div>
+    
+    <div class="clear"></div>
+    
+    <div class="grid_3">
+        @RazorHelper.ShiftDropDownList("SunShift", Model.SunShift, (IList<SelectListItem>)ViewBag.Shifts)
+    </div>
+    <div class="grid_3">
+        @RazorHelper.ShiftDropDownList("MonShift", Model.MonShift, (IList<SelectListItem>)ViewBag.Shifts)
+    </div>
+    <div class="grid_3">
+        @RazorHelper.ShiftDropDownList("TueShift", Model.TueShift, (IList<SelectListItem>)ViewBag.Shifts)
+    </div>
+    <div class="grid_3">
+        @RazorHelper.ShiftDropDownList("WedShift", Model.WedShift, (IList<SelectListItem>)ViewBag.Shifts)
+    </div>
+    <div class="grid_3">
+        @RazorHelper.ShiftDropDownList("ThuShift", Model.ThuShift, (IList<SelectListItem>)ViewBag.Shifts)
+    </div>
+    <div class="grid_3">
+        @RazorHelper.ShiftDropDownList("FriShift", Model.FriShift, (IList<SelectListItem>)ViewBag.Shifts)
+    </div>
+    <div class="grid_3">
+        @RazorHelper.ShiftDropDownList("SatShift", Model.SatShift, (IList<SelectListItem>)ViewBag.Shifts)
+    </div>
+    <div class="clear"></div>
+    
+    <div>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.EmpID)
+        <input type="submit" value="@Labels.Save" />
+    </div>
+
+}
+</div>

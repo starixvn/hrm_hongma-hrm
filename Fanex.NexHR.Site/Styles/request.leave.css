@@ -1,0 +1,7 @@
+﻿#TotalDays {
+	width:30px;
+	text-align:center;
+}
+#FromTime, #ToTime {
+	min-width:60px;
+}

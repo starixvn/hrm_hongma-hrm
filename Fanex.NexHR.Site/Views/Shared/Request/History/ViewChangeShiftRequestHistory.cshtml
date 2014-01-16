@@ -1,0 +1,61 @@
+﻿@model IList<Fanex.NexHR.Models.Request.RequestEntity>
+
+<table class="data">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>@Labels.Team</th>
+                <th>@Labels.Employee</th>
+                <th>@Labels.RequestDate</th>
+                <th>@Labels.From</th>
+                <th>@Labels.To</th>
+                <th>@Labels.CreatedDate</th>
+                <th>@Labels.Remark</th>
+                <th>@Labels.Status</th>
+                <th>@Labels.ProcessedBy</th>
+            </tr>
+        </thead>
+            
+    @if (ViewBag.EntityList.Count > 0)
+    {
+        <tbody>
+        @{int index = 1;}
+        @foreach (var request in Model)
+        { 
+                <tr id="row@(request.Id)">
+                        <td>@(index++)
+                        </td>
+                        <td class="tooltip" title="@request.Requester.Team.Name">@request.Requester.Team.Code</td>
+                        <td class="tooltip" title="@request.Requester.FullName">
+                            @request.Requester.NickName.ToString()
+                        </td>
+                            
+                        <td class="ddMMyyyy highlight">@request.RequestedDate.ToDateMonthYearFormatedDate()</td>
+                        <td class="highlight" >@request.FromShift.Name.ToString()</td>
+                        <td class="highlight">@request.ToShift.Name.ToString()</td>
+                        <td class="ddMMyyyyhhmm">@request.CreatedDate.ToShortFormatedDate()</td>
+
+                        @if (!string.IsNullOrWhiteSpace(request.Remark))
+                            { 
+                                 <td class="tooltip" title="@request.Remark">
+                                     <span class="icon remark" alt="remark" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+
+                        <td>@request.Status.ToString()</td>
+                        @RazorHelper.ModifierDisplay(request.ModifiedBy.NickName, request.ModifiedBy.FullName, request.ModifiedDate, request.Id)
+                    </tr>  
+        }
+        </tbody>
+    }
+    else
+    { 
+        @RazorHelper.DisplayNoInformation(colspan: 11);
+    }
+                
+    </table>
+

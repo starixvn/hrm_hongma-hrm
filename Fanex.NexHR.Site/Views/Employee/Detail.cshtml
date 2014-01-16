@@ -1,0 +1,347 @@
+﻿@model Fanex.NexHR.Models.Employee
+@{
+    ViewBag.Title = Model.NickName + " - " + Model.FullName;
+}
+
+@section css{
+    @Url.CombresLink("accountcss")
+}
+@section js{
+    @Url.CombresLink("accountjs")
+}
+
+@section Breadcrumb {
+    <a class="step">Personal</a><span class="step">@ViewBag.Title</span>
+
+}
+<div class="leftpersonal">
+    <div class="avatarbox">
+        <div class="avatar">
+            <img src="~/employee/avatar/@(Model.Code)" alt="@Model.NickName" />
+        </div>
+        <div class="pinfo">
+            <span class="name">@Model.FullName</span>
+            <p class="accinfo">
+                @Model.DomainUsername<br>
+                <br>
+                Staff ID: @Model.Code
+            </p>
+        </div>
+    </div>
+    <div class="personalinformation">
+        <div class="boxtitle">
+            PERSONAL INFORMATION
+        </div>
+        <div class="boxcontent">
+            <div class="line">
+                <div class="label">
+                    Full Name:
+                </div>
+                <div class="pcontent">
+                    @Model.FullName
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Nick Name:
+                </div>
+                <div class="pcontent">
+                    @Model.NickName
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    D.O.B:
+                </div>
+                <div class="pcontent">
+                    @Model.DOB.ToString("dd MMM, yyyy")
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Gender:
+                </div>
+                <div class="pcontent">
+                    @(Model.Gender == 1 ? "Male" : "Female")
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Marriage:
+                </div>
+                <div class="pcontent">
+                    @(Model.Mariage == null ? "Unknown" : (Model.Mariage == true ? "Yes" : "No"))
+                </div>
+                <div class="clear"></div>
+            </div>
+            @if (Roles.IsUserInRole("HR"))
+            {
+                <div class="line">
+                    <div class="label">
+                        Card No:
+                    </div>
+                    <div class="pcontent">
+                        @Model.CardNo
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                if (Model.PassportNo != null)
+                {
+                    <div class="line">
+                        <div class="label">
+                            Passport No:
+                        </div>
+                    <div class="pcontent">
+                        @Model.PassportNo
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                }
+            
+                if (Model.PassportExp != null)
+                {
+                    var date = (DateTime)Model.PassportExp;
+                    <div class="line">
+                        <div class="label">
+                            Passport Exp:
+                        </div>
+                    <div class="pcontent">
+                        @date.ToString("dd MMM, yyyy")
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="Jobinformation">  	
+        <div class="boxtitle">
+            JOB INFORMATION
+        </div>
+            	
+        <div class="boxcontent">
+            <div class="line">
+                <div class="label">
+                    Job Title:
+                </div>
+                <div class="pcontent">
+                    @ViewBag.JobTitle
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Team:
+                </div>
+                <div class="pcontent">
+                    @Model.Team.Name
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Roles:
+                </div>
+                <div class="pcontent">
+                    @Model.DisplayRoles()
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Joined Date:
+                </div>
+                <div class="pcontent">
+                    @if (Model.JoinedDate != null)
+                    { 
+                        var date = (DateTime)Model.JoinedDate;
+                        @date.ToString("dd MMM, yyyy")
+                    }
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Confirmed Date:
+                </div>
+                <div class="pcontent">
+                    @if (Model.ConfirmedDate != null)
+                    {
+                        var date = (DateTime)Model.ConfirmedDate;
+                        @date.ToString("dd MMM, yyyy")
+                    }
+                </div>
+                <div class="clear"></div>
+            </div>
+             @if (Model.ResignedDate != null)
+            {
+                 var date = (DateTime)Model.ResignedDate;
+                <div class="line">
+                    <div class="label">
+                        Resigned Date:
+                    </div>
+                    <div class="pcontent">
+                        @date.ToString("dd MMM, yyyy")
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            }
+        </div>  
+    </div> 
+    
+</div>
+
+<div class="rightjob"> 
+    <div class="personalinformation">
+        <div class="boxtitle">
+            CONTACT DETAILS
+        </div>
+        <div class="boxcontent">
+            <div class="line">
+                <div class="label">
+                    Email:
+                </div>
+                <div class="pcontent">
+                    <a href="mailto:@Model.Email">@Model.Email</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                     Phone:
+                </div>
+                <div class="pcontent">
+                    @Model.Phone
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Skype:
+                </div>
+                <div class="pcontent">
+                    <a href="skype:@(Model.Skype)?chat">@Model.Skype</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="line">
+                <div class="label">
+                    Yahoo:
+                </div>
+                <div class="pcontent">
+                    <a href="ymsgr:SendIM?@(Model.Yahoo)">@Model.Yahoo</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            @if (Roles.IsUserInRole("HR"))
+            {
+                <div class="line">
+                    <div class="label">
+                         Address:
+                    </div>
+                    <div class="pcontent">
+                        @Model.Address
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="line">
+                    <div class="label">
+                         Current Address:
+                    </div>
+                    <div class="pcontent">
+                        @Model.CurrentAddress
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            }
+        </div>
+    </div>
+
+    
+    <div class="clear"></div>
+    <div class="attendacereport">
+        <div class="boxtitle">
+            ATTENDANCE REPORT
+        </div>
+        <div class="boxcontent">
+            <div class="line">
+                <div class="label2">
+                    Annual Leave Balance:
+                </div>
+                <div class="pcontent">
+                    @ViewBag.Working.AnnualLeaveBalance day(s)
+                </div>
+                <div class="clear"></div>  
+            </div>
+            <div class="line">
+                <div class="label2">
+                    Working Calendar:
+                </div>
+                <div class="pcontent">
+                    <div class="scheduleoff">
+                        <div class="day">
+                            Sun
+                        </div>
+                        <div class="shift">
+                            @ViewBag.Sun
+                        </div>
+                    </div>
+                    <div class="schedule">
+                        <div class="day">
+                            Mon
+                        </div>
+                        <div class="shift">
+                            @ViewBag.Mon
+                        </div>
+                    </div>
+                    <div class="schedule">
+                        <div class="day">
+                            Tue
+                        </div>
+                        <div class="shift">
+                            @ViewBag.Tue
+                        </div>
+                    </div>
+                    <div class="schedule">
+                        <div class="day">
+                            Wed
+                        </div>
+                        <div class="shift">
+                            @ViewBag.Wed
+                        </div>
+                    </div>
+                    <div class="schedule">
+                        <div class="day">
+                            Thu
+                        </div>
+                        <div class="shift">
+                            @ViewBag.Thu
+                        </div>
+                    </div>
+                    <div class="schedule">
+                        <div class="day">
+                            Fri
+                        </div>
+                        <div class="shift">
+                            @ViewBag.Fri
+                        </div>
+                    </div>
+                    <div class="scheduleoff">
+                        <div class="day">
+                            Sat
+                        </div>
+                        <div class="shift">
+                            @ViewBag.Sat
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>  
+            </div>
+        </div>
+    </div>
+</div>

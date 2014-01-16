@@ -1,0 +1,48 @@
+﻿@model Fanex.NexHR.Models.Employee
+<div class="header_wrap">
+    <div class="header">
+        <h1>
+            <a href="~/">
+                <img src="/Images/logo.png" width="147px" height="30px" alt="Nexcel Solutions Vietnam" /></a></h1>
+        <div class="search_bar">
+            <form class="search" method="get" action="/search" accept-charset="UTF-8" id="search">
+            <input type="text" autocomplete="off" placeholder="Nickname or full name" name="q"
+                id="searchbox" class="placeholder" /><a class="search_btn button straight-left no_border just-icon"
+                    href="/search"><span class="icon magnifier"></span></a></form>
+        </div>
+        @* <div id="quick_add_buttons">*@ @* <div class="button-icon">
+                <span class="icon plus"></span><a href="#">Request</a>
+            </div>*@ @* <div class="button-icon">
+                <span class="icon plus"></span><a href="#">Shift</a>
+            </div>
+            <div class="button-icon">
+                <span class="icon plus"></span><a href="#">Late / Earlyt</a>
+            </div>
+            <div class="button-icon">
+                <span class="icon plus"></span><a href="#">Check In/Out</a>
+            </div>*@ @*<a href="#!/new" title="new leave request" class="quick_add_btn conv button straight-right no_border just-icon">
+                <span class="icon balloon_add button_img just-icon"></span></a><a href="#!/new" title="new late in/ early out request"
+                    class="quick_add_btn conv button straight-right no_border just-icon"><span class="icon task_add button_img">
+                    </span></a><a href="#!/new" title="new change shift request" class="quick_add_btn conv button straight-right no_border just-icon">
+                        <span class="icon task_add button_img"></span></a><a href="#!/new" title="new check in/out request"
+                            class="quick_add_btn task button straight-left just-icon"><span class="icon task_add button_img">
+                            </span></a>*@ @* </div>*@ @* <div id="user_request" class="dropdown_navigation">
+          
+        </div>*@
+        <div id="user_utilities" class="dropdown_navigation">
+            <h2>
+                @Model.FullName - <i>@Model.NickName</i>
+            </h2>
+            <a href="javascript:void(0)" class="dropdown_arrow"></a>
+            <ol class="global_navigation">
+                <li><a class="" href="#">My profile</a> </li>
+                <li><a class="" href="#">Request leave</a> </li>
+                <li><a class="" href="#">Request change shift</a> </li>
+                <li><a class="" href="#">Request leate in - early out</a> </li>
+                <li><a class="" href="#">Request check in/out</a> </li>
+            </ol>
+        </div>
+
+        
+    </div>
+</div>

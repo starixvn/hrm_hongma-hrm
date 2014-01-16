@@ -1,0 +1,42 @@
+﻿@helper SubmitButton(string text = null, string submitButtonId = null)
+    {
+    <input type="submit" id="@submitButtonId" value="@text" class="ui-button ui-widget ui-state-default ui-corner-all"/>                    
+}
+@helper DivButton(string text = null, string divId = null)
+    {
+    <div id="@divId" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+        <span class="ui-button-text">@text</span></div>
+}
+@helper InputButton(string text = null, string inputButtonId = null)
+    {
+    <input type="button" value="@text" id="@inputButtonId" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" />
+}
+@helper HrefButton(string text = null, string href = "#", string hrefId = null)
+    {
+    <a href="@href" id="@hrefId)" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+        <span class="ui-button-text">@text</span></a>
+}
+
+@helper IconLeftHrefButton(string iconLeft = null, string text = null, string href = "#", string hrefIconLeftId = null)
+    {
+    <a href="@href" id="@hrefIconLeftId)" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button">
+      <span class="ui-button-icon-primary ui-icon @iconLeft"></span>  <span class="ui-button-text">@text</span></a>
+}
+
+
+@helper IconLeftButton(string iconLeft = null, string text=null, string iconLeftButtonId=null)
+{
+    <div id="@iconLeftButtonId" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+                    role="button">
+                    <span class="ui-button-icon-primary ui-icon @iconLeft"></span><span class="ui-button-text">
+                        @text</span></div>
+    
+    
+}
+
+@helper IconLeftRightButton(string iconLeft = null, string iconRight = null, string text = null, string iconLeftRightButtonId = null)
+    {
+    <div id="@iconLeftRightButtonId" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icons" role="button">
+    <span class="ui-button-icon-primary ui-icon @iconLeft"></span><span class="ui-button-text">@text</span>
+    <span class="ui-button-icon-secondary ui-icon @iconRight"></span></div>
+}
