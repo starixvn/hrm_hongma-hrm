@@ -44,5 +44,23 @@ namespace Fanex.NexHR.Repositories.Interfaces
             int year,
             int? empId,
             string groupIds);
+
+        IList<ExtensionNoModel> GetAllExtensionNo();
+
+        IList<ExtensionNoModel> GetAllExtensionGroupInfo(bool isInternal, int? groupId);
+
+        bool AddNewExtensionNoMember(ExtensionNoModel model, out int errorCode, out string message);
+
+        ExtensionNoModel GetEmployeeExtensionNoById(bool isInternal, int empExtID);
+
+        bool UpdateExtensionNoMember(ExtensionNoModel model, out int errorCode, out string message);
+
+        bool DeleteExtensionNumber(int extId, out int errorCode, out string message);
+
+        bool AddNewExternalGroup(string groupName, out int errorCode, out string message);
+
+        bool EditExternalGroup(int groupId, string groupName, out int errorCode, out string message);
+
+        bool DeleteExternalGroup(int groupId, out int errorCode, out string message);
     }
 }

@@ -43,5 +43,23 @@ namespace Fanex.NexHR.Services.Interface
             string groupIds);
 
         IList<LeaveSummaryByTeam> GetAnnualLeaveByTeam(IList<LeaveSummary> leaveSummaryList, IList<Team> teams);
+
+        IList<ExtensionNoModel> GetAllExtensionNo();
+
+        IList<ExtensionNoModel> GetAllExtensionGroupInfo(bool isInternal, int? groupId);
+
+        bool AddNewExtensionNoMember(ExtensionNoModel model);
+
+        ExtensionNoModel GetEmployeeExtensionNoById(bool isInternal, int empExtID);
+
+        bool UpdateExtensionNoMember(ExtensionNoModel model);
+
+        bool DeleteExtensionNumber(int extId);
+
+        bool AddNewExternalGroup(string groupName);
+
+        bool EditExternalGroup(int groupId, string groupName);
+        
+        bool DeleteExternalGroup(int groupId);
     }
 }

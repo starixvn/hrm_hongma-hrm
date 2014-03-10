@@ -33,7 +33,7 @@
             <siteMapNode title="Total working hours" controller="report" action="totalworkinghours" icon="clock" />
             <siteMapNode title="Holiday" controller="holiday" action="index" icon="holiday" />
             <siteMapNode title="Shift info" controller="shift" action="index" icon="calendar3" />
-            <siteMapNode title="Extension numbers" controller="report" action="extensionno" icon="mobile" />
+            <siteMapNode title="Extension numbers" controller="extensionno" action="index" icon="mobile" />
             <siteMapNode title="Company memo" controller="memo" action="index" icon="memo" />
         </siteMapNode>
     </siteMapNode>

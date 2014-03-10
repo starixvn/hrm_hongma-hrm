@@ -239,5 +239,33 @@ namespace Fanex.NexHR.Controllers
         {
             return _lookupDataService.Update(id, name);
         }
+
+        [Authorize(Roles = "HR")]
+        [HttpPost]
+        public bool DeleteExtensionNumber(int extId)
+        {
+            return _reportService.DeleteExtensionNumber(extId);
+        }
+
+        [Authorize(Roles = "HR")]
+        [HttpPost]
+        public bool AddNewExternalGroup(string groupName)
+        {
+            return _reportService.AddNewExternalGroup(groupName);
+        }
+
+        [Authorize(Roles = "HR")]
+        [HttpPost]
+        public bool DeleteExternalGroup(int extId)
+        {
+            return _reportService.DeleteExternalGroup(extId);
+        }
+
+        [Authorize(Roles = "HR")]
+        [HttpPost]
+        public bool EditExternalGroup(int extId, string groupName)
+        {
+            return _reportService.EditExternalGroup(extId, groupName);
+        }
     }
 }

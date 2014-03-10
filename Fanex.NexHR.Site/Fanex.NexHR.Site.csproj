@@ -337,7 +337,9 @@
     <Content Include="Scripts\MultiSelect\prettify.css" />
     <Content Include="Scripts\MultiSelect\prettify.js" />
     <Content Include="Scripts\MultiSelect\style.css" />
+    <Content Include="Scripts\Views\addextensionno.js" />
     <Content Include="Scripts\Views\annualbalance.js" />
+    <Content Include="Scripts\Views\extensionno.js" />
     <Content Include="Scripts\Views\jobtitle.js" />
     <Content Include="Scripts\Views\jquery.tablesorter.js" />
     <Content Include="Scripts\Views\mgr.requests.hr.js" />
@@ -1024,6 +1026,10 @@
     <Content Include="ExcelTemplates\AttendanceReportTemplate.xls" />
     <Content Include="ExcelTemplates\LeaveSummaryTemplate.xls" />
     <Content Include="ExcelTemplates\WorkingTimeRequestTemplate.xls" />
+    <Content Include="Views\ExtensionNo\AddNewMember.cshtml" />
+    <Content Include="Views\ExtensionNo\EditExtensionNumber.cshtml" />
+    <Content Include="Views\ExtensionNo\Index.cshtml" />
+    <Content Include="Views\ExtensionNo\ManageExternalGroup.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

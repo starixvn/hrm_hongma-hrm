@@ -1,0 +1,92 @@
+﻿@model ExtensionNoModel
+@{
+    ViewBag.Title = "Update Extension Number";
+}
+@section css{
+    @Url.CombresLink("extensionnocss")
+}
+@section js{
+    @Url.CombresLink("addextensionnojs")
+}
+@section Breadcrumb {
+    <a class="step">Company</a> 
+    <a class="step" href="@Url.Action("index", "extensionno")">Extension Numbers</a>
+    <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+<div class="bunhat container_24">
+@{ Html.EnableClientValidation(false); }
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary()
+
+        if (ViewBag.Updated == true)
+        {
+        <div class="success">Extension number has been updated successfully!</div>
+        <input type="hidden" id="successed" value="true" />
+        }
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.IsInternal)
+            </div>
+            <div class="input">
+                @Html.CheckBoxFor(model => model.IsInternal, new { @checked = "checked" })
+            </div>
+        </div>
+        <div class="formrow">
+            <div class="label">
+                @Html.Label("Group")
+            </div>
+            <div class="input">
+                @Html.DropDownListFor(model => model.TeamId, (List<SelectListItem>)ViewBag.Group)
+            </div>
+        </div>
+        
+        <div class="formrow" id="EmployeeField">
+            <div class="label">
+                @Html.LabelFor(model => model.Employee)
+            </div>
+            <div class="input">
+                @Html.TextBoxFor(model => model.Employee)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.FullName)
+            </div>
+            <div class="input">
+                @Html.TextBoxFor(model => model.FullName)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.NickName)
+            </div>
+            <div class="input">
+                @Html.TextBoxFor(model => model.NickName)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.LabelFor(model => model.ExtensionNo)
+            </div>
+            <div class="input">
+                @Html.TextBoxFor(model => model.ExtensionNo)
+            </div>
+        </div>
+        
+        <div class="formrow">
+            <div class="label">
+                @Html.Hidden("EmpId")
+            </div>
+            <div class="input">
+                <input type="submit" value="@Fanex.NexHR.Resources.Labels.Update"/>
+                <a href="~/extensionno/index" class="button">@Labels.Back</a>
+            </div>
+        </div>
+    }
+</div>

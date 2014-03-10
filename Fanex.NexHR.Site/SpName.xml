@@ -87,7 +87,19 @@
         <Setting Key="Holiday_GetByYear" SpName="Holiday_GetByYear" DbName="nexhrx" Plain="1"></Setting>
         <Setting Key="Holiday_GetById" SpName="Holiday_GetById" DbName="nexhrx" Plain="1"></Setting>
     </Function>
+  <Function Name="ExtensionNumber">
+    <Setting Key="ExtensionNO_GetAll" SpName="ExtensionNO_GetAll" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_GetGroupInfo" SpName="ExtensionNO_GetGroupInfo" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_Insert_EmployeeInfo" SpName="ExtensionNO_Insert_EmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_GetEmployeeInfo" SpName="ExtensionNO_GetEmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_Update_EmployeeInfo" SpName="ExtensionNO_Update_EmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_DELETE_EmployeeInfo" SpName="ExtensionNO_DELETE_EmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
 
+    <Setting Key="ExtensionNO_Insert_GroupExternal" SpName="ExtensionNO_Insert_GroupExternal" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_Update_GroupExternal" SpName="ExtensionNO_Update_GroupExternal" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_DELETE_GroupExternal" SpName="ExtensionNO_DELETE_GroupExternal" DbName="nexhrx" Plain="1"></Setting>
+
+  </Function>
     <Function Name="Memo">
         <Setting Key="Memo_Insert" SpName="Memo_Insert" DbName="nexhrx" Plain="1"></Setting>
         <Setting Key="Memo_Update" SpName="Memo_Update" DbName="nexhrx" Plain="1"></Setting>

@@ -1,0 +1,106 @@
+﻿@model List<ExtensionNoModel>
+@section css{
+    @Url.CombresLink("extensionnocss")
+}
+@section js{
+    @Url.CombresLink("extensionnojs")
+}
+@{
+    ViewBag.Title = "External Group";
+}
+@section Breadcrumb {
+    <a class="step">Company</a> 
+    <a class="step" href="@Url.Action("extensionno", "report")">Extension Numbers</a>
+    <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+<div class="button-icon">
+    <span class="icon plus"></span><a href="#" id="btnNewExternalGroup">New External Group</a></div>
+<table class="data" id="data">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Group Name
+            </th>
+            <th>
+                Edit
+            </th>
+            <th>
+                Delete
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            int index = 1;
+            foreach (ExtensionNoModel item in Model)
+            {
+            <tr id="@item.TeamId">
+                <td>
+                    @(index++)
+                </td>
+                <td>
+                    <span class="groupName"> @item.TeamName</span>
+                    
+                </td>
+                <td>
+                    <a href="javascript:;" id="editExternal">
+                        <img src="~/Styles/Images/edit-icon.png" alt="Delete" /></a>
+                </td>
+                <td>
+                    @if(item.TotalMember > 0)
+                    {
+                        <a href="#" style="cursor:default"><img src="@Url.Content("~/Styles/Images/disabled-delete.png")" /></a> 
+                    }
+                    else
+                    {
+                        <a href="javascript:;" id="deleteExternal"><img src="@Url.Content("~/Styles/Images/delete-icon.png")" /></a>
+                    }
+                </td>
+            </tr>
+            }
+
+        }
+        else
+        {
+            @RazorHelper.DisplayNoInformation(colspan: 4);
+        }
+    </tbody>
+</table>
+<div id="dialog-form" title="Add new External Group" style="display: none">
+    <p class="validateTips">
+    </p>
+    <form>
+    <div class="formrow">
+        <div class="label">
+            Group Name
+        </div>
+        <div class="input">
+            <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div id="dialog-form_edit" title="Update External Group" style="display: none">
+    <p class="validateTips">
+    </p>
+    <form>
+    <div class="formrow">
+        <div class="label">
+            Group Name
+        </div>
+        <div class="input">
+            <input type="text" name="name" id="name_edit" class="text ui-widget-content ui-corner-all" />
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    </form>
+</div>

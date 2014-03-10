@@ -1,0 +1,98 @@
+﻿@model List<ExtensionNumberViewModel>
+@section css{
+    @Url.CombresLink("extensionnocss")
+}
+@section js{
+    @Url.CombresLink("extensionnojs")
+}
+@{
+    ViewBag.Title = "Extension Numbers";
+}
+@section Breadcrumb {
+    <a class="step">Company</a> <span class="step">@ViewBag.Title</span>
+}
+<h2>@ViewBag.Title</h2>
+@if (Roles.IsUserInRole("HR"))
+{
+    <div class="button-icon">
+        <span class="icon plus"></span>@Html.ActionLink("New Extension Number", "AddNewMember")</div>
+    <div class="button">@Html.ActionLink("Manage External Group", "ManageExternalGroup")</div>
+}
+<table class="data" id="data">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                Full Name
+            </th>
+            <th>
+                Nick Name
+            </th>
+            <th>
+                Extension Number
+            </th>
+            @if (Roles.IsUserInRole("HR"))
+            {
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            int index = 1;
+            foreach (ExtensionNumberViewModel item in Model)
+            {
+                if (item.ListExt.Count > 0)
+                {
+            <tr>
+                <td class="rowdivider highlight left" colspan="19">
+                    <b>@item.Name.ToUpper()</b>
+                </td>
+            </tr>
+                }
+                foreach (ExtensionNoModel ext in item.ListExt)
+                {
+            <tr id="@ext.EmpExtID">
+                <td>
+                    @(index++)
+                </td>
+                <td class="left">
+                    @ext.FullName
+                </td>
+                <td>
+                    @ext.NickName
+                </td>
+                <td style="color: #0789D1;">
+                    @ext.ExtensionNo
+                </td>
+                @if (Roles.IsUserInRole("HR"))
+                {
+                    <td>
+                        <a href="@Url.Action("EditExtensionNumber", "ExtensionNo", new { isInternal = ext.IsInternal, empExtID = ext.EmpExtID })">
+                            <img src="~/Styles/Images/edit-icon.png" alt="Delete" /></a>
+                    </td>
+                    <td>
+                        <a href="javascript:;" id="deleteExt">
+                            <img src="~/Styles/Images/delete-icon.png" /></a>
+                    </td>
+                }
+            </tr>
+                }
+
+            }
+
+        }
+        else
+        {
+            @RazorHelper.DisplayNoInformation(colspan: 5);
+        }
+    </tbody>
+</table>

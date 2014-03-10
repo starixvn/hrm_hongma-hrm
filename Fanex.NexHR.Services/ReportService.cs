@@ -151,5 +151,62 @@ namespace Fanex.NexHR.Services
             return leaveSummaryByTeamList;
         }
         #endregion
+
+        public IList<ExtensionNoModel> GetAllExtensionNo()
+        {
+            return _reportRepository.GetAllExtensionNo();
+        }
+
+        public IList<ExtensionNoModel> GetAllExtensionGroupInfo(bool isInternal, int? groupId)
+        {
+            return _reportRepository.GetAllExtensionGroupInfo(isInternal, groupId);
+        }
+
+        public bool AddNewExtensionNoMember(ExtensionNoModel model)
+        {
+            int errorCode;
+            string message;
+            return _reportRepository.AddNewExtensionNoMember(model, out errorCode, out message);
+        }
+
+        public ExtensionNoModel GetEmployeeExtensionNoById(bool isInternal, int empExtID)
+        {
+            return _reportRepository.GetEmployeeExtensionNoById(isInternal, empExtID);
+        }
+
+        public bool UpdateExtensionNoMember(ExtensionNoModel model)
+        {
+            int errorCode;
+            string message;
+            return _reportRepository.UpdateExtensionNoMember(model, out errorCode, out message);
+        }
+
+        public bool DeleteExtensionNumber(int extId)
+        {
+            int errorCode;
+            string message;
+            return _reportRepository.DeleteExtensionNumber(extId, out errorCode, out message);
+        }
+
+        public bool AddNewExternalGroup(string groupName)
+        {
+            int errorCode;
+            string message;
+            return _reportRepository.AddNewExternalGroup(groupName, out errorCode, out message);
+        }
+
+        public bool EditExternalGroup(int groupId, string groupName)
+        {
+            int errorCode;
+            string message;
+            return _reportRepository.EditExternalGroup(groupId, groupName, out errorCode, out message);
+        }
+
+        public bool DeleteExternalGroup(int groupId)
+        {
+            int errorCode;
+            string message;
+            return _reportRepository.DeleteExternalGroup(groupId, out errorCode, out message);
+        }
     }
 }

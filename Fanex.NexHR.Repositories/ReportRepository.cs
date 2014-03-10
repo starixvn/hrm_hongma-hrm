@@ -258,5 +258,221 @@ namespace Fanex.NexHR.Repositories
                 return entityList;
             }
         }
+
+        public IList<ExtensionNoModel> GetAllExtensionNo()
+        {
+            using (var db = new ObjectDb("ExtensionNO_GetAll"))
+            {
+                var lstEntity = db.Query<ExtensionNoModel>().ToList();
+                return lstEntity;
+            }
+        }
+
+        public IList<ExtensionNoModel> GetAllExtensionGroupInfo(bool isInternal, int? groupId)
+        {
+            using (var db = new ObjectDb("ExtensionNO_GetGroupInfo"))
+            {
+                var lstEntity = db.Query<ExtensionNoModel>(new { isInternal = isInternal, GroupID = groupId }).ToList();
+                return lstEntity;
+            }
+        }
+
+        /// <summary>
+        /// Method add new Extension Number member.
+        /// </summary>
+        /// <param name="model">ExtensionNoModel model.</param>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>Boolean to check result.</returns>
+        public bool AddNewExtensionNoMember(ExtensionNoModel model, out int errorCode, out string message)
+        {
+            using (var db = new ObjectDb("ExtensionNO_Insert_EmployeeInfo"))
+            {
+                db.AddInParameter("@FullName", DbType.String, model.FullName);
+                db.AddInParameter("@NickName", DbType.String, model.NickName);
+                db.AddInParameter("@ExtensionNo", DbType.String, model.ExtensionNo);
+
+                db.AddInParameter("@IsInternal", DbType.Boolean, model.IsInternal);
+                db.AddInParameter("@EmpID", DbType.Int32, model.EmpId);
+                db.AddInParameter("@GroupID", DbType.Int32, model.TeamId);
+
+                db.AddOutParameter("@ErrCode", DbType.Int32, 8);
+                db.AddOutParameter("@ErrMsg", DbType.String, 200);
+
+                var result = db.ExecuteScalar();
+                message = db.GetParameterValue("ErrMsg") as string;
+                errorCode = (int)db.GetParameterValue("ErrCode");
+
+                if (errorCode != 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public ExtensionNoModel GetEmployeeExtensionNoById(bool isInternal, int empExtID)
+        {
+            IList<ExtensionNoModel> entityList = new List<ExtensionNoModel>();
+            using (var db = new ObjectDb("ExtensionNO_GetEmployeeInfo"))
+            {
+                var entity = db.QueryEntity<ExtensionNoModel>(new { isInternal = isInternal, EmpExtID = empExtID });
+
+                return entity;
+            }
+        }
+
+        /// <summary>
+        /// Method update Extension Number member.
+        /// </summary>
+        /// <param name="model">ExtensionNoModel model.</param>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>Boolean to check Result.</returns>
+        public bool UpdateExtensionNoMember(ExtensionNoModel model, out int errorCode, out string message)
+        {
+            using (var db = new ObjectDb("ExtensionNO_Update_EmployeeInfo"))
+            {
+                db.AddInParameter("@FullName", DbType.String, model.FullName);
+                db.AddInParameter("@NickName", DbType.String, model.NickName);
+                db.AddInParameter("@ExtensionNo", DbType.String, model.ExtensionNo);
+
+                db.AddInParameter("@IsInternal", DbType.Boolean, model.IsInternal);
+                db.AddInParameter("@ExtID", DbType.Int32, model.EmpExtID);
+                db.AddInParameter("@EmpID", DbType.Int32, model.EmpId);
+                db.AddInParameter("@GroupID", DbType.Int32, model.TeamId);
+
+                db.AddOutParameter("@ErrCode", DbType.Int32, 8);
+                db.AddOutParameter("@ErrMsg", DbType.String, 200);
+
+                var result = db.ExecuteScalar();
+                message = db.GetParameterValue("ErrMsg") as string;
+                errorCode = (int)db.GetParameterValue("ErrCode");
+
+                if (errorCode != 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Method Delete ExtensionNumber.
+        /// </summary>
+        /// <param name="extId">Extension Id.</param>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>Boolean to check.</returns>
+        public bool DeleteExtensionNumber(int extId, out int errorCode, out string message)
+        {
+            using (ObjectDb db = new ObjectDb("ExtensionNO_DELETE_EmployeeInfo"))
+            {
+                db.AddInParameter("@ExtID", DbType.Int32, extId);
+                db.AddOutParameter("@ErrCode", DbType.Int32, 8);
+                db.AddOutParameter("@ErrMsg", DbType.String, 200);
+
+                db.ExecuteScalar();
+
+                message = db.GetParameterValue("ErrMsg") as string;
+                errorCode = (int)db.GetParameterValue("ErrCode");
+                if (errorCode != 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Method Add New External Group.
+        /// </summary>
+        /// <param name="groupName">Group name.</param>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>Boolean to check.</returns>
+        public bool AddNewExternalGroup(string groupName, out int errorCode, out string message)
+        {
+            using (var db = new ObjectDb("ExtensionNO_Insert_GroupExternal"))
+            {
+                db.AddInParameter("@FullName", DbType.String, groupName);
+
+                db.AddOutParameter("@ErrCode", DbType.Int32, 8);
+                db.AddOutParameter("@ErrMsg", DbType.String, 200);
+
+                var result = db.ExecuteScalar();
+                message = db.GetParameterValue("ErrMsg") as string;
+                errorCode = (int)db.GetParameterValue("ErrCode");
+
+                if (errorCode != 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Method Update an External Group.
+        /// </summary>
+        /// <param name="groupId">Group's id.</param>
+        /// <param name="groupName">Group name.</param>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>Boolean to check.</returns>
+        public bool EditExternalGroup(int groupId, string groupName, out int errorCode, out string message)
+        {
+            using (var db = new ObjectDb("ExtensionNO_Update_GroupExternal"))
+            {
+                db.AddInParameter("@FullName", DbType.String, groupName);
+                db.AddInParameter("@ExtID", DbType.String, groupId);
+
+                db.AddOutParameter("@ErrCode", DbType.Int32, 8);
+                db.AddOutParameter("@ErrMsg", DbType.String, 200);
+
+                var result = db.ExecuteScalar();
+                message = db.GetParameterValue("ErrMsg") as string;
+                errorCode = (int)db.GetParameterValue("ErrCode");
+
+                if (errorCode != 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Method Delete external group.
+        /// </summary>
+        /// <param name="groupId">Group's Id.</param>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="message">Error message.</param>
+        /// <returns>Boolean to check.</returns>
+        public bool DeleteExternalGroup(int groupId, out int errorCode, out string message)
+        {
+            using (ObjectDb db = new ObjectDb("ExtensionNO_DELETE_GroupExternal"))
+            {
+                db.AddInParameter("@ExtID", DbType.Int32, groupId);
+                db.AddOutParameter("@ErrCode", DbType.Int32, 8);
+                db.AddOutParameter("@ErrMsg", DbType.String, 200);
+
+                db.ExecuteScalar();
+
+                message = db.GetParameterValue("ErrMsg") as string;
+                errorCode = (int)db.GetParameterValue("ErrCode");
+                if (errorCode != 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
     }
 }
