@@ -1,134 +1,134 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Functions>
     <Function Name="Employee">
-        <Setting Key="GetEmployee" SpName="Employee_GetEmployee" DbName="nexhrx" Plain="1">
+        <Setting Key="GetEmployee" SpName="Employee_GetEmployee" DbName="nexhrx" Plain="0">
         </Setting>
-        <Setting Key="GetEmployees" SpName="Employee_GetEmployees" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_Insert" SpName="Employee_Insert" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_Delete" SpName="Employee_Delete" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeShift_Get" SpName="EmployeeShift_Get" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeShift_Update" SpName="EmployeeShift_Update" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_GetWeekWorking" SpName="EmployeeCalendar_GetWeekWorking" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_UpdateWeekWorking" SpName="EmployeeCalendar_UpdateWeekWorking" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeAttendance_GetByType" SpName="EmployeeAttendance_GetByType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_Insert" SpName="WorkingTimeRequest_Insert" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_InsertDetail" SpName="WorkingTimeRequest_InsertDetail" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_GetLeaders" SpName="Employee_GetLeaders" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Report_EmployeeDashBoard" SpName="Report_EmployeeDashBoard" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Report_HRLeaderDashBoard" SpName="Report_HRLeaderDashBoard" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Report_WorkingHoursSummary" SpName="Report_WorkingHoursSummary" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Report_LeaveSummary" SpName="Report_LeaveSummary" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="RequestMonitoring" SpName="Report_RequestMonitor" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Report_EmployeeCalendarByMonth" SpName="Report_EmployeeCalendarByMonth" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByEmp_CheckinOutType" SpName="WorkingTimeRequest_GetRequestByEmp_CheckinOutType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType" SpName="WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByEmp_ChangeShiftType" SpName="WorkingTimeRequest_GetRequestByEmp_ChangeShiftType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByEmp_LeaveType" SpName="WorkingTimeRequest_GetRequestByEmp_LeaveType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByEmp_OvertimeType" SpName="WorkingTimeRequest_GetRequestByEmp_OvertimeType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByEmp_AllType" SpName="WorkingTimeRequest_GetRequestByEmp_AllType" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="GetEmployees" SpName="Employee_GetEmployees" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_Insert" SpName="Employee_Insert" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_Delete" SpName="Employee_Delete" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_UpdateEmployee" SpName="Employee_UpdateEmployee" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeShift_Get" SpName="EmployeeShift_Get" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeShift_Update" SpName="EmployeeShift_Update" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_GetWeekWorking" SpName="EmployeeCalendar_GetWeekWorking" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_UpdateWeekWorking" SpName="EmployeeCalendar_UpdateWeekWorking" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeAttendance_GetByType" SpName="EmployeeAttendance_GetByType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_Insert" SpName="WorkingTimeRequest_Insert" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_InsertDetail" SpName="WorkingTimeRequest_InsertDetail" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_GetLeaders" SpName="Employee_GetLeaders" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Report_EmployeeDashBoard" SpName="Report_EmployeeDashBoard" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Report_HRLeaderDashBoard" SpName="Report_HRLeaderDashBoard" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Report_WorkingHoursSummary" SpName="Report_WorkingHoursSummary" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Report_LeaveSummary" SpName="Report_LeaveSummary" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="RequestMonitoring" SpName="Report_RequestMonitor" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Report_EmployeeCalendarByMonth" SpName="Report_EmployeeCalendarByMonth" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByEmp_CheckinOutType" SpName="WorkingTimeRequest_GetRequestByEmp_CheckinOutType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType" SpName="WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByEmp_ChangeShiftType" SpName="WorkingTimeRequest_GetRequestByEmp_ChangeShiftType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByEmp_LeaveType" SpName="WorkingTimeRequest_GetRequestByEmp_LeaveType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByEmp_OvertimeType" SpName="WorkingTimeRequest_GetRequestByEmp_OvertimeType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByEmp_AllType" SpName="WorkingTimeRequest_GetRequestByEmp_AllType" DbName="nexhrx" Plain="0"></Setting>
 
-      <Setting Key="WorkingTimeRequest_GetRequestByEmp" SpName="WorkingTimeRequest_GetRequestByEmp" DbName="nexhrx" Plain="1"></Setting>
-      <Setting Key="WorkingTimeRequest_GetRequestByDate" SpName="WorkingTimeRequest_GetRequestByDate" DbName="nexhrx" Plain="1"></Setting>
+      <Setting Key="WorkingTimeRequest_GetRequestByEmp" SpName="WorkingTimeRequest_GetRequestByEmp" DbName="nexhrx" Plain="0"></Setting>
+      <Setting Key="WorkingTimeRequest_GetRequestByDate" SpName="WorkingTimeRequest_GetRequestByDate" DbName="nexhrx" Plain="0"></Setting>
       
-        <Setting Key="WorkingTimeRequest_GetRequestByDate_CheckinOutType" SpName="WorkingTimeRequest_GetRequestByDate_CheckinOutType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByDate_LateInEarlyOutType" SpName="WorkingTimeRequest_GetRequestByDate_LateInEarlyOutType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByDate_ChangeShiftType" SpName="WorkingTimeRequest_GetRequestByDate_ChangeShiftType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByDate_LeaveType" SpName="WorkingTimeRequest_GetRequestByDate_LeaveType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestByDate_AllType" SpName="WorkingTimeRequest_GetRequestByDate_AllType" DbName="nexhrx" Plain="1"></Setting>
-      <Setting Key="WorkingTimeRequest_GetRequestByDate_OvertimeType" SpName="WorkingTimeRequest_GetRequestByDate_OvertimeType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_GetMembesByManager" SpName="Employee_GetMembesByManager" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_GetChangedShift" SpName="EmployeeCalendar_GetChangedShift" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeGroup_Insert" SpName="EmployeeGroup_Insert" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeGroup_Update" SpName="EmployeeGroup_Update" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeGroup_Delete" SpName="EmployeeGroup_Delete" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_GetHalfDayOff" SpName="EmployeeCalendar_GetHalfDayOff" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetRequestHistory" SpName="WorkingTimeRequest_GetRequestHistory" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_SetOffDayForAllEmployees" SpName="EmployeeCalendar_SetOffDayForAllEmployees" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_GetRangeDate" SpName="EmployeeCalendar_GetRangeDate" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_GetUnavailRequestDate" SpName="EmployeeCalendar_GetUnavailRequestDate" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_GetEmployeeForRelatedTeam" SpName="Employee_GetEmployeeForRelatedTeam" DbName="nexhrx" Plain="1"></Setting>
-		<Setting Key="Employee_GetEmployeeByCode" SpName="Employee_GetEmployeeByCode" DbName="nexhrx" Plain="1"></Setting>
-		<Setting Key="Employee_ChangePassword" SpName="Employee_ChangePassword" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByDate_CheckinOutType" SpName="WorkingTimeRequest_GetRequestByDate_CheckinOutType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByDate_LateInEarlyOutType" SpName="WorkingTimeRequest_GetRequestByDate_LateInEarlyOutType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByDate_ChangeShiftType" SpName="WorkingTimeRequest_GetRequestByDate_ChangeShiftType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByDate_LeaveType" SpName="WorkingTimeRequest_GetRequestByDate_LeaveType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestByDate_AllType" SpName="WorkingTimeRequest_GetRequestByDate_AllType" DbName="nexhrx" Plain="0"></Setting>
+      <Setting Key="WorkingTimeRequest_GetRequestByDate_OvertimeType" SpName="WorkingTimeRequest_GetRequestByDate_OvertimeType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_GetMembesByManager" SpName="Employee_GetMembesByManager" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_GetChangedShift" SpName="EmployeeCalendar_GetChangedShift" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeGroup_Insert" SpName="EmployeeGroup_Insert" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeGroup_Update" SpName="EmployeeGroup_Update" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeGroup_Delete" SpName="EmployeeGroup_Delete" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_GetHalfDayOff" SpName="EmployeeCalendar_GetHalfDayOff" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetRequestHistory" SpName="WorkingTimeRequest_GetRequestHistory" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_SetOffDayForAllEmployees" SpName="EmployeeCalendar_SetOffDayForAllEmployees" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_GetRangeDate" SpName="EmployeeCalendar_GetRangeDate" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_GetUnavailRequestDate" SpName="EmployeeCalendar_GetUnavailRequestDate" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_GetEmployeeForRelatedTeam" SpName="Employee_GetEmployeeForRelatedTeam" DbName="nexhrx" Plain="0"></Setting>
+		<Setting Key="Employee_GetEmployeeByCode" SpName="Employee_GetEmployeeByCode" DbName="nexhrx" Plain="0"></Setting>
+		<Setting Key="Employee_ChangePassword" SpName="Employee_ChangePassword" DbName="nexhrx" Plain="0"></Setting>
 	</Function>
     <Function Name="Group">
-        <Setting Key="GetGroup" SpName="EmployeeGroup_GetGroup" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="GetGroupOfEmployee" SpName="EmployeeGroup_GetGroupOfEmployee" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="GetGroups" SpName="EmployeeGroup_GetGroups" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="GetTeamManagedById" SpName="EmployeeGroup_GetGroupsByManagerID" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_GetSubTeam" SpName="Employee_GetSubTeam" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Employee_GetGroupHandleRequest" SpName="Employee_GetGroupHandleRequest" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="GetGroup" SpName="EmployeeGroup_GetGroup" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="GetGroupOfEmployee" SpName="EmployeeGroup_GetGroupOfEmployee" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="GetGroups" SpName="EmployeeGroup_GetGroups" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="GetTeamManagedById" SpName="EmployeeGroup_GetGroupsByManagerID" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_GetSubTeam" SpName="Employee_GetSubTeam" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Employee_GetGroupHandleRequest" SpName="Employee_GetGroupHandleRequest" DbName="nexhrx" Plain="0"></Setting>
     </Function>
     <Function Name="Lookup">
-        <Setting Key="Lookup_GetLookupData" SpName="Lookup_GetLookupData" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Lookup_GetJobTitle" SpName="Lookup_GetJobTitle" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="LookupData_Delete" SpName="LookupData_Delete" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="LookupData_Insert" SpName="LookupData_Insert" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="LookupData_Update" SpName="LookupData_Update" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="Lookup_GetLookupData" SpName="Lookup_GetLookupData" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Lookup_GetJobTitle" SpName="Lookup_GetJobTitle" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="LookupData_Delete" SpName="LookupData_Delete" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="LookupData_Insert" SpName="LookupData_Insert" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="LookupData_Update" SpName="LookupData_Update" DbName="nexhrx" Plain="0"></Setting>
     </Function>
     <Function Name="Shift">
-        <Setting Key="Shift_GetShifts" SpName="Shift_GetShifts" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_GetShiftByDate" SpName="EmployeeCalendar_GetShiftByDate" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="EmployeeCalendar_Update" SpName="EmployeeCalendar_Update" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="Shift_GetShifts" SpName="Shift_GetShifts" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_GetShiftByDate" SpName="EmployeeCalendar_GetShiftByDate" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="EmployeeCalendar_Update" SpName="EmployeeCalendar_Update" DbName="nexhrx" Plain="0"></Setting>
     </Function>
     <Function Name="WorkingTimeRequest">
-        <Setting Key="WorkingTimeRequest_ApproveRequest" SpName="WorkingTimeRequest_ApproveRequest" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_DisapproveRequest" SpName="WorkingTimeRequest_DisapproveRequest" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_RejectRequest" SpName="WorkingTimeRequest_RejectRequest" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_GetByEmployee" SpName="WorkingTimeRequest_GetByEmployee" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_Delete" SpName="WorkingTimeRequest_Delete" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_Update" SpName="WorkingTimeRequest_Update" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="WorkingTimeRequest_Get" SpName="WorkingTimeRequest_Get" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="WorkingTimeRequest_ApproveRequest" SpName="WorkingTimeRequest_ApproveRequest" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_DisapproveRequest" SpName="WorkingTimeRequest_DisapproveRequest" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_RejectRequest" SpName="WorkingTimeRequest_RejectRequest" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_GetByEmployee" SpName="WorkingTimeRequest_GetByEmployee" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_Delete" SpName="WorkingTimeRequest_Delete" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_Update" SpName="WorkingTimeRequest_Update" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="WorkingTimeRequest_Get" SpName="WorkingTimeRequest_Get" DbName="nexhrx" Plain="0"></Setting>
     </Function>
     <Function Name="Holiday">
-        <Setting Key="Holiday_Insert" SpName="Holiday_Insert" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Holiday_Update" SpName="Holiday_Update" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Holiday_Delete" SpName="Holiday_Delete" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Holiday_GetByYear" SpName="Holiday_GetByYear" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Holiday_GetById" SpName="Holiday_GetById" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="Holiday_Insert" SpName="Holiday_Insert" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Holiday_Update" SpName="Holiday_Update" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Holiday_Delete" SpName="Holiday_Delete" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Holiday_GetByYear" SpName="Holiday_GetByYear" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Holiday_GetById" SpName="Holiday_GetById" DbName="nexhrx" Plain="0"></Setting>
     </Function>
   <Function Name="ExtensionNumber">
-    <Setting Key="ExtensionNO_GetAll" SpName="ExtensionNO_GetAll" DbName="nexhrx" Plain="1"></Setting>
-    <Setting Key="ExtensionNO_GetGroupInfo" SpName="ExtensionNO_GetGroupInfo" DbName="nexhrx" Plain="1"></Setting>
-    <Setting Key="ExtensionNO_Insert_EmployeeInfo" SpName="ExtensionNO_Insert_EmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
-    <Setting Key="ExtensionNO_GetEmployeeInfo" SpName="ExtensionNO_GetEmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
-    <Setting Key="ExtensionNO_Update_EmployeeInfo" SpName="ExtensionNO_Update_EmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
-    <Setting Key="ExtensionNO_DELETE_EmployeeInfo" SpName="ExtensionNO_DELETE_EmployeeInfo" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_GetAll" SpName="ExtensionNO_GetAll" DbName="nexhrx" Plain="0"></Setting>
+    <Setting Key="ExtensionNO_GetGroupInfo" SpName="ExtensionNO_GetGroupInfo" DbName="nexhrx" Plain="0"></Setting>
+    <Setting Key="ExtensionNO_Insert_EmployeeInfo" SpName="ExtensionNO_Insert_EmployeeInfo" DbName="nexhrx" Plain="0"></Setting>
+    <Setting Key="ExtensionNO_GetEmployeeInfo" SpName="ExtensionNO_GetEmployeeInfo" DbName="nexhrx" Plain="0"></Setting>
+    <Setting Key="ExtensionNO_Update_EmployeeInfo" SpName="ExtensionNO_Update_EmployeeInfo" DbName="nexhrx" Plain="0"></Setting>
+    <Setting Key="ExtensionNO_DELETE_EmployeeInfo" SpName="ExtensionNO_DELETE_EmployeeInfo" DbName="nexhrx" Plain="0"></Setting>
 
-    <Setting Key="ExtensionNO_Insert_GroupExternal" SpName="ExtensionNO_Insert_GroupExternal" DbName="nexhrx" Plain="1"></Setting>
-    <Setting Key="ExtensionNO_Update_GroupExternal" SpName="ExtensionNO_Update_GroupExternal" DbName="nexhrx" Plain="1"></Setting>
-    <Setting Key="ExtensionNO_DELETE_GroupExternal" SpName="ExtensionNO_DELETE_GroupExternal" DbName="nexhrx" Plain="1"></Setting>
+    <Setting Key="ExtensionNO_Insert_GroupExternal" SpName="ExtensionNO_Insert_GroupExternal" DbName="nexhrx" Plain="0"></Setting>
+    <Setting Key="ExtensionNO_Update_GroupExternal" SpName="ExtensionNO_Update_GroupExternal" DbName="nexhrx" Plain="0"></Setting>
+    <Setting Key="ExtensionNO_DELETE_GroupExternal" SpName="ExtensionNO_DELETE_GroupExternal" DbName="nexhrx" Plain="0"></Setting>
 
   </Function>
     <Function Name="Memo">
-        <Setting Key="Memo_Insert" SpName="Memo_Insert" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Memo_Update" SpName="Memo_Update" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Memo_Delete" SpName="Memo_Delete" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Memo_GetAll" SpName="Memo_GetAll" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Memo_GetById" SpName="Memo_GetById" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="Memo_GetById" SpName="Memo_GetById" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="Memo_Insert" SpName="Memo_Insert" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Memo_Update" SpName="Memo_Update" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Memo_Delete" SpName="Memo_Delete" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Memo_GetAll" SpName="Memo_GetAll" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Memo_GetById" SpName="Memo_GetById" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="Memo_GetById" SpName="Memo_GetById" DbName="nexhrx" Plain="0"></Setting>
     </Function>
 
     <Function Name="LeaveType">
-      <Setting Key="LeaveType_GetAll" SpName="LeaveType_GetAll" DbName="nexhrx" Plain="1"></Setting>
-      <Setting Key="LeaveType_GetById" SpName="LeaveType_GetById" DbName="nexhrx" Plain="1"></Setting>
+      <Setting Key="LeaveType_GetAll" SpName="LeaveType_GetAll" DbName="nexhrx" Plain="0"></Setting>
+      <Setting Key="LeaveType_GetById" SpName="LeaveType_GetById" DbName="nexhrx" Plain="0"></Setting>
     </Function>
 
     <Function Name="Request">
-        <Setting Key="GetCheckInOutByYear" SpName="WorkingTimeRequest_GetRequestByEmp_CheckinOutType" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="GetLateInOutByYear" SpName="WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType" DbName="nexhrx" Plain="1"></Setting>
+        <Setting Key="GetCheckInOutByYear" SpName="WorkingTimeRequest_GetRequestByEmp_CheckinOutType" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="GetLateInOutByYear" SpName="WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType" DbName="nexhrx" Plain="0"></Setting>
     </Function>
 
     <Function Name="AnnualLeaveBalance">
-        <Setting Key="AnnualLeave_InsertTransaction" SpName="AnnualLeave_InsertTransaction" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="AnnualLeave_InsertMultipleTransactions" SpName="AnnualLeave_InsertMultipleTransactions" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="AnnualLeave_UpdateTransaction" SpName="AnnualLeave_UpdateTransaction" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="AnnualLeave_DeleteTransaction" SpName="AnnualLeave_DeleteTransaction" DbName="nexhrx" Plain="1"></Setting>
-        <Setting Key="AnnualLeave_GetTransByEmp" SpName="AnnualLeave_GetTransByEmp" DbName="nexhrx" Plain="1">
+        <Setting Key="AnnualLeave_InsertTransaction" SpName="AnnualLeave_InsertTransaction" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="AnnualLeave_InsertMultipleTransactions" SpName="AnnualLeave_InsertMultipleTransactions" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="AnnualLeave_UpdateTransaction" SpName="AnnualLeave_UpdateTransaction" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="AnnualLeave_DeleteTransaction" SpName="AnnualLeave_DeleteTransaction" DbName="nexhrx" Plain="0"></Setting>
+        <Setting Key="AnnualLeave_GetTransByEmp" SpName="AnnualLeave_GetTransByEmp" DbName="nexhrx" Plain="0">
         </Setting>
-        <Setting Key="AnnualLeave_GetByID" SpName="AnnualLeave_GetByID" DbName="nexhrx" Plain="1">
+        <Setting Key="AnnualLeave_GetByID" SpName="AnnualLeave_GetByID" DbName="nexhrx" Plain="0">
         </Setting>
-        <Setting Key="AnnualLeave_ResetMultipleTransactions" SpName="AnnualLeave_ResetMultipleTransactions" DbName="nexhrx" Plain="1">
+        <Setting Key="AnnualLeave_ResetMultipleTransactions" SpName="AnnualLeave_ResetMultipleTransactions" DbName="nexhrx" Plain="0">
         </Setting>
     </Function>
 </Functions>
