@@ -22,6 +22,8 @@ namespace Fanex.NexHR.Models
 
         public short RequestType { get; set; }
 
+        public DateTime RequestDate { get; set; }
+
         public byte Status { get; set; }
 
         public bool IsPlanned { get; set; }

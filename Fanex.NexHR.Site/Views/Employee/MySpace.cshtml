@@ -14,7 +14,6 @@
     <a class="step" href="#">Personal</a> <span class="step">@ViewBag.Title</span>
 }
 
-
 <h2>@Labels.MySpace</h2>
 <div  class="grid_5">
     @Labels.AnualLeaveBalance:<strong> @Model.AnnualLeaveBalance day(s)</strong>
@@ -127,7 +126,7 @@
                 }
             </td>
 
-            <td>                    
+            <td>
                 @Html.ActionLink(Labels.Request, "create", "leave")
             </td>
         </tr>

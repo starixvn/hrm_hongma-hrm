@@ -24,14 +24,14 @@
 
     if (ViewBag.Updated == true)
     {
-        <div class="success">@Fanex.NexHR.Resources.Messages.RequestUpdated</div> 
+        <div class="success">@Messages.RequestUpdated</div> 
         <input type="hidden" id="successed" value="true" />
         <input type="hidden" id="year" value="@ViewBag.Year" />
-    }
+	}
     
     <div class="formrow">
         <div class="label">
-            @Fanex.NexHR.Resources.Labels.RequestCode
+            @Labels.RequestCode
         </div>
         <div class="input">
             <strong>Rq.@Model.Id</strong>
@@ -56,13 +56,24 @@
         </div>
         <div class="clear"></div>
     </div>
-
-    <div class="formrow">
+	<div class="formrow">
         <div class="label">
-            @Fanex.NexHR.Resources.Labels.RequestTime
+            Attendant date
         </div>
         <div class="input">
-            @Html.DatePickerFor(model => model.ForDate, new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1), DateTime.Now, unavailDates: (IEnumerable<DateTime>)ViewBag.UnavailDates)
+            @Html.DatePickerFor(model => model.ForDate, new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1), DateTime.Now)
+        </div>
+    </div>
+	<div class="clear">
+    </div>
+    <div class="space">
+    </div>
+    <div class="formrow">
+        <div class="label">
+            @Labels.RequestTime
+        </div>
+        <div class="input">
+            @Html.DatePickerFor(model => model.RequestTime, new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1), DateTime.Now)
                 
             @Html.Html5Number(0, 23, 1, Model.Hour, new { Name = "Hour", MaxLength = "2", id = "Hour" })
                  
@@ -76,7 +87,7 @@
             @Html.LabelFor(model => model.Shift)
         </div>
         <div class="input">
-            <span id="shiftname">@Model.Shift</span> <a id="shiftinfo" href="javascript:;" title="@Fanex.NexHR.Resources.Labels.ShiftInfo">
+            <span id="shiftname">@Model.Shift</span> <a id="shiftinfo" href="javascript:;" title="@Labels.ShiftInfo">
                 <span class="icon shiftinfo"> </span>
             </a>
             <div class="hide">
@@ -87,7 +98,6 @@
         
     <div class="formrow">
         <div class="label">
-                
         </div>
         <div class="input">
             @Html.HiddenFor(model => model.Employee)
@@ -95,12 +105,12 @@
             @Html.HiddenFor(model => model.EmployeeId)
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.Type)
-            @Html.HiddenFor(model => model.Shift)  
+            @Html.HiddenFor(model => model.Shift)
             @Html.Hidden("InTime")
             @Html.Hidden("OutTime")
 
             <input type="submit" value="@Labels.Update"/>
-            <a href="@Url.Action("employeeview","checkinout")" class="button">@Labels.Back</a>
+            <a href="@Url.Action("employeeview", "checkinout")" class="button">@Labels.Back</a>
         </div>
     </div>
 }

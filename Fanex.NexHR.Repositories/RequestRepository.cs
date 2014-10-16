@@ -36,6 +36,7 @@ namespace Fanex.NexHR.Repositories
         /// <param name="createdBy">Created by.</param>
         /// <param name="errorCode">Error code.</param>
         /// <param name="message">Message to request.</param>
+        /// <param name="requestDate">Request date.</param>
         /// <param name="fromDate">From date.</param>
         /// <param name="fromShift">From shift.</param>
         /// <param name="toDate">Request to Date.</param>
@@ -56,6 +57,7 @@ namespace Fanex.NexHR.Repositories
             int createdBy,
             out int errorCode,
             out string message,
+            DateTime requestDate,
             DateTime fromDate,
             int? fromShift = null,
             DateTime? toDate = null,
@@ -73,6 +75,8 @@ namespace Fanex.NexHR.Repositories
                 db.AddInParameter("@RequestType", DbType.Int16, requestType);
                 db.AddInParameter("@IsPlanned", DbType.Boolean, isPlanned);
                 db.AddInParameter("@Remark", DbType.String, remark);
+
+                db.AddInParameter("@RequestDate", DbType.DateTime, requestDate);
 
                 db.AddInParameter("@FromDate", DbType.DateTime, fromDate);
                 db.AddInParameter("@FromShift", DbType.Int32, fromShift);
@@ -109,6 +113,7 @@ namespace Fanex.NexHR.Repositories
         /// <param name="isPlanned">Is Planned.</param>
         /// <param name="remark">Remark, comment.</param>
         /// <param name="modifiedby">Modified by.</param>
+        /// <param name="requestDate">Request date.</param>
         /// <param name="fromDate">From date.</param>
         /// <param name="modifiedDate">Modified date.</param>
         /// <param name="fromShift">From Shift.</param>
@@ -126,6 +131,7 @@ namespace Fanex.NexHR.Repositories
            bool isPlanned,
            string remark,
            int modifiedby,
+           DateTime requestDate,
            DateTime fromDate,
            DateTime modifiedDate,
            int? fromShift = null,
@@ -143,6 +149,7 @@ namespace Fanex.NexHR.Repositories
                 db.AddInParameter("@Id", DbType.Int64, requestId);
                 db.AddInParameter("@IsPlanned", DbType.Boolean, isPlanned);
                 db.AddInParameter("@Remark", DbType.String, remark);
+                db.AddInParameter("@RequestDate", DbType.DateTime, requestDate);
                 db.AddInParameter("@FromDate", DbType.DateTime, fromDate);
                 db.AddInParameter("@FromShift", DbType.Int32, fromShift);
                 db.AddInParameter("@ToDate", DbType.DateTime, toDate);
@@ -236,7 +243,7 @@ namespace Fanex.NexHR.Repositories
         {
             using (ObjectDb db = new ObjectDb("WorkingTimeRequest_Get"))
             {
-                return db.Query<WorkingTimeRequest>(new { id }).FirstOrDefault();
+                return db.QueryEntity<WorkingTimeRequest>(new { id });
             }
         }
 
@@ -278,7 +285,7 @@ namespace Fanex.NexHR.Repositories
                                 Status = new RequestStatus { Id = reader.ToByte("Status") },
                                 Type = new RequestType { Id = reader.ToShort("RequestType") },
                                 TotalDaysRequestInMonth = reader.ToDecimal("TotalDaysRequestInMonth"),
-                                RequestedDate = reader.ToDateTime("RequestDate"),
+                                RequestDate = reader.ToDateTime("RequestDate"),
                                 Requester = new Employee
                                 {
                                     Id = reader.To<int>("empID"),
@@ -427,7 +434,7 @@ namespace Fanex.NexHR.Repositories
                                 Remark = reader.ToString("Remark"),
                                 CreatedDate = reader.ToDateTime("CreatedDate"),
                                 Status = new RequestStatus { Id = reader.ToByte("Status") },
-                                RequestedDate = reader.ToDateTime("RequestDate"),
+                                RequestDate = reader.ToDateTime("RequestDate"),
                                 TotalDaysRequestInMonth = reader.ToDecimal("TotalDaysRequestInMonth"),
 
                                 Requester = new Employee
@@ -563,7 +570,8 @@ namespace Fanex.NexHR.Repositories
                                 Id = reader.ToInt("Id"),
                                 Type = new RequestType { Id = reader.ToShort("RequestType") },
                                 FromShift = new Shift { Name = reader.ToString("Shift") },
-                                RequestedDate = reader.ToDateTime("RequestTime"),
+                                RequestDate = reader.ToDateTime("RequestDate"),
+                                FromDate = reader.ToDateTime("RequestTime"),
                                 CreatedDate = reader.ToDateTime("CreatedDate"),
                                 Status = new RequestStatus { Id = reader.ToByte("Status") },
                                 TotalDaysRequestInMonth = reader.ToDecimal("TotalDaysRequestInMonth"),
@@ -741,7 +749,7 @@ namespace Fanex.NexHR.Repositories
                                 CreatedDate = reader.ToDateTime("CreatedDate"),
                                 Remark = reader.ToString("Remark"),
                                 Status = new RequestStatus { Id = reader.ToByte("Status") },
-                                RequestedDate = reader.ToDateTime("RequestDate"),
+                                RequestDate = reader.ToDateTime("RequestDate"),
 
                                 Requester = new Employee
                                 {
@@ -840,7 +848,8 @@ namespace Fanex.NexHR.Repositories
                                 Id = reader.ToInt("Id"),
                                 Type = new RequestType { Id = reader.ToShort("RequestType") },
                                 FromShift = new Shift { Name = reader.ToString("Shift") },
-                                RequestedDate = reader.ToDateTime("RequestTime"),
+                                RequestDate = reader.ToDateTime("RequestDate"),
+                                FromDate = reader.ToDateTime("RequestTime"),
                                 CreatedDate = reader.ToDateTime("CreatedDate"),
                                 Status = new RequestStatus { Id = reader.ToByte("Status") },
                                 Requester = new Employee

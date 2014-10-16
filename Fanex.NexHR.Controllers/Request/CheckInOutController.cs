@@ -38,8 +38,7 @@ namespace Fanex.NexHR.Controllers.Request
         /// <returns>View Create.</returns>
         public ActionResult Create()
         {
-            var listUnavailDates = _EmployeeService.GetDisableRequestDate(this.CurrentUser.Id, DateTime.Now.AddMonths(-1), DateTime.Now.AddMonths(1));
-            ViewBag.UnavailDates = listUnavailDates;
+            ViewBag.UnavailDates = _EmployeeService.GetDisableRequestDate(this.CurrentUser.Id, DateTime.Now.AddMonths(-1), DateTime.Now.AddMonths(1));
             var employee = _EmployeeService.Get(this.CurrentUser.Id);
             ViewBag.Shifts = _ShiftService.GetAll();
             var viewModel = new CheckInOutRequestViewModel
@@ -48,6 +47,7 @@ namespace Fanex.NexHR.Controllers.Request
                 DisplayName = employee.DisplayName,
                 EmployeeId = employee.Id,
                 ForDate = DateTime.Today,
+                RequestTime = DateTime.Now,
                 Hour = DateTime.Now.Hour,
                 Minute = DateTime.Now.Minute,
                 Type = (short)RequestTypes.CheckIn,
@@ -84,7 +84,6 @@ namespace Fanex.NexHR.Controllers.Request
             }
 
             ViewBag.TotalRequest = numberOfRequest;
-
             return View(viewModel);
         }
 
@@ -136,7 +135,8 @@ namespace Fanex.NexHR.Controllers.Request
                 Employee = employee.NickName,
                 DisplayName = employee.DisplayName,
                 EmployeeId = employee.Id,
-                ForDate = request.FromDate.Date,
+                RequestTime = request.FromDate.Date,
+                ForDate = request.RequestDate.Date,
                 Hour = request.FromDate.Hour,
                 Minute = request.FromDate.Minute,
                 Type = request.RequestType,

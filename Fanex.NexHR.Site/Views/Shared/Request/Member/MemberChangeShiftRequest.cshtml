@@ -37,7 +37,7 @@
                     <td class="tooltip" title="@request.Requester.FullName">
                         @request.Requester.NickName.ToString()
                     </td>
-                    <td class="ddMMyyyy highlight">@request.RequestedDate.ToDateMonthYearFormatedDate()
+                    <td class="ddMMyyyy highlight">@request.RequestDate.ToDateMonthYearFormatedDate()
                     </td>
                     <td class="highlight">@request.FromShift.Name.ToString()
                     </td>
@@ -60,7 +60,7 @@
                     {
                         case 1: //Pending
                         <td>
-                            <a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString() tooltip" title="@request.Requester.NickName had @request.TotalDaysRequestInMonth approved request(s) in @request.RequestedDate.ToMonthAndYearFormatedDate()">@request.Status.ToString()</a>
+                            <a requestid="@request.Id" href="javascript:;" class="@request.Status.ToString() tooltip" title="@request.Requester.NickName had @request.TotalDaysRequestInMonth approved request(s) in @request.RequestDate.ToMonthAndYearFormatedDate()">@request.Status.ToString()</a>
                         </td>
                                                                                                          break;
                         case 2: //Approve

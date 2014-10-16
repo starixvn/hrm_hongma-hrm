@@ -24,6 +24,8 @@ namespace Fanex.NexHR.ViewModels
         [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ForDate { get; set; }
 
+        public DateTime RequestTime { get; set; }
+
         [Required]
         [DisplayFormat(DataFormatString = "{0:f2}", ApplyFormatInEditMode = true)]
         [Range(0, 23)]

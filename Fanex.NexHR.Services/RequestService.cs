@@ -12,6 +12,7 @@ namespace Fanex.NexHR.Services
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -33,7 +34,6 @@ namespace Fanex.NexHR.Services
     /// </summary>
     public class RequestService : IRequestService
     {
-        #region constant
         private const string _MsgLeave = "<span class='req leave'>{1}</span> {0} days";
         private const string _MsgLeaveHalfDay = "<span class='req leave'>{0} ({1}-{2})</span> 0.5 day";
         private const string _MsgLeaveOneDay = "<span class='req leave'>{0}</span> 1 day";
@@ -44,15 +44,11 @@ namespace Fanex.NexHR.Services
         private const string _MsgEarlyOut = "<span class='req inout'>-{0}' {1}</span> {2}";
         private const string _MsgOvertimeHours = "<span class='req overtime'>{0} ({1}-{2})</span> {3}' - {4}";
         private const string _MsgOvertimeShift = "<span class='req overtime'>{0} ({1})</span> {2}";
-
         private const string _MailContentLeave = "{0} to {1} ({2} days)";
         private const string _MailContentLeaveOneDay = "{0}";
         private const string _MailContentLeaveHalfDay = "{0} (0.5 day from {1} to {2})";
         private const string _MailContentLeaveDuringWorking = "{0} ({1} - {2})";
         private const int _MaxMunites = 210;
-
-        #endregion
-
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmailService _emailService;
         private readonly ILeaveTypeService _leaveTypeService;
@@ -190,6 +186,7 @@ namespace Fanex.NexHR.Services
                     model.By,
                     out errorCode,
                     out message,
+                    requestDate: model.FromDate,
                     fromDate: model.FromDate,
                     toDate: model.ToDate,
                     totalDays: model.TotalDays,
@@ -234,11 +231,11 @@ namespace Fanex.NexHR.Services
                     out errorCode,
                     out message,
                     model.ForDate,
+                    model.ForDate,
                     fromShift: model.FromShift,
                     toShift: model.ToShift);
                 if (errorCode == 0)
                 {
-                    //// get leader(s)
                     var leaders = this._employeeRepository.GetLeaders(model.EmployeeId);
 
                     if (leaders == null || leaders.Count == 0)
@@ -301,6 +298,7 @@ namespace Fanex.NexHR.Services
                 out errorCode,
                 out message,
                 model.FromDate,
+                model.FromDate,
                 toDate: model.ToDate,
                 lateInMins: lateInMins,
                 earlyOutMins: earlyOutMins);
@@ -323,15 +321,19 @@ namespace Fanex.NexHR.Services
         /// <param name="modelState">ModelState Dictionary.</param>
         /// <param name="model">CheckInOutRequest ViewModel.</param>
         /// <returns>Result of insert.</returns>
+        [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public bool CheckInOut(ModelStateDictionary modelState, CheckInOutRequestViewModel model)
         {
             if (modelState.IsValid)
             {
                 // update date & time
-                model.ForDate = model.ForDate + new TimeSpan(model.Hour, model.Minute, 0);
+                model.RequestTime = model.RequestTime + new TimeSpan(model.Hour, model.Minute, 0);
                 int errorCode;
                 string message;
-                var requestId = this._requestRepository.WorkingTimeRequest(
+                long requestId = 0;
+                if ((model.RequestTime - model.ForDate).Days >= 0 && (model.RequestTime - model.ForDate).Days < 2)
+                {
+                    requestId = this._requestRepository.WorkingTimeRequest(
                     model.EmployeeId,
                     model.Type,
                     false,
@@ -340,12 +342,18 @@ namespace Fanex.NexHR.Services
                     model.By,
                     out errorCode,
                     out message,
-                    model.ForDate);
+                    model.ForDate,
+                    model.RequestTime);
+                }
+                else
+                {
+                    errorCode = 1;
+                    message = Messages.InvalidInputData;
+                }
+
                 if (errorCode == 0)
                 {
-                    //// get leader(s)
                     var leaders = this._employeeRepository.GetLeaders(model.EmployeeId);
-
                     if (leaders == null || leaders.Count == 0)
                     {
                         string errorMessage;
@@ -367,7 +375,7 @@ namespace Fanex.NexHR.Services
             }
             else
             {
-                modelState.AddModelError(string.Empty, Resources.Messages.InvalidInputData);
+                modelState.AddModelError(string.Empty, Messages.InvalidInputData);
             }
 
             return false;
@@ -402,6 +410,7 @@ namespace Fanex.NexHR.Services
                     model.By,
                     out errorCode,
                     out message,
+                    fromDate,
                     fromDate: fromDate,
                     toDate: toDate,
                     fromShift: model.Shift,
@@ -420,7 +429,7 @@ namespace Fanex.NexHR.Services
             }
             else
             {
-                modelState.AddModelError(string.Empty, Resources.Messages.InvalidInputData);
+                modelState.AddModelError(string.Empty, Messages.InvalidInputData);
             }
 
             return false;
@@ -432,6 +441,7 @@ namespace Fanex.NexHR.Services
         /// <param name="modelState">ModelState Dictionary.</param>
         /// <param name="model">LeaveRequest ViewModel.</param>
         /// <returns>Result of update.</returns>
+         [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan", Justification = "Reviewed. Suppression is OK here.")]
         public bool UpdateLeave(ModelStateDictionary modelState, LeaveRequestViewModel model)
         {
             if (modelState.IsValid)
@@ -464,6 +474,7 @@ namespace Fanex.NexHR.Services
                     model.IsPlanned,
                     model.Remark,
                     model.EmployeeId,
+                    model.FromDate,
                     model.FromDate,
                     DateTime.Now,
                     toDate: model.ToDate,
@@ -500,15 +511,14 @@ namespace Fanex.NexHR.Services
                     model.Remark,
                     model.By,
                     model.ForDate,
+                    model.ForDate,
                     DateTime.Now,
                     fromShift: model.FromShift,
                     toShift: model.ToShift);
 
                 if (updated)
                 {
-                    // get leader(s)
                     var leaders = this._employeeRepository.GetLeaders(model.EmployeeId);
-
                     if (leaders == null || leaders.Count == 0)
                     {
                         string errorMessage;
@@ -560,6 +570,7 @@ namespace Fanex.NexHR.Services
                             model.Remark,
                             model.By,
                             model.FromDate,
+                            model.FromDate,
                             toDate: model.ToDate,
                             modifiedDate: DateTime.Now,
                             lateInMins: lateInMins,
@@ -599,21 +610,27 @@ namespace Fanex.NexHR.Services
         {
             if (modelState.IsValid)
             {
-                model.ForDate = model.ForDate + new TimeSpan(model.Hour, model.Minute, 0);
-
-                var updated = this._requestRepository.UpdateRequest(
+                model.RequestTime = model.RequestTime + new TimeSpan(model.Hour, model.Minute, 0);
+                var updated = false;
+                if ((model.RequestTime - model.ForDate).Days >= 0 && (model.RequestTime - model.ForDate).Days < 2)
+                {
+                    updated = this._requestRepository.UpdateRequest(
                     model.Id,
                     false,
                     null,
                     model.EmployeeId,
                     model.ForDate,
+                    model.RequestTime,
                     DateTime.Now);
+                }
+                else
+                {
+                    modelState.AddModelError(string.Empty, Resources.Messages.InvalidInputData);
+                }
 
                 if (updated)
                 {
-                    // get leader(s)
                     var leaders = this._employeeRepository.GetLeaders(model.EmployeeId);
-
                     if (leaders == null || leaders.Count == 0)
                     {
                         string errorMessage;
@@ -660,6 +677,7 @@ namespace Fanex.NexHR.Services
                     model.IsPlanned,
                     model.Remark,
                     model.EmployeeId,
+                    fromDate,
                     fromDate,
                     DateTime.Now,
                     toDate: toDate,
@@ -708,7 +726,6 @@ namespace Fanex.NexHR.Services
             var request = this._requestRepository.GetWorkingTimeRequest(id);
             var employee = this._employeeRepository.Get(request.EmpId);
             var processUser = this._employeeRepository.Get(processBy);
-
             Commands processCommand;
             switch (command)
             {
@@ -727,14 +744,11 @@ namespace Fanex.NexHR.Services
             }
 
             string message;
-            int code = this._requestRepository.ProcessRequest(
-                processCommand, id, processBy, DateTime.Now, out message);
-
+            int code = this._requestRepository.ProcessRequest(processCommand, id, processBy, DateTime.Now, out message);
             if (code == 0)
             {
                 var templateEmailPathForRequester = HttpContext.Current.Server.MapPath("~/app_data/emails/process.request.cshtml");
                 var templateEmailPathForRelated = GetEmailTemplatePath(request.RequestType);
-
                 var taskSendMail = new Task(()
                     => this.SendMailProcess(command, request, employee, processUser, processCommand, templateEmailPathForRequester, templateEmailPathForRelated));
                 taskSendMail.Start();
@@ -772,7 +786,6 @@ namespace Fanex.NexHR.Services
         public bool DeleteWorkingTimeRequest(int id)
         {
             Check.Argument.IsNotNegativeOrZero(id, "id");
-
             return this._requestRepository.DeleteWorkingTimeRequest(id);
         }
 
@@ -799,19 +812,11 @@ namespace Fanex.NexHR.Services
             int? loginId = null)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
+            if (fromDate <= toDate)
             {
-                if (fromDate <= toDate)
-                {
-                    entityList = this._requestRepository.GetCheckInOutRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
-                }
+                entityList = this._requestRepository.GetCheckInOutRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
             }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
-            }
-
+           
             return entityList;
         }
 
@@ -838,17 +843,9 @@ namespace Fanex.NexHR.Services
             int? loginId = null)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
+            if (fromDate <= toDate)
             {
-                if (fromDate <= toDate)
-                {
-                    entityList = this._requestRepository.GetLateInEarlyOutRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
-                }
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
+                entityList = this._requestRepository.GetLateInEarlyOutRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
             }
 
             return entityList;
@@ -877,17 +874,9 @@ namespace Fanex.NexHR.Services
             int? loginId = null)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
+            if (fromDate <= toDate)
             {
-                if (fromDate <= toDate)
-                {
-                    entityList = this._requestRepository.GetChangeShiftRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
-                }
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
+                entityList = this._requestRepository.GetChangeShiftRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
             }
 
             return entityList;
@@ -916,17 +905,9 @@ namespace Fanex.NexHR.Services
             int? loginId = null)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
+            if (fromDate <= toDate)
             {
-                if (fromDate <= toDate)
-                {
-                    entityList = this._requestRepository.GetLeaveRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
-                }
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
+                entityList = this._requestRepository.GetLeaveRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
             }
 
             return entityList;
@@ -955,17 +936,9 @@ namespace Fanex.NexHR.Services
             int? loginId = null)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
+            if (fromDate <= toDate)
             {
-                if (fromDate <= toDate)
-                {
-                    entityList = this._requestRepository.GetOvertimeRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
-                }
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
+                entityList = this._requestRepository.GetOvertimeRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
             }
 
             return entityList;
@@ -994,17 +967,9 @@ namespace Fanex.NexHR.Services
             int? loginId = null)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
+            if (fromDate <= toDate)
             {
-                if (fromDate <= toDate)
-                {
-                    entityList = this._requestRepository.GetAllRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
-                }
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
+                entityList = this._requestRepository.GetAllRequest(roleId, fromDate, toDate, groupIds, isDailyRequest, employeeId, status, loginId);
             }
 
             return entityList;
@@ -1061,16 +1026,7 @@ namespace Fanex.NexHR.Services
         public IList<RequestEntity> GetLeaveRequestHistory(long requestId, int requestTypeId)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
-            {
-                entityList = this._requestRepository.GetLeaveRequestHistory(requestId, requestTypeId);
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
-            }
-
+            entityList = this._requestRepository.GetLeaveRequestHistory(requestId, requestTypeId);
             return entityList;
         }
 
@@ -1083,16 +1039,7 @@ namespace Fanex.NexHR.Services
         public IList<RequestEntity> GetChangeShiftRequestHistory(long requestId, int requestTypeId)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
-            {
-                entityList = this._requestRepository.GetChangeShiftRequestHistory(requestId, requestTypeId);
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
-            }
-
+            entityList = this._requestRepository.GetChangeShiftRequestHistory(requestId, requestTypeId);
             return entityList;
         }
 
@@ -1105,16 +1052,7 @@ namespace Fanex.NexHR.Services
         public IList<RequestEntity> GetLateInEarlyOutRequestHistory(long requestId, int requestTypeId)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
-            {
-                entityList = this._requestRepository.GetLateInEarlyOutRequestHistory(requestId, requestTypeId);
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
-            }
-
+            entityList = this._requestRepository.GetLateInEarlyOutRequestHistory(requestId, requestTypeId);
             return entityList;
         }
 
@@ -1127,16 +1065,7 @@ namespace Fanex.NexHR.Services
         public IList<RequestEntity> GetCheckInOutRequestHistory(long requestId, int requestTypeId)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
-            {
-                entityList = this._requestRepository.GetCheckInOutRequestHistory(requestId, requestTypeId);
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
-            }
-
+            entityList = this._requestRepository.GetCheckInOutRequestHistory(requestId, requestTypeId);
             return entityList;
         }
 
@@ -1149,16 +1078,7 @@ namespace Fanex.NexHR.Services
         public IList<RequestEntity> GetOvertimeRequestHistory(long requestId, int requestTypeId)
         {
             IList<RequestEntity> entityList = new List<RequestEntity>();
-            try
-            {
-                entityList = this._requestRepository.GetOvertimeRequestHistory(requestId, requestTypeId);
-            }
-            catch (Exception ex)
-            {
-                /*writelog*/
-                Fanex.Logging.LogService.Error(ex.Message, ex);
-            }
-
+            entityList = this._requestRepository.GetOvertimeRequestHistory(requestId, requestTypeId);
             return entityList;
         }
 

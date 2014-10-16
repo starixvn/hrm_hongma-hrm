@@ -17,11 +17,11 @@ namespace Fanex.NexHR.Models.Request
     {
         public Employee Requester { get; set; }
 
-        public DateTime RequestedDate { get; set; }
+        public DateTime RequestDate { get; set; }
 
         public RequestType Type { get; set; }
 
-        public RequestStatus Status { get; set; }        
+        public RequestStatus Status { get; set; }
 
         public Employee CreatedBy { get; set; }
 
