@@ -31,6 +31,8 @@ namespace Fanex.NexHR.Models
 
         public string Password { get; set; }
 
+        public string EmployeeCard { get; set; }
+
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
 

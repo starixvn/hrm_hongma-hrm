@@ -10,10 +10,8 @@
 namespace Fanex.NexHR.Repositories.Interfaces
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using Fanex.NexHR.Models;
 
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed.")]
     public interface IHolidayRepository
     {
         int Insert(Holiday model);
