@@ -1,6 +1,6 @@
 USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_Update]    Script Date: 10/21/2014 11:01:14 ******/
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_Update]    Script Date: 10/21/2014 12:53:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -57,7 +57,7 @@ Param's Explanation:
 	IsLeaveDay = case when @ShiftId is null and LeaveTypeId is not null then 1  
 	  else 0 end ,
 	ModifiedBy = @ModifiedBy ,
-	ModifiedDate = @ModifiedDate  
+	ModifiedDate = GETDATE()  
  WHERE empId = @EmpId AND  
   datediff(d, WorkDate, @date) = 0  
   

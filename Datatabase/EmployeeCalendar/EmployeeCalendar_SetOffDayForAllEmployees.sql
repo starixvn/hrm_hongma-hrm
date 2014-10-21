@@ -1,6 +1,6 @@
 USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_SetOffDayForAllEmployees]    Script Date: 10/21/2014 11:01:00 ******/
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_SetOffDayForAllEmployees]    Script Date: 10/21/2014 12:52:47 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -53,7 +53,7 @@ END
  SET isOffDay = case when @isOffDay = 0 and ShiftID is null and isHoliday=0 and isLeaveday=0 then 1
 					else @isOffDay end,
 	ModifiedBy = @ModifiedBy,
-	ModifiedDate = @ModifiedDate					
+	ModifiedDate = GETDATE()					
  WHERE WorkDate = @date
     
  -- update attendate record   

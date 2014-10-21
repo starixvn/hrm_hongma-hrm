@@ -1,6 +1,6 @@
 USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[EmployeeGroup_Delete]    Script Date: 10/21/2014 11:03:13 ******/
+/****** Object:  StoredProcedure [dbo].[EmployeeGroup_Delete]    Script Date: 10/21/2014 12:58:03 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -40,7 +40,7 @@ BEGIN
 
 	UPDATE [dbo].[EmployeeGroup]
 	SET Deleted = 1
-		,ModifiedDate = @ModifiedDate
+		,ModifiedDate = GETDATE()
 		,ModifiedBy = @ModifiedBy
 	WHERE Id=@Id
 	SET @ErrCode=0
