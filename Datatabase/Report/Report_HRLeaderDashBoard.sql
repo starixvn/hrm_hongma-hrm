@@ -1,8 +1,15 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Report_HRLeaderDashBoard]    Script Date: 10/21/2014 11:19:21 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*
 --Report_HRLeaderDashBoard 150, '2012/5/15'
 */
 
-ALTER PROCEDURE Report_HRLeaderDashBoard
+ALTER PROCEDURE [dbo].[Report_HRLeaderDashBoard]
 	@employeeid int = null,
 	@date datetime
 AS

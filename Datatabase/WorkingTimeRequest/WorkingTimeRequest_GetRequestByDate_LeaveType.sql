@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByDate_LeaveType]    Script Date: 10/18/2013 9:12:40 AM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByDate_LeaveType]    Script Date: 10/21/2014 12:41:43 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

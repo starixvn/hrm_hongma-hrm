@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Report_MonthlyAttendance]    Script Date: 10/21/2014 11:19:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 
 /*
 declare @fromtime datetime, @totime datetime, @empid int, @groupid int 
@@ -10,7 +17,7 @@ set @groupid= 1
 exec dbo.Report_MonthlyAttendance @fromtime , @totime , @empid, @groupid
 */
 
-ALTER PROCEDURE dbo.[Report_MonthlyAttendance]
+ALTER PROCEDURE [dbo].[Report_MonthlyAttendance]
 	@fromtime datetime, 
 	@totime datetime, 
 	@empid int = null, 	

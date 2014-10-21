@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Employee_GetSubTeam]    Script Date: 10/21/2014 10:53:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- Employee_GetSubTeam 165
 
 ALTER PROCEDURE [dbo].[Employee_GetSubTeam]

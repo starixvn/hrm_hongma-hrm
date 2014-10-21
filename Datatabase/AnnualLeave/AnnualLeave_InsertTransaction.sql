@@ -1,16 +1,16 @@
-USE [NexHR]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[AnnualLeave_InsertTransaction]    Script Date: 04/20/2012 11:43:20 ******/
+/****** Object:  StoredProcedure [dbo].[AnnualLeave_InsertTransaction]    Script Date: 10/21/2014 10:45:55 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 ALTER PROCEDURE [dbo].[AnnualLeave_InsertTransaction]
 	@EmpId int, 
-	@RequestId int,
+	@RequestId int = null,
 	@Description nvarchar(4000),
 	@FromDate datetime,
-	@ToDate datetime,
+	@ToDate datetime = null,
 	@DeductDays numeric(18,1),
 	@CreditDays numeric(18,1),
 	@CreatedDate datetime,

@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_UpdateWeekWorking]    Script Date: 10/21/2014 11:01:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*
 declare 
 	@empId int,
@@ -117,11 +124,10 @@ Param's Explanation:
 						when @dw=6 and @FriShift is null and LeaveTypeId is not null  then 1
 						when @dw=7 and @SatShift is null and LeaveTypeId is not null  then 1
 						else 0
-					end
+					end,
+		ModifiedDate = GETDATE()
 	WHERE empId = @Id AND
 		WorkDate BETWEEN @fromdate AND @todate
 
 	-- update attendance record 
 	EXEC EmployeeAttendance_ProcessingAndInsert @id, @fromdate, @todate, 1
-
-

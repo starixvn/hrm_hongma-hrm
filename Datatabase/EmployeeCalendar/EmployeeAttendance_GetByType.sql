@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[EmployeeAttendance_GetByType]    Script Date: 10/18/2013 8:26:44 AM ******/
+/****** Object:  StoredProcedure [dbo].[EmployeeAttendance_GetByType]    Script Date: 10/21/2014 10:54:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -117,6 +117,7 @@ from (
 			LEFT JOIN dbo.Shift s WITH (NOLOCK) ON s.Id=a.ShiftId			
 			LEFT JOIN dbo.EmployeeGroup g WITH (NOLOCK) ON e.groupid=g.Id			
 	WHERE attendancedate between @fromtime and  @totime
+			AND e.Enabled =1
 			and ((e.isDeleted is null or e.isDeleted = 0) or @excludeUserDelete = 0)
 			and (@empid is null or a.empid=@empid)		
 			and (@groupids IS NULL OR @groupids = '' OR g.Id IN (SELECT GroupId FROM #GroupsList))

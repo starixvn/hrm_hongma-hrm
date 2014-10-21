@@ -1,6 +1,13 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_WriteHistory]    Script Date: 10/21/2014 12:43:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- [WorkingTimeRequest_WriteHistory] 316
 
-CREATE PROCEDURE [dbo].[WorkingTimeRequest_WriteHistory]	
+ALTER PROCEDURE [dbo].[WorkingTimeRequest_WriteHistory]	
 	@RequestID bigint
 AS
 /*
@@ -35,7 +42,10 @@ INSERT dbo.WorkingTimeRequest_history
 			TotalDays,
 			LateInMins,
 			EarlyOutMins,
-			LogDate
+			LogDate,
+			OvertimeType,
+			IsOvertimeHours,
+			RequestDate
 		)
 	SELECT
 			Id,
@@ -58,6 +68,9 @@ INSERT dbo.WorkingTimeRequest_history
 			TotalDays,
 			LateInMins,
 			EarlyOutMins,	
-			getdate()
+			getdate(),
+			OvertimeType,
+			IsOvertimeHours,
+			RequestDate
 	FROM dbo.WorkingTimeRequest
 	WHERE Id = @RequestID

@@ -1,9 +1,16 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Report_EmployeeDashBoard]    Script Date: 10/21/2014 11:19:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*
 --set @empid= 165--165--143
 Report_EmployeeDashBoard 143, '2012/04/01'
 */
 
-ALTER PROCEDURE Report_EmployeeDashBoard
+ALTER PROCEDURE [dbo].[Report_EmployeeDashBoard]
 	@empid int,
 	@date datetime
 AS

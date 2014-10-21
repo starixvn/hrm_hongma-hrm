@@ -1,6 +1,13 @@
--- Employee_GetGroupHandleRequest 165
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Employee_GetGroupHandleRequest]    Script Date: 10/21/2014 10:52:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- Employee_GetLeaders 165
 
-CREATE PROCEDURE [dbo].[Employee_GetGroupHandleRequest]	
+ALTER PROCEDURE [dbo].[Employee_GetGroupHandleRequest]	
 	@id int
 AS
 /*

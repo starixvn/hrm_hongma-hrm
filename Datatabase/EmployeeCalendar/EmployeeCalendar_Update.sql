@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_Update]    Script Date: 10/21/2014 11:01:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*  
 declare @empId int, @date datetime, @shiftId int  
 select @empId=163,  
@@ -7,12 +14,12 @@ select @empId=163,
 exec EmployeeCalendar_Update @empId , @date , @ShiftID  
 */  
   
-CREATE PROCEDURE [dbo].[EmployeeCalendar_Update]   
+ALTER PROCEDURE [dbo].[EmployeeCalendar_Update]   
 	@EmpId int,   
 	@date datetime,  
 	@ShiftID int,
 	@ModifiedBy int,
-	@ModifiedDate datetime
+	@ModifiedDate datetime  
 AS  
 /*  
 Created: 2012/05/10@Dan  

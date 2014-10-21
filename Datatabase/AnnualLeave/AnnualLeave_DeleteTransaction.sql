@@ -1,8 +1,15 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[AnnualLeave_DeleteTransaction]    Script Date: 10/21/2014 10:43:43 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*
 AnnualLeave_DeleteTransaction 2,'2012/04/20',86
 */
 
-alter PROCEDURE AnnualLeave_DeleteTransaction	
+ALTER PROCEDURE [dbo].[AnnualLeave_DeleteTransaction]	
 	@Id int	,
 	@ModifiedDate datetime,
 	@ModifiedBy int
@@ -68,4 +75,3 @@ BEGIN CATCH
                @ErrorState -- State.
                );
 END CATCH;
-

@@ -1,4 +1,11 @@
-ALTER PROCEDURE EmployeeGroup_InsertMember
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeGroup_InsertMember]    Script Date: 10/21/2014 11:06:24 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[EmployeeGroup_InsertMember]
 	@EmpId INT
    ,@GroupId INT
    ,@isMainGroup bit

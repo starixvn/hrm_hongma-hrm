@@ -1,6 +1,6 @@
-USE [NexHRM]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_Insert]    Script Date: 9/12/2012 4:11:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_Insert]    Script Date: 10/21/2014 12:43:16 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9,7 +9,8 @@ ALTER PROCEDURE [dbo].[WorkingTimeRequest_Insert]
 	@EmpId int, 
 	@RequestType smallint,	
 	@IsPlanned bit,
-	@Remark nvarchar(2000),				
+	@Remark nvarchar(2000),
+	@requestDate datetime,
 	@FromDate datetime, 
 	@FromShift int, 	
 	@ToDate datetime, 
@@ -18,6 +19,8 @@ ALTER PROCEDURE [dbo].[WorkingTimeRequest_Insert]
 	@TotalDays numeric(5,1), 
 	@LateInMins int,
 	@EarlyOutMins int,
+	@OvertimeType smallint,
+	@IsOvertimeHours bit,
 	@CreatedDate datetime,
 	@CreatedBy int,
 	@ErrCode int = 0 OUTPUT,
@@ -64,7 +67,7 @@ END
 
 IF (@RequestType IN (6) AND 
 	(@FromDate IS NULL OR @ToDate IS NULL OR @LeaveTypeID IS NULL 
-		OR ISNULL(@TotalDays,0) <= 0 )
+		OR ISNULL(@TotalDays,0) < 0 )
 	)
 BEGIN
 	SET @ErrCode =105
@@ -72,16 +75,27 @@ BEGIN
 	RETURN;
 END
 
---check maximum request in month
-IF (@RequestType IN (3,4,5))
+IF (@RequestType = 6)
 BEGIN
-	EXEC WorkingTimeRequest_CheckNumberRequest @empid, @RequestType, @FromDate, @ErrCode OUTPUT, @ErrMsg OUTPUT	
-	IF (@ErrCode <>0)
-		RETURN
-END
+	-- 
+	IF (@LeaveTypeID = 2 AND datediff(d, getdate(), @FromDate) < 7) -- Emergency Annual leave
+	BEGIN
+		SET @ErrCode = 112
+		SET @ErrMsg = 'Not allow to create "Annual Leave" request less than 7 days in advance. Please turn to "Emergency Annual Leave" instead'
+		RETURN;
+	END
+END	
+
+--check maximum request in month
+--IF (@RequestType IN (3,4,5))
+--BEGIN
+--	EXEC WorkingTimeRequest_CheckNumberRequest @empid, @RequestType, @FromDate, @ErrCode OUTPUT, @ErrMsg OUTPUT	
+--	IF (@ErrCode <>0)
+--		RETURN
+--END
 
 -- check if there is another request in the same date
-IF (@RequestType IN (1,2,3,4,5) AND 
+IF (@RequestType IN (1,2,5) AND 
 	exists(select * from dbo.WorkingTimeRequest
 		where empid=@empid 
 			and RequestType=@RequestType
@@ -95,16 +109,15 @@ BEGIN
 	RETURN;
 END
 
--- check if there is another request in the same range
-IF (@RequestType IN (6) AND 
+IF (@RequestType IN (3,4) AND 
 	exists(select * from dbo.WorkingTimeRequest
 		where empid=@empid 
-			and RequestType=@RequestType
-			and status in (1,2)
-			and (	CONVERT(VARCHAR(10),fromdate,111) between CONVERT(VARCHAR(10),@fromdate,111) and CONVERT(VARCHAR(10),@todate,111) 
-				or  CONVERT(VARCHAR(10),todate,111) between CONVERT(VARCHAR(10),@fromdate,111) and CONVERT(VARCHAR(10),@todate,111) 
-				or  CONVERT(VARCHAR(10),@fromdate,111) between CONVERT(VARCHAR(10),fromdate,111) and CONVERT(VARCHAR(10),todate,111) 
-				or  CONVERT(VARCHAR(10),@todate,111) between CONVERT(VARCHAR(10),fromdate,111) and CONVERT(VARCHAR(10),todate,111) 
+			AND RequestType=@RequestType
+			AND status in (1,2)
+			AND (CONVERT(VARCHAR(10),fromdate,111) BETWEEN CONVERT(VARCHAR(10),@fromdate,111) AND CONVERT(VARCHAR(10),@todate,111)  
+					OR CONVERT(VARCHAR(10),todate,111) BETWEEN CONVERT(VARCHAR(10),@fromdate,111) AND CONVERT(VARCHAR(10),@todate,111)
+					OR CONVERT(VARCHAR(10),@fromdate,111) BETWEEN CONVERT(VARCHAR(10),fromdate,111) AND CONVERT(VARCHAR(10),todate,111)
+					OR CONVERT(VARCHAR(10),@todate,111) BETWEEN CONVERT(VARCHAR(10),fromdate,111) AND CONVERT(VARCHAR(10),todate,111)
 			)
 		)
 	)
@@ -114,13 +127,59 @@ BEGIN
 	RETURN;
 END
 
+IF (@RequestType = 6) AND 
+	(exists(select * from dbo.WorkingTimeRequest WITH (NOLOCK)
+		where empid=@empid 
+			AND RequestType=@RequestType
+			AND status in (1,2)
+			AND (
+					(@TotalDays >= 1 AND 
+						(CONVERT(VARCHAR(10),fromdate,111) BETWEEN CONVERT(VARCHAR(10),@fromdate,111) AND CONVERT(VARCHAR(10),@todate,111)  
+						OR CONVERT(VARCHAR(10),todate,111) BETWEEN CONVERT(VARCHAR(10),@fromdate,111) AND CONVERT(VARCHAR(10),@todate,111)
+						OR CONVERT(VARCHAR(10),@fromdate,111) BETWEEN CONVERT(VARCHAR(10),fromdate,111) AND CONVERT(VARCHAR(10),todate,111)
+						OR CONVERT(VARCHAR(10),@todate,111) BETWEEN CONVERT(VARCHAR(10),fromdate,111) AND CONVERT(VARCHAR(10),todate,111))
+					)
+					OR
+					(
+						@TotalDays < 1 AND TotalDays >= 1 AND
+						(CONVERT(VARCHAR(10),fromdate,111) BETWEEN CONVERT(VARCHAR(10),@fromdate,111) AND CONVERT(VARCHAR(10),@todate,111)  
+						OR CONVERT(VARCHAR(10),todate,111) BETWEEN CONVERT(VARCHAR(10),@fromdate,111) AND CONVERT(VARCHAR(10),@todate,111)
+						OR CONVERT(VARCHAR(10),@fromdate,111) BETWEEN CONVERT(VARCHAR(10),fromdate,111) AND CONVERT(VARCHAR(10),todate,111)
+						OR CONVERT(VARCHAR(10),@todate,111) BETWEEN CONVERT(VARCHAR(10),fromdate,111) AND CONVERT(VARCHAR(10),todate,111))
+					)
+					OR
+					(
+						@TotalDays < 1 AND TotalDays < 1 AND
+						((fromdate BETWEEN @fromdate AND @todate) 
+						OR (todate BETWEEN @fromdate AND @todate) 
+						OR (@fromdate BETWEEN fromdate AND todate) 
+						OR (@todate BETWEEN fromdate AND todate))
+					)
+				)
+	) 
+	OR
+		(SELECT COUNT(*) FROM dbo.WorkingTimeRequest WITH (NOLOCK) 
+			WHERE empid=@empid 
+			AND RequestType=@RequestType
+			AND status IN (1,2)
+			AND @TotalDays < 1
+			AND TotalDays = 0.5
+			AND (CONVERT(VARCHAR(10),fromdate,111) BETWEEN CONVERT(VARCHAR(10),@fromdate,111) AND CONVERT(VARCHAR(10),@todate,111))
+		) >=2 
+	)
+BEGIN
+	SET @ErrCode = 107
+	SET @ErrMsg = 'There is another request in the same range'
+	RETURN;
+END
+
 -- check the late in, ealry out min <=60 
-IF ( (@RequestType = 3 AND @LateInMins > 60)
-	or (@RequestType = 4 AND @EarlyOutMins > 60)	
+IF ( (@RequestType = 3 AND @LateInMins > 210)
+	or (@RequestType = 4 AND @EarlyOutMins > 210)	
 	)
 BEGIN
 	SET @ErrCode =108
-	SET @ErrMsg = 'The maximun late in/early out minutes is 60'
+	SET @ErrMsg = 'The maximun late in/early out minutes is 03h30'
 	RETURN;
 END
 
@@ -163,7 +222,7 @@ BEGIN
 END	
 
 -- cut off time
-IF (@RequestType IN (3,4,5))
+IF (@RequestType IN (5))
 BEGIN
 	SET @fromdate = CONVERT(VARCHAR(10),@fromdate,111)
 	IF (@todate IS NOT NULL)
@@ -187,7 +246,11 @@ INSERT INTO dbo.WorkingTimeRequest
 	LeaveTypeID,
 	TotalDays,
 	LateInMins,
-	EarlyOutMins
+	EarlyOutMins,
+	ProcessedBy,
+	OvertimeType,
+	IsOvertimeHours,
+	RequestDate
 )
 VALUES
 (
@@ -207,7 +270,11 @@ VALUES
 	@LeaveTypeID,
 	@TotalDays,
 	@LateInMins,
-	@EarlyOutMins
+	@EarlyOutMins,
+	@CreatedBy,
+	@OvertimeType,
+	@IsOvertimeHours,
+	@requestDate
 )
 
 DECLARE @id bigint

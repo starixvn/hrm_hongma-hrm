@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[EmployeeAttendance_ProcessingAndInsert]    Script Date: 10/18/2013 8:27:09 AM ******/
+/****** Object:  StoredProcedure [dbo].[EmployeeAttendance_ProcessingAndInsert]    Script Date: 10/21/2014 10:55:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -20,7 +20,7 @@ select * from dbo.EmployeeAttendance
 where empid= @empid and 
 		AttendanceDate between @fromtime and @totime
 */
-ALTER PROCEDURE [dbo].[EmployeeAttendance_ProcessingAndInsert]
+ALTER PROCEDURE [dbo].[EmployeeAttendance_ProcessingAndInsert] -- null, '2014-05-25', '2014-05-30'
 		@empid int, 
 		@fromtime datetime, 
 		@totime datetime,
@@ -72,13 +72,24 @@ DECLARE @TimeRecord TABLE (
 	[TimeOut] datetime
 )
 
+CREATE TABLE #WorkingTimeRequest (
+	id INT PRIMARY KEY IDENTITY(1,1), 
+	FromTime datetime,
+	ToTime datetime,
+	LeaveTypeId INT
+)
+
+DECLARE @adjustExpectedInTime DATETIME, @adjustExpectedOutTime DATETIME, @adjustTotalMunites INT, @adjustLeaveTypeId INT,
+@requestBusinessTimeInDay INT 
 --get data checkin/out for each employee
 DECLARE @yesterday datetime
-set @yesterday = convert(varchar(10),dateadd(d,-1,@FromTime) ,111)  + ' 17:00' 
-
+-- set @yesterday = convert(varchar(10),dateadd(d,-1,@FromTime) ,111)  + ' 17:00' 
+--set @yesterday = @ToTime
+-- set @yesterday = convert(varchar(10),@FromTime ,111)
+set @ToTime = DATEADD(d, 1, @ToTime)
 INSERT INTO @TimeRecord (EmpID,TimeIn, TimeOut)
 select EmpID, TimeIn, [TimeOut]
-from dbo.fnc_getTableInOut(@yesterday, @ToTime, @empid)
+from dbo.fnc_getTableInOut(@FromTime, @ToTime, @empid)
 
 -- view the @TimeRecord
 --select * from @TimeRecord
@@ -194,16 +205,18 @@ declare @LeaveTypeDefaultId as int
 select @LeaveTypeDefaultId = dbo.fnc_getLeaveTypeDefault()
 
 declare @i int
+declare @j int
 set @i=1
 while exists (select 1 from @empcalendar where id = @i)
-begin
+begin 
 	-- reset parameter
 	select @Absence=null,  @InOfMachine = null, @OutOfMachine = null, 
 			@ID = null, @ExpectedOutTime  = null, @IsRightShift=null,
 			@ExpectedInTime = null,	@ExpectedOutTime = null, 
 			@ActualLateIn = 0, @ActualEarlyOut = 0,
 			@RequestedCheckinTime = null, @RequestedCheckoutTime = null,
-			@TotalWorkHours = null, @BreakTimeMins = 0 
+			@TotalWorkHours = null, @BreakTimeMins = 0,
+			@adjustExpectedInTime = null, @adjustExpectedOutTime = null, @adjustTotalMunites = 0
 	
 	-- get one employee calendar to process
 	select 		
@@ -226,16 +239,30 @@ begin
 		@LeaveDay = LeaveDay
 	from @EmpCalendar
 	where id=@i
-	
 	-- get the checkin/out data in the same day of working calendar
 	-- case shift has working hours >= 24h (S8, S10)
+	
+	--if datediff(d,'2014-05-30', @WorkDate)=0 
+	--	begin
+	--		--select @EmpIdCur,@InOfMachine, @OutOfMachine
+	--		select @BeginCheckInTime, @BeginCheckOutTime
+	--		select * from @TimeRecord
+	--		where EmpID = @EmpIdCur
+	--	end
 	if(datediff (hh, @BeginCheckInTime , @BeginCheckOutTime)>=24)
 	begin
 		select top 1 @ID = ID, @InOfMachine = TimeIn from @TimeRecord
 		where EmpID = @EmpIdCur
 				and ( datediff (d, TimeIn , @WorkDate) = 0
 					or (TimeIn is null and datediff (d, @WorkDate, TimeOut) in (0,1))) -- in case missing timein
-
+					
+		--if datediff(d,'2014-05-30', @WorkDate)=0 
+		--begin
+		--	--select @EmpIdCur,@InOfMachine, @OutOfMachine
+		--	select * from @TimeRecord
+		--	where EmpID = @EmpIdCur
+		--end
+		
 		select top 1 @OutOfMachine = TimeOut 
 		from @TimeRecord
 		where EmpID = @EmpIdCur
@@ -252,7 +279,7 @@ begin
 				and ( datediff (d, TimeIn , @WorkDate) = 0
 					or (TimeIn is null and datediff (d, @WorkDate, TimeOut) in (0,1))) -- in case missing timein
 	end
-			
+	
 	-- if there is check-in request time, use it 
 	if (@RequestedCheckinTime is not null)
 		SET @InOfMachine = @RequestedCheckinTime
@@ -276,12 +303,21 @@ begin
 		if (@OutOfMachine<@EndCheckInTime)
 			set @OutOfMachine = null
 	end
-		
+	
+	SELECT @requestBusinessTimeInDay = count(1) FROM WorkingTimeRequest WITH (NOLOCK) WHERE EmpId = @EmpIdCur 
+				AND RequestType = 6 
+				AND LeaveTypeID = @CalculateWokingLeaveType
+				AND FromDate between @WorkDate and dateadd(ss,-1,dateadd(Day,1,@WorkDate))
+
+
 	-- if this is off day, or leave day, or holiday
 	if (@isOffDay = 1 or @IsHoliday = 1 or
-			(@IsLeaveDay = 1 and @LeaveDay = 1) 
+			(@IsLeaveDay = 1 and @LeaveDay = 1 AND @LeaveTypeId != @CalculateWokingLeaveType AND @requestBusinessTimeInDay < 2)
 		)
 	begin
+		if (@InOfMachine is not null and @OutOfMachine is not null )
+			SET @TotalWorkHours =  (datediff(mi,@InOfMachine, @OutOfMachine))/ 60.0 
+			
 		set @Absence=1
 			
 		if (@IsHoliday=1)
@@ -307,6 +343,7 @@ begin
 		begin
 			if(@IsLeaveDay = 1 and @LeaveDay = 0.5)
 			begin
+				--select '11'
 				select @RequestLeaveTimeBegin = FromDate, @RequestLeaveTimeEnd = ToDate 
 					from WorkingTimeRequest 
 					where EmpId = @EmpIdCur and 
@@ -332,7 +369,7 @@ begin
 									set @ExpectedInTime = @BeginCheckInTime
 									set @ExpectedOutTime = @BeginCheckOutTime
 								end
-								else if (@ShiftID = @ShiftIdSpecial and @adjustCheckinTime> @BeginCheckInTime and @adjustCheckinTime<= @EndCheckInTime)
+								else if (@ShiftID = @ShiftIdSpecial and @adjustCheckinTime> @BeginCheckInTime and @adjustCheckinTime <= @EndCheckInTime)
 									begin
 										set @ExpectedInTime = @adjustCheckinTime
 										set @ExpectedOutTime = dateadd(mi, (datediff(mi, @BeginCheckInTime, @BeginCheckOutTime)),@adjustCheckinTime)
@@ -374,6 +411,40 @@ begin
 				-- select  @ExpectedInTime, @ExpectedOutTime
 			end
 		end
+			
+			DELETE FROM #WorkingTimeRequest
+			INSERT INTO #WorkingTimeRequest (FromTime, ToTime, LeaveTypeId)
+			SELECT FromDate, ToDate, LeaveTypeID FROM WorkingTimeRequest WITH (NOLOCK)
+			WHERE EmpId = @EmpIdCur 
+				AND RequestType = 6
+				AND Status = 2 
+				AND FromDate between @WorkDate and dateadd(ss,-1,dateadd(Day,1,@WorkDate))
+			SELECT @j = MIN(Id) FROM #WorkingTimeRequest
+			SELECT @adjustExpectedInTime = null, @adjustExpectedOutTime = null, @adjustTotalMunites = 0
+			WHILE exists (select 1 from #WorkingTimeRequest where id = @j)
+			BEGIN
+
+				SELECT @RequestLeaveTimeBegin = FromTime, @RequestLeaveTimeEnd = ToTime, @adjustLeaveTypeId = LeaveTypeId FROM #WorkingTimeRequest where id = @j
+
+				IF(datediff(mi, @ExpectedInTime, @RequestLeaveTimeBegin) < 5 AND datediff(mi, @ExpectedInTime, @RequestLeaveTimeBegin) > -5)
+				BEGIN
+					SET @ExpectedInTime = @RequestLeaveTimeEnd
+				END
+				ELSE IF (datediff(mi, @ExpectedOutTime, @RequestLeaveTimeEnd) < 5 AND datediff(mi, @ExpectedOutTime, @RequestLeaveTimeEnd) > -5)
+				BEGIN
+					SET @ExpectedOutTime = @RequestLeaveTimeBegin
+				END
+
+
+				IF(@adjustLeaveTypeId = @CalculateWokingLeaveType)
+				BEGIN
+					SET @adjustTotalMunites = @adjustTotalMunites + datediff(mi, @RequestLeaveTimeBegin, @RequestLeaveTimeEnd)
+				END
+
+				SET @j = @j + 1
+			END
+
+			
 		-- Quinn
 		-- neu nghi 1/2 ngay xu ly rieng, nguoc lai giu nguyen cach xu ly cua a Dan
 		-- calculate the Early Out minutes (after subtracting the minutes has been allowed to check out early)
@@ -384,7 +455,15 @@ begin
 		-- calculate the Late In minutes (after subtracting the minutes has been allowed to check in late)
 		if ( dateadd(mi, -@LateIn, @InOfMachine) >  @ExpectedInTime ) 
 			set @ActualLateIn = datediff (minute, @ExpectedInTime, dateadd(mi,-@LateIn , @InOfMachine)) 
-
+	--if(@EmpIdCur = 18)
+	--	begin
+	--		select @WorkDate
+	--		select @ExpectedInTime
+	--		select @LateIn
+	--		select @InOfMachine
+	--		select @ActualLateIn
+	--	end
+		--select @adjustTotalMunites
 		if(@IsLeaveDay = 1 and @LeaveDay = 0.5)
 			begin 
 				-- if leave half day
@@ -392,8 +471,16 @@ begin
 				if (@InOfMachine is not null and @OutOfMachine is not null )
 					begin
 						set @TotalWorkHours =  (datediff(mi,@InOfMachine, @OutOfMachine))/ 60.0 
-						if(@LeaveTypeId = @CalculateWokingLeaveType)
-							set @TotalWorkHours  = @TotalWorkHours + (datediff(mi, @RequestLeaveTimeBegin, @RequestLeaveTimeEnd) - ISNULL(@BreakTimeMins,0))/ 60.0 
+						IF (@adjustTotalMunites > 0)
+						BEGIN
+							SET @TotalWorkHours =  (@TotalWorkHours * 60 + @adjustTotalMunites ) / 60.0
+						END
+						IF(@TotalWorkHours > 240)
+						BEGIN
+							SET @TotalWorkHours = @TotalWorkHours - ISNULL(@BreakTimeMins,0)
+						END
+						-- if(@LeaveTypeId = @CalculateWokingLeaveType)
+						-- set @TotalWorkHours  = @TotalWorkHours + (datediff(mi, @RequestLeaveTimeBegin, @RequestLeaveTimeEnd) - ISNULL(@BreakTimeMins,0))/ 60.0 
 					end
 				if(
 					 datediff(mi, (dateadd(mi,(datediff(mi,@ExpectedInTime, @ExpectedOutTime)/2 - 90), @ExpectedInTime)), @RequestLeaveTimeBegin) <0
@@ -420,11 +507,15 @@ begin
 			begin
 				-- calculate the actual work hour
 				if (@InOfMachine is not null and @OutOfMachine is not null )
-						set @TotalWorkHours =  (datediff(mi,@InOfMachine, @OutOfMachine) - ISNULL(@BreakTimeMins,0))/ 60.0 
+
+						set @TotalWorkHours =  (datediff(mi,@InOfMachine, @OutOfMachine) - ISNULL(@BreakTimeMins,0))/ 60.0
+
+						SET @TotalWorkHours =  (@TotalWorkHours * 60 + @adjustTotalMunites) / 60.0
+						
 						if(@TotalWorkHours < 4)
 							set @TotalWorkHours = (@TotalWorkHours * 60 + ISNULL(@BreakTimeMins,0)) / 60.0
 			end
-
+		
 		-- check in/out in right shift
 		if 
 		(
@@ -453,7 +544,6 @@ begin
 				where EmpId=@EmpIdCur and datediff(d,AttendanceDate, @WorkDate)=0))
 	begin
 		--update
-		--select @ActualLateIn, @ActualEarlyOut, @ExpectedInTime	
 		update dbo.EmployeeAttendance
 		set 
 			ShiftId = @ShiftId, 
@@ -532,4 +622,6 @@ begin
 		print 'IsRightShift' + cast( @IsRightShift as varchar(100))
 	*/	
 	set @i=@i+1
+	SET @j = 1
 end 
+DROP TABLE #WorkingTimeRequest

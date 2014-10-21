@@ -1,4 +1,11 @@
-﻿-- Employee_GetMembesByManager 165, 1,1,10, N't'
+﻿USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Employee_GetMembesByManager]    Script Date: 10/21/2014 10:52:48 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- Employee_GetMembesByManager 165, 3,0,NULL, N'Quang'
 ALTER PROCEDURE [dbo].[Employee_GetMembesByManager] 
 	@managerID int,
 	@role int,

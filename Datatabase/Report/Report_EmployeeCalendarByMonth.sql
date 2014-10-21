@@ -1,6 +1,13 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Report_EmployeeCalendarByMonth]    Script Date: 10/21/2014 11:18:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- Report_EmployeeCalendarByMonth '2012/04/08'
 
-ALTER PROCEDURE Report_EmployeeCalendarByMonth
+ALTER PROCEDURE [dbo].[Report_EmployeeCalendarByMonth]
 	@reportDate datetime,
 	@employeeId int = null,
 	@groupid int = null

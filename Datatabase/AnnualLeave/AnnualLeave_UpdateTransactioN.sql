@@ -1,8 +1,16 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[AnnualLeave_UpdateTransaction]    Script Date: 10/21/2014 10:46:18 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 /*
 AnnualLeave_UpdateTransaction 1, NULL, 'CAP NGAY PHEP DAU NAM', '2012/01/01', '2012/01/01',0,12, '2012/04/20', 86
 */
 
-ALTER PROCEDURE AnnualLeave_UpdateTransaction	
+ALTER PROCEDURE [dbo].[AnnualLeave_UpdateTransaction]	
 	@Id int,
 	@Description nvarchar(4000),
 	@FromDate datetime,
@@ -38,7 +46,7 @@ BEGIN TRY
 	UPDATE dbo.LeaveTrans WITH (ROWLOCK, UPDLOCK)
 	SET Description= @Description,
 		FromDate = @FromDate,
-		ToDate = @ToDate,
+		ToDate = @FromDate,
 		DeductDays = @DeductDays,
 		CreditDays = @CreditDays,
 		ModifiedDate = @ModifiedDate,
@@ -71,4 +79,5 @@ BEGIN CATCH
                @ErrorState -- State.
                );
 END CATCH;
+
 

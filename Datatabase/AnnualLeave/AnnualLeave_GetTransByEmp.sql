@@ -1,5 +1,13 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[AnnualLeave_GetTransByEmp]    Script Date: 10/21/2014 10:44:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 --AnnualLeave_GetTransByEmp 144, 2012,0
-CREATE PROCEDURE [dbo].[AnnualLeave_GetTransByEmp]
+ALTER PROCEDURE [dbo].[AnnualLeave_GetTransByEmp]
 	-- Add the parameters for the stored procedure here	
 	@EmpID int,
 	@Year int,
@@ -28,7 +36,7 @@ BEGIN
 	SELECT 
 		t.ID,
 		RequestID,
-		FromDate AS AffectedDate,
+		FromDate AS AffectedFrom,
 		ISNULL(CreditDays,0) - ISNULL(DeductDays,0) AS [ToTalDays],
 		Description,
 		t.CreatedDate		
@@ -39,3 +47,4 @@ BEGIN
 		(@excludedRequestTrans=0 OR RequestId IS NULL) 		
 		
 END
+

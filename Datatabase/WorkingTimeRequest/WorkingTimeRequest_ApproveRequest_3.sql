@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_ApproveRequest_3]    Script Date: 10/18/2013 8:51:11 AM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_ApproveRequest_3]    Script Date: 10/21/2014 11:26:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -40,10 +40,6 @@ BEGIN TRY
 		ModifiedBy = @ApprovedBy
 	WHERE EmpID = @EmpId 
 	and WorkDate between convert(varchar(10),@FromDate,111) and convert(varchar(10),@ToDate,111)
-	--datediff(d, WorkDate, @WorkDate)=0
-
-	-- process the calendar into attendance
-	EXEC EmployeeAttendance_ProcessingAndInsert @EmpId,  @FromDate, @ToDate, 1
 
 	-- update status of request
 	UPDATE dbo.WorkingTimeRequest
@@ -56,8 +52,12 @@ BEGIN TRY
 	
 	INSERT INTO dbo.EmployeeCalendar_Request(EmpId, WorkDate, RequestId)
 	SELECT EmpId, WorkDate, @RequestID FROM dbo.EmployeeCalendar WITH(NOLOCK) 
-	WHERE EmpId = @EmpId 
+	WHERE EmpId = @EmpId
+	AND IsOffDay <> 1 AND IsHoliday <> 1 
 	AND WorkDate BETWEEN CONVERT(VARCHAR(10),@FromDate,111) AND CONVERT(VARCHAR(10),@ToDate,111)
+	
+	-- process the calendar into attendance
+	EXEC EmployeeAttendance_ProcessingAndInsert @EmpId,  @FromDate, @ToDate, 1
 
 	COMMIT TRANSACTION;    
 END TRY

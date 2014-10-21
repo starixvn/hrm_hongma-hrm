@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByDate_AllType]    Script Date: 10/18/2013 9:04:28 AM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByDate_AllType]    Script Date: 10/21/2014 12:40:54 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +29,7 @@ SELECT
 	r.Id,
 	r.empID,
 	RequestType,
-	r.FromDate AS RequestDate,		
+	r.RequestDate,	
 	r.CreatedDate,
 	Status,	
 	e.NickName AS Requester,

@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[Report_WorkingHoursSummary]    Script Date: 10/18/2013 8:45:19 AM ******/
+/****** Object:  StoredProcedure [dbo].[Report_WorkingHoursSummary]    Script Date: 10/21/2014 11:20:11 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

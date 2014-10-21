@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_SetOffDayForAllEmployees]    Script Date: 10/21/2014 11:01:00 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- EmployeeCalendar_SetOffDayForAllEmployees '2012/07/02',0, 128 , '2012/07/19 11:11'
 
 ALTER PROCEDURE [dbo].[EmployeeCalendar_SetOffDayForAllEmployees]

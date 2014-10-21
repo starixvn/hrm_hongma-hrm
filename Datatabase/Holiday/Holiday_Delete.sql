@@ -1,10 +1,17 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[Holiday_Delete]    Script Date: 10/21/2014 11:13:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*
 --Holiday_Insert 'TEST 10/4', '2012/4/10','2012/4/10'
 
 Holiday_Delete 5
 */
 
-ALTER PROCEDURE Holiday_Delete
+ALTER PROCEDURE [dbo].[Holiday_Delete]
 	@Id int	,
 	@ModifiedBy int,
 	@ModifiedDate datetime 	

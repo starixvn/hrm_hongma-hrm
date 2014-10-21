@@ -1,6 +1,6 @@
-USE [NexHRM]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType]    Script Date: 8/27/2012 11:24:22 AM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType]    Script Date: 10/21/2014 12:42:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9,9 +9,9 @@ GO
 
 --WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType NULL,null,'2012/05/1', '2012/07/22', null,NULL, 3
 
-ALTER PROCEDURE [dbo].[WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType]	
+ALTER PROCEDURE [dbo].[WorkingTimeRequest_GetRequestByEmp_LateInEarlyOutType] 
 	@empid int = null,
-	@groupid int = null,
+	@groupids varchar(max) = '',
 	@fromdate datetime,
 	@todate datetime,
 	@status tinyint = null,
@@ -28,6 +28,10 @@ Revisions:
 Param's Explanation:
 */
 
+CREATE TABLE #GroupsList (GroupId TINYINT)
+INSERT INTO #GroupsList (GroupId)
+SELECT val FROM fnc_strSplit (@groupids, ',')
+
 set @fromdate = convert(varchar(10),@fromdate,111)
 set @todate = dateadd(d, 1, convert(varchar(10),@todate,111))
 
@@ -35,7 +39,8 @@ SELECT
 	r.Id,
 	RequestType,
 	s.Code AS Shift,
-	FromDate AS RequestDate,
+	FromDate,
+	ToDate,
 	case when RequestType = 3 then LateInMins else EarlyOutMins end as [Time],	
 	Remark,
 	r.CreatedDate,
@@ -50,6 +55,7 @@ SELECT
 	(SELECT count(*) FROM dbo.WorkingTimeRequest wt WITH (NOLOCK) WHERE wt.EmpId = r.EmpId 
 	and wt.RequestType in (3,4) and wt.Status = 2 and month(wt.FromDate) = month(r.FromDate)) AS TotalDaysRequestInMonth	
 
+
 FROM  dbo.WorkingTimeRequest r WITH (NOLOCK) 
 	LEFT JOIN Employee ap WITH (NOLOCK) ON ap.ID = r.ProcessedBy	
 	JOIN dbo.EmployeeCalendar C WITH (NOLOCK) ON c.empid=r.empid and c.WorkDate = convert(VARCHAR(10),r.FromDate,111)
@@ -63,8 +69,8 @@ WHERE RequestType in (3,4) and
 	(@status is null or r.status = @status ) and
 	r.createddate >= @fromdate and r.createddate  < @todate	
 	and (
-		(@groupid is null and @role NOT IN (1,2)) or
-		(@groupid is null and @role IN (1,2)  	
+		((@groupids IS NULL OR @groupids = '') and @role NOT IN (1,2)) or
+		((@groupids IS NULL OR @groupids = '') and @role IN (1,2)  	
 					AND r.empID IN (SELECT empid
 								from  dbo.EmployeeGroup_Employee eg WITH (NOLOCK)
 								where eg.GroupId IN (SELECT Id
@@ -75,9 +81,10 @@ WHERE RequestType in (3,4) and
 										AND ISNULL(HandleRequest,0) = 1
 									)) or
 
-		(@groupid is not null and r.empID IN (SELECT empid
+		(@groupids IS NOT NULL AND @groupids != '' and r.empID IN (SELECT empid
 								from  dbo.EmployeeGroup_Employee eg WITH (NOLOCK)
-								where eg.GroupId = @groupid AND ISNULL(HandleRequest,0) = 1
+								where eg.GroupId IN (SELECT GroupId FROM #GroupsList) 
+									AND ISNULL(HandleRequest,0) = 1
 								))
 		) 
 ORDER BY r.CreatedDate DESC

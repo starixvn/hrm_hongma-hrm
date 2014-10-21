@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByDate_ChangeShiftType]    Script Date: 10/18/2013 9:04:38 AM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByDate_ChangeShiftType]    Script Date: 10/21/2014 12:41:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

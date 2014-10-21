@@ -1,6 +1,6 @@
-USE [NexHRM]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByEmp_LeaveType]    Script Date: 8/27/2012 11:24:39 AM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestByEmp_LeaveType]    Script Date: 10/21/2014 12:42:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -13,7 +13,7 @@ GO
 
 ALTER PROCEDURE [dbo].[WorkingTimeRequest_GetRequestByEmp_LeaveType]
 	@empid int = null,
-	@groupid int = null,
+	@groupids varchar(max) = '',
 	@fromdate datetime,
 	@todate datetime,
 	@status tinyint = null,
@@ -29,6 +29,11 @@ Original:
 Revisions:    
 Param's Explanation:
 */
+
+CREATE TABLE #GroupsList (GroupId TINYINT)
+INSERT INTO #GroupsList (GroupId)
+SELECT val FROM fnc_strSplit (@groupids, ',')
+
 set @fromdate = convert(varchar(10),@fromdate,111)
 set @todate = dateadd(d, 1, convert(varchar(10),@todate,111))
 
@@ -64,8 +69,8 @@ WHERE RequestType = 6 and
 	(@status is null or r.status = @status ) and
 	r.createddate >= @fromdate and r.createddate  < @todate	
 	and (
-		(@groupid is null and @role NOT IN (1,2)) or
-		(@groupid is null and @role IN (1,2)  	
+		((@groupids IS NULL OR @groupids = '') and @role NOT IN (1,2)) or
+		((@groupids IS NULL OR @groupids = '') and @role IN (1,2)  	
 					AND r.empID IN (SELECT empid
 								from  dbo.EmployeeGroup_Employee eg WITH (NOLOCK)
 								where eg.GroupId IN (SELECT Id
@@ -76,12 +81,13 @@ WHERE RequestType = 6 and
 										AND ISNULL(HandleRequest,0) = 1
 									)) or
 
-		(@groupid is not null and r.empID IN (SELECT empid
+		(@groupids IS NOT NULL AND @groupids != '' and r.empID IN (SELECT empid
 								from  dbo.EmployeeGroup_Employee eg WITH (NOLOCK)
-								where eg.GroupId = @groupid AND ISNULL(HandleRequest,0) = 1
+								where eg.GroupId IN (SELECT GroupId FROM #GroupsList) 
+									AND ISNULL(HandleRequest,0) = 1
 								))
 		) 
 ORDER BY r.CreatedDate DESC
 
-
+DROP TABLE #GroupsList
 

@@ -1,6 +1,6 @@
-USE [HRMS-HongMa]
+USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_ApproveRequest_6]    Script Date: 10/18/2013 8:53:24 AM ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_ApproveRequest_6]    Script Date: 10/21/2014 11:33:17 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -35,6 +35,22 @@ SET XACT_ABORT ON;
 BEGIN TRY
     BEGIN TRANSACTION;
 	-- update the working calendar to record the check-in time
+	-- update status of request
+	UPDATE dbo.WorkingTimeRequest
+	SET [Status] = 2 ,-- approved
+		ProcessedBy= @ApprovedBy,
+		ProcessedDate= @ApprovedDate,
+		ModifiedDate = @ApprovedDate,
+		ModifiedBy = @ApprovedBy 
+	WHERE Id = @RequestID
+	
+	INSERT INTO dbo.EmployeeCalendar_Request(EmpId, WorkDate, RequestId, LeaveTypeId)
+	SELECT EmpId, WorkDate, @RequestID, @LeaveTypeID 
+	FROM dbo.EmployeeCalendar WITH(NOLOCK) 
+	WHERE EmpId = @EmpId 
+	AND IsOffDay <> 1 AND IsHoliday <> 1
+	AND WorkDate BETWEEN CONVERT(VARCHAR(10),@FromDate,111) AND CONVERT(VARCHAR(10),@ToDate,111)
+	
 	IF(@TotalDays <> 0)
 	BEGIN
 		UPDATE dbo.EmployeeCalendar
@@ -46,8 +62,9 @@ BEGIN TRY
 						else 1 end,
 			ModifiedDate = @ApprovedDate,
 			ModifiedBy = @ApprovedBy 
-		WHERE EmpID = @EmpId and	
-			WorkDate between convert(varchar(10),@FromDate,111) and convert(varchar(10),@ToDate,111) -- cut off time before compare
+		WHERE EmpID = @EmpId 
+			AND IsOffDay <> 1 AND IsHoliday <> 1	
+			AND WorkDate between convert(varchar(10),@FromDate,111) and convert(varchar(10),@ToDate,111) -- cut off time before compare
 	
 		-- process the calendar into attendance
 		EXEC EmployeeAttendance_ProcessingAndInsert @EmpId,  @FromDate, @ToDate, 1
@@ -56,20 +73,7 @@ BEGIN TRY
 		IF (EXISTS(SELECT * FROM dbo.LeaveType WHERE Id = @LeaveTypeID and IsALDeduction = 1))		
 			EXEC AnnualLeave_InsertTransaction @EmpId, @RequestID, 'Leave Request', @FromDate, @ToDate, @TotalDays, NULL, @ApprovedDate, @ApprovedBy
 	END
-	-- update status of request
-	UPDATE dbo.WorkingTimeRequest
-	SET [Status] = 2 ,-- approved
-		ProcessedBy= @ApprovedBy,
-		ProcessedDate= @ApprovedDate,
-		ModifiedDate = @ApprovedDate,
-		ModifiedBy = @ApprovedBy 
-	WHERE Id = @RequestID
 	
-	INSERT INTO dbo.EmployeeCalendar_Request(EmpId, WorkDate, RequestId, LeaveTypeId)
-	SELECT EmpId, WorkDate, @RequestID, @LeaveTypeID FROM dbo.EmployeeCalendar WITH(NOLOCK) 
-	WHERE EmpId = @EmpId 
-	AND WorkDate BETWEEN CONVERT(VARCHAR(10),@FromDate,111) AND CONVERT(VARCHAR(10),@ToDate,111)
-
     COMMIT TRANSACTION; 
 END TRY
 BEGIN CATCH

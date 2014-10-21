@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeGroup_Delete]    Script Date: 10/21/2014 11:03:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*
 declare @ErrCode int,@ErrMsg nvarchar(200)
 		
@@ -5,7 +12,7 @@ exec EmployeeGroup_Delete 25,'2012/06/11',86,@ErrCode OUTPUT,@ErrMsg OUTPUT
 
 select @ErrCode,@ErrMsg
 */ 
-ALTER PROCEDURE EmployeeGroup_Delete
+ALTER PROCEDURE [dbo].[EmployeeGroup_Delete]
 	@Id int,
     @ModifiedDate datetime,
     @ModifiedBy int,

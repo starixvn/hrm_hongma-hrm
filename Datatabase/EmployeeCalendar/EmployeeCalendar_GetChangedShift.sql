@@ -1,5 +1,12 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_GetChangedShift]    Script Date: 10/21/2014 10:56:33 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- EmployeeCalendar_GetChangedShift '2012/06/6'
-ALTER PROCEDURE EmployeeCalendar_GetChangedShift
+ALTER PROCEDURE [dbo].[EmployeeCalendar_GetChangedShift]
 	@reportDate datetime,
 	@employeeId int = null,
 	@groupid int = null

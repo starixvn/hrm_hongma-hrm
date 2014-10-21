@@ -1,5 +1,12 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_GetHalfDayOff]    Script Date: 10/21/2014 10:58:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- EmployeeCalendar_GetHalfDayOff '2012/06/6'
-ALTER PROCEDURE EmployeeCalendar_GetHalfDayOff
+ALTER PROCEDURE [dbo].[EmployeeCalendar_GetHalfDayOff]
 	@reportDate datetime,
 	@employeeId int = null,
 	@groupid int = null

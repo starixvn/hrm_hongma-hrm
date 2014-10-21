@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[AnnualLeave_InsertMultipleTransactions]    Script Date: 10/21/2014 10:44:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- AnnualLeave_InsertMultipleTransactions '86,87', 'test', '2012/05/28', 0,1, '2012/05/28', 86 
 -- select * from employee where id in ('86','87')
 

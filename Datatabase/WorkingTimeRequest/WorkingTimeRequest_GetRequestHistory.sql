@@ -1,6 +1,13 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_GetRequestHistory]    Script Date: 10/21/2014 12:43:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 -- [WorkingTimeRequest_GetRequestHistory] 310,0 
 
-ALTER PROCEDURE [dbo].[WorkingTimeRequest_GetRequestHistory]
+ALTER PROCEDURE [dbo].[WorkingTimeRequest_GetRequestHistory] 
 	@requestid bigint,
 	@type int	
 AS
@@ -43,6 +50,7 @@ BEGIN
 		r.Id,
 		RequestType,
 		s.Code AS Shift,
+		r.RequestDate,
 		FromDate AS RequestTime,	
 		r.CreatedDate,
 		Status,	
@@ -55,7 +63,7 @@ BEGIN
 		ProcessedDate
 	FROM  dbo.WorkingTimeRequest_history r WITH (NOLOCK)
 		LEFT JOIN Employee ap WITH (NOLOCK) ON ap.ID = r.ProcessedBy	
-		JOIN dbo.EmployeeCalendar C WITH (NOLOCK) ON c.empid=r.empid and c.WorkDate = convert(VARCHAR(10),r.FromDate,111)
+		JOIN dbo.EmployeeCalendar C WITH (NOLOCK) ON c.empid=r.empid and c.WorkDate = convert(VARCHAR(10),r.RequestDate,111)
 		JOIN Shift s WITH (NOLOCK) ON s.id = c.ShiftID
 		JOIN Employee e WITH (NOLOCK) ON e.ID = r.empID	
 		LEFT JOIN EmployeeGroup g WITH (NOLOCK) ON e.GroupID = g.ID
@@ -68,7 +76,8 @@ BEGIN
 		r.Id,
 		RequestType,
 		s.Code AS Shift,
-		FromDate AS RequestDate,
+		FromDate,
+		ToDate,
 		case when RequestType = 3 then LateInMins else EarlyOutMins end as [Time],	
 		Remark,
 		r.CreatedDate,
@@ -142,4 +151,35 @@ ELSE IF (@type = 4) -- view LeaveType
 		LEFT JOIN EmployeeGroup g WITH (NOLOCK) ON e.GroupID = g.ID
 	WHERE r.Id = @requestid
 	ORDER BY keyid
+END
+ELSE
+BEGIN
+	SELECT 
+		r.Id,
+		RequestType,			
+		FromDate,
+		ToDate,
+		TotalDays, 
+		Remark,
+		r.CreatedDate,
+		s1.Code as FromShift,
+		r.OvertimeType,
+		r.IsOvertimeHours,
+		Status,	
+		e.NickName AS Requester,
+		e.FullName AS FullNameRequester,
+		g.Name AS Team,
+		g.Code AS TeamCode,
+		ap.NickName AS ProcessedBy,
+		ap.FullName AS FullNameProcessedBy,
+		ProcessedDate
+
+	FROM  dbo.WorkingTimeRequest_history r WITH (NOLOCK) 
+		LEFT JOIN Employee ap WITH (NOLOCK) ON ap.ID = r.ProcessedBy
+		LEFT JOIN dbo.Shift s1 WITH (NOLOCK) ON s1.Id= r.FromShift
+		JOIN Employee e WITH (NOLOCK) ON e.ID = r.empID	
+		LEFT JOIN EmployeeGroup g WITH (NOLOCK) ON e.GroupID = g.ID
+	WHERE r.Id = @requestid
+	ORDER BY keyid
+		
 END

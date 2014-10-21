@@ -8,17 +8,7 @@
 		}
 	});
 
-	$("form").submit(function (e) {
-		if ($('#Shift').val() != "U1" && ($("#Type_2").attr("checked") == "checked" || $('#Type').val() == "2")) {
-			var timeOut = ($('#Hour').val().length < 2 ? "0" + $('#Hour').val() : $('#Hour').val()) + ":" + ($('#Minute').val().length < 2 ? "0" + $('#Minute').val() : $('#Minute').val());
-			if (timeOut < $('#InTime').val() || $('#Hour').val().length == 0 || $('#Minute').val().length == 0) {
-				e.preventDefault();
-				alert('Request time Invalid!');
-			}
-		}
-	});
-
-$("#Employee").blur(function () {
+	$("#Employee").blur(function () {
 		$.getJSON(_global.root + 'api/employee/GetUnavailDate', { employeeId: $('#EmployeeId').val(), date: new Date().toDateString() },
 				function (response) {
 					if (response != null) {
@@ -53,7 +43,7 @@ $("#Employee").blur(function () {
 	});
 
 	if ($('#Type_1').val() != undefined)
-	    $("#Employee").blur();
+		$("#Employee").blur();
 	else
 		getShiftByDate();
 

@@ -1,3 +1,10 @@
+USE [HRMS]
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_CheckExistedCalendar]    Script Date: 10/21/2014 10:55:30 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 /*declare @empid int, @fromdate datetime, @todate datetime,
 		@maxDate datetime, @minDate datetime
 set @empid=86
@@ -5,7 +12,7 @@ set @fromdate='2012/04/06'
 set @todate='2012/06/06'
 exec EmployeeCalendar_CheckExistedCalendar 86, 
 */
-alter PROCEDURE dbo.EmployeeCalendar_CheckExistedCalendar
+ALTER PROCEDURE [dbo].[EmployeeCalendar_CheckExistedCalendar]
 	@empid int, 
 	@fromdate datetime, 
 	@todate datetime
