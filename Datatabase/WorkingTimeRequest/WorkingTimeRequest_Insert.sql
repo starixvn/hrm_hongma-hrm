@@ -1,6 +1,6 @@
 USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_Insert]    Script Date: 10/21/2014 12:43:16 ******/
+/****** Object:  StoredProcedure [dbo].[WorkingTimeRequest_Insert]    Script Date: 10/27/2014 10:23:20 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -150,10 +150,10 @@ IF (@RequestType = 6) AND
 					OR
 					(
 						@TotalDays < 1 AND TotalDays < 1 AND
-						((fromdate BETWEEN @fromdate AND @todate) 
+						(((fromdate BETWEEN @fromdate AND @todate) 
 						OR (todate BETWEEN @fromdate AND @todate) 
 						OR (@fromdate BETWEEN fromdate AND todate) 
-						OR (@todate BETWEEN fromdate AND todate))
+						OR (@todate BETWEEN fromdate AND todate)) AND fromdate <> @todate AND todate <> @fromdate)
 					)
 				)
 	) 
