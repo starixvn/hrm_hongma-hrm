@@ -231,7 +231,7 @@ namespace Fanex.NexHR.Repositories
             {
                 db.AddInParameter("@id", DbType.Int32, model.Id);
                 db.AddInParameter("@code", DbType.String, model.Code.Trim());
-                db.AddInParameter("@EmployeeCard", DbType.String, model.EmployeeCard != null ? model.EmployeeCard.Trim() :  string.Empty);
+                db.AddInParameter("@EmployeeCard", DbType.String, model.EmployeeCard != null ? model.EmployeeCard.Trim() : string.Empty);
                 db.AddInParameter("@domainUsername", DbType.String, model.DomainUsername);
                 db.AddInParameter("@fullName", DbType.String, model.FullName);
                 db.AddInParameter("@nickName", DbType.String, model.NickName);
