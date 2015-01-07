@@ -662,7 +662,8 @@ namespace Fanex.NexHR.Services
 
                 foreach (var request in item.RequestList)
                 {
-                    requests += "- " + request.RequestType.Name + ": " + this.GetRequestDetail(request) 
+                    string requestName = request.RequestType.Name == "Leave" ? request.LeaveType : request.RequestType.Name;
+                    requests += "- " + requestName + ": " + this.GetRequestDetail(request)
                         + (string.IsNullOrEmpty(request.Remark) ? string.Empty : " --> " + request.Remark) + "\r\n";
                 }
 

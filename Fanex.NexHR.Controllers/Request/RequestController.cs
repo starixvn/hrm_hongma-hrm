@@ -210,21 +210,7 @@ namespace Fanex.NexHR.Controllers.Request
         [NonAction]
         private void CommonViewRequest(ref RequestViewModel request, RolesEnum role, bool isDailyRequest)
         {
-            if (role == RolesEnum.AssistantLeader)
-            {
-                if (request.TeamIds == null)
-                {
-                    request.ToDate = DateTime.Now.Date;
-                    request.FromDate = request.ToDate.AddDays(-7);
-                }
-
-                request.TeamCollection = _TeamService.GetAll();
-            }
-            else
-            {
-                request.TeamCollection = _TeamService.GetAll();
-            }
-
+            request.TeamCollection = _TeamService.GetAll();
             var requestList = _RequestService.GetWorkingTimeRequests(
                 request,
                 (short)role,
