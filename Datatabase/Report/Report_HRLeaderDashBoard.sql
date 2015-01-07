@@ -1,6 +1,6 @@
 USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[Report_HRLeaderDashBoard]    Script Date: 10/21/2014 11:19:21 ******/
+/****** Object:  StoredProcedure [dbo].[Report_HRLeaderDashBoard]    Script Date: 01/06/2015 13:13:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -41,25 +41,22 @@ if (ISNULL(@role,0)=0)
 
 SELECT 
 	-- check in/out request	
-	ISNULL(SUM(case when requesttype in (1,2) and status=1 then 1 else 0 end),0) as TotalPendingCheckInOutRequest,
 	ISNULL(SUM(case when requesttype in (1,2) and status=2 then 1 else 0 end),0) as TotalApprovedCheckInOutRequest,
 	ISNULL(SUM(case when requesttype in (1,2) and status=3 then 1 else 0 end),0) as TotalRejectCheckInOutRequest,
 
 	-- late in/early out request	
-	ISNULL(SUM(case when requesttype in (3,4) and status=1 then 1 else 0 end),0) as TotalPendingLateInEarlyOutRequest,
 	ISNULL(SUM(case when requesttype in (3,4) and status=2 then 1 else 0 end),0) as TotalApprovedLateInEarlyOutRequest,
 	ISNULL(SUM(case when requesttype in (3,4) and status=3 then 1 else 0 end),0) as TotalRejectLateInEarlyOutRequest,
 
 	-- Change Shift Request	
-	ISNULL(SUM(case when requesttype = 5 and status=1 then 1 else 0 end),0) as TotalPendingChangeShiftRequest,
 	ISNULL(SUM(case when requesttype = 5 and status=1 then 2 else 0 end),0) as TotalApprovedChangeShiftRequest,
 	ISNULL(SUM(case when requesttype = 5 and status=1 then 3 else 0 end),0) as TotalRejectChangeShiftRequest,
 	
 	--Leave Request	
-	ISNULL(SUM(case when requesttype = 6 and status=1 then 1 else 0 end),0) as TotalPendingLeaveRequest,
 	ISNULL(SUM(case when requesttype = 6 and status=2 then 1 else 0 end),0) as TotalApprovedLeaveRequest,
 	ISNULL(SUM(case when requesttype = 6 and status=3 then 1 else 0 end),0) as TotalRejectLeaveRequest
-
+	
+INTO #processedRequestTable
 FROM dbo.WorkingTimeRequest r
 	JOIN Employee e ON e.Id = r.empid 
 WHERE r.CreatedDate >= @fromdate and r.CreatedDate < @toDate	
@@ -76,3 +73,42 @@ WHERE r.CreatedDate >= @fromdate and r.CreatedDate < @toDate
 									)
 				)
 		)
+		
+		
+		
+SELECT 
+	-- check in/out request	
+	ISNULL(SUM(case when requesttype in (1,2) and status=1 then 1 else 0 end),0) as TotalPendingCheckInOutRequest,
+
+	-- late in/early out request	
+	ISNULL(SUM(case when requesttype in (3,4) and status=1 then 1 else 0 end),0) as TotalPendingLateInEarlyOutRequest,
+
+	-- Change Shift Request	
+	ISNULL(SUM(case when requesttype = 5 and status=1 then 1 else 0 end),0) as TotalPendingChangeShiftRequest,
+	
+	--Leave Request	
+	ISNULL(SUM(case when requesttype = 6 and status=1 then 1 else 0 end),0) as TotalPendingLeaveRequest
+
+INTO #pendingRequestTable
+FROM dbo.WorkingTimeRequest r
+	JOIN Employee e ON e.Id = r.empid 
+WHERE 
+	( r.empid <> @employeeid -- not count the leader itself 
+			AND r.empID IN (SELECT empid
+					from  dbo.EmployeeGroup_Employee eg WITH (NOLOCK)
+					where eg.GroupId IN (SELECT Id
+										FROM dbo.EmployeeGroup WITH (NOLOCK)
+										WHERE LeaderId = @employeeid OR	
+												AssistantLeaderId = @employeeid
+									)
+						AND ISNULL(HandleRequest,0) = 1			
+						)
+	)
+		
+		
+		
+SELECT *  FROM #processedRequestTable CROSS JOIN #pendingRequestTable
+		
+DROP TABLE #processedRequestTable
+
+DROP TABLE #pendingRequestTable
