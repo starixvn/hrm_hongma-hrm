@@ -1,6 +1,6 @@
 USE [HRMS]
 GO
-/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_Update]    Script Date: 10/21/2014 12:53:37 ******/
+/****** Object:  StoredProcedure [dbo].[EmployeeCalendar_Update]    Script Date: 02/25/2015 10:35:35 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -50,7 +50,7 @@ Param's Explanation:
 	@isHoliday =  case when EXISTS(select * from dbo.Holiday   
 		 where WorkDate between FromDate and ToDate)  
 	   THEN 1 ELSE 0 END,  
-	IsHoliday = Case WHEN @ShiftID IS NULL THEN @isHoliday ELSE 0 end ,  
+	IsHoliday = @isHoliday,  
 	ShiftId =  @ShiftID,  
 	isOffDay = case when @ShiftID is null and @isHoliday=0 and LeaveTypeId is null then 1  
 	  else 0 end,  
